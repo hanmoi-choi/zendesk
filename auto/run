@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+auto/dev-environment sbt clean assembly
+
+scala target/scala-2.13/zendesk.jar

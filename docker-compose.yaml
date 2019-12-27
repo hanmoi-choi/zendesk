@@ -1,0 +1,19 @@
+---
+version: "3"
+
+services:
+  dev:
+    build: .
+    volumes:
+      - .:/app
+      - ivy-cache:/root/.ivy2
+      - maven-cache:/root/.m2
+      - sbt-cache:/root/.sbt
+
+volumes:
+  ivy-cache:
+    external: true
+  maven-cache:
+    external: true
+  sbt-cache:
+    external: true
