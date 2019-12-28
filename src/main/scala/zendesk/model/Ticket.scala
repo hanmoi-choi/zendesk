@@ -8,7 +8,7 @@ case class Ticket(
                    id: TicketId,
                    url: Url,
                    externalId: ExternalId,
-                   createdAt: DateTime,
+                   createdAt: ZenDateTime,
                    `type`: Option[Type],
                    subject: Subject,
                    description: Description,
@@ -19,7 +19,7 @@ case class Ticket(
                    organizationId: OrganizationId,
                    tags: List[Tag],
                    hasIncidents: HasIncidents,
-                   dueAt: DateTime,
+                   dueAt: ZenDateTime,
                    via: Via
                  )
 
@@ -47,7 +47,7 @@ object Ticket {
     ticketId <- c.downField("_id").as[TicketId]
     url <- c.downField("url").as[Url]
     externalId <- c.downField("external_id").as[ExternalId]
-    createdAt <- c.downField("created_at").as[DateTime]
+    createdAt <- c.downField("created_at").as[ZenDateTime]
     ticketType <- c.downField("type").as[Option[Type]]
     subject <- c.downField("subject").as[Subject]
     description <- c.downField("description").as[Description]
@@ -58,7 +58,7 @@ object Ticket {
     organizationId <- c.downField("organization_id").as[OrganizationId]
     tags <- c.downField("tags").as[List[Tag]]
     hasIncidents <- c.downField("has_incidents").as[HasIncidents]
-    dueAt <- c.downField("due_at").as[DateTime]
+    dueAt <- c.downField("due_at").as[ZenDateTime]
     via <- c.downField("via").as[Via]
   } yield {
     new Ticket(

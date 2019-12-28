@@ -1,11 +1,11 @@
 package zendesk.model
 
-import java.time.ZonedDateTime
 import java.util.UUID
 
 import cats.syntax.either._
 import io.circe._
 import io.circe.syntax._
+import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import zendesk.model.value._
 
@@ -43,13 +43,13 @@ class UserSpec extends Specification {
     externalId = ExternalId(UUID.fromString("74341f74-9c79-49d5-9611-87ef9b6eb75f")),
     name = Name("Francisca Rasmussen"),
     alias = Alias("Miss Coffey"),
-    createdAt = DateTime(ZonedDateTime.parse("2016-05-21T11:10:28-10:00")),
+    createdAt = ZenDateTime(DateTime.parse("2016-05-21T11:10:28-10:00")),
     active = Active(true),
     verified = Verified(true),
     shared = Shared(false),
     locale = Locale("en-AU"),
     timezone = Timezone("Sri Lanka"),
-    lastLoginAt = DateTime(ZonedDateTime.parse("2016-05-21T11:10:28-10:00")),
+    lastLoginAt = ZenDateTime(DateTime.parse("2016-05-21T11:10:28-10:00")),
     email = Email("coffeyrasmussen@flotonic.com"),
     phone = Phone("8335-422-718"),
     signature = Signature("Don't Worry Be Happy!"),

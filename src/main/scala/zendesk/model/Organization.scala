@@ -10,7 +10,7 @@ case class Organization(
                          externalId: ExternalId,
                          name: Name,
                          domainNames: List[DomainName],
-                         createdAt: DateTime,
+                         createdAt: ZenDateTime,
                          details: Details,
                          sharedTickets: SharedTickets,
                          tags: List[Tag]
@@ -29,13 +29,13 @@ object Organization {
     ("tags", org.tags.asJson)
   )
 
-  implicit val decodeFoo: Decoder[Organization] = (c: HCursor) => for {
+  implicit val decodeOrg: Decoder[Organization] = (c: HCursor) => for {
     id <- c.downField("_id").as[Id]
     url <- c.downField("url").as[Url]
     externalId <- c.downField("external_id").as[ExternalId]
     name <- c.downField("name").as[Name]
     domainNames <- c.downField("domain_names").as[List[DomainName]]
-    createdAt <- c.downField("created_at").as[DateTime]
+    createdAt <- c.downField("created_at").as[ZenDateTime]
     details <- c.downField("details").as[Details]
     sharedTickets <- c.downField("shared_tickets").as[SharedTickets]
     tags <- c.downField("tags").as[List[Tag]]

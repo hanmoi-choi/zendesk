@@ -10,13 +10,13 @@ case class User(
                  externalId: ExternalId,
                  name: Name,
                  alias: Alias,
-                 createdAt: DateTime,
+                 createdAt: ZenDateTime,
                  active: Active,
                  verified: Verified,
                  shared: Shared,
                  locale: Locale,
                  timezone: Timezone,
-                 lastLoginAt: DateTime,
+                 lastLoginAt: ZenDateTime,
                  email: Email,
                  phone: Phone,
                  signature: Signature,
@@ -55,13 +55,13 @@ object User {
     externalId <- c.downField("external_id").as[ExternalId]
     name <- c.downField("name").as[Name]
     alias <- c.downField("alias").as[Alias]
-    createdAt <- c.downField("created_at").as[DateTime]
+    createdAt <- c.downField("created_at").as[ZenDateTime]
     active <- c.downField("active").as[Active]
     verified <- c.downField("verified").as[Verified]
     shared <- c.downField("shared").as[Shared]
     locale <- c.downField("locale").as[Locale]
     timezone <- c.downField("timezone").as[Timezone]
-    lastLoginAt <- c.downField("last_login_at").as[DateTime]
+    lastLoginAt <- c.downField("last_login_at").as[ZenDateTime]
     email <- c.downField("email").as[Email]
     phone <- c.downField("phone").as[Phone]
     signature <- c.downField("signature").as[Signature]

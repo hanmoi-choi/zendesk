@@ -28,10 +28,15 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
 
+  // Joda time
+  "joda-time" % "joda-time" % "2.10.5",
+
   // Test
   "org.scalatest" % "scalatest_2.13" % "3.1.0" % "test",
-  "org.specs2" %% "specs2-core" % "4.6.0" % "test",
-  "org.scalacheck" %% "scalacheck" % "1.14.1" % "test"
+  "org.specs2" %% "specs2-core" % "4.8.1" % "test",
+  "org.specs2" %% "specs2-matcher" % "4.8.1" % "test",
+  "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test",
+  "com.47deg" %% "scalacheck-toolbox-datetime" % "0.3.1" % "test"
 
 )
 
