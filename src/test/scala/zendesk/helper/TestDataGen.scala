@@ -3,7 +3,7 @@ package zendesk.helper
 import com.fortysevendeg.scalacheck.datetime.joda.ArbitraryJoda.genDateTime
 import org.scalacheck.{Arbitrary, Gen}
 import zendesk.model.value._
-import zendesk.model.{Organization, User}
+import zendesk.model.{Organization, Ticket, User}
 
 object TestDataGen {
 
@@ -11,15 +11,16 @@ object TestDataGen {
   private implicit val nameGen: Gen[Name] = Gen.alphaStr.map(Name(_))
   private implicit val domainNamesGen: Gen[List[DomainName]] = Gen.listOf(Gen.alphaStr.map(DomainName(_)))
   private implicit val detailsGen: Gen[Details] = Gen.alphaStr.map(Details(_))
-  private implicit val sharedTicketsGen = Gen.oneOf(true, false).map(SharedTickets(_))
+  private implicit val sharedTicketsGen: Gen[SharedTickets] = Gen.oneOf(true, false).map(SharedTickets(_))
   private implicit val tagsGen: Gen[List[Tag]] = Gen.listOf(Gen.alphaStr.map(Tag(_)))
-  private implicit val externalIdGen = Gen.uuid.map(ExternalId(_))
-  private implicit val ticketUrlGen = Gen.uuid.map { id => s"http://initech.zendesk.com/api/v2/tickets/$id.json" }.map(Url(_))
-  private implicit val userUrlGen = Gen.posNum[Long].map { id => s"http://initech.zendesk.com/api/v2/users/$id.json" }.map(Url(_))
-  private implicit val orgUrlGen = Gen.posNum[Long].map { id => s"http://initech.zendesk.com/api/v2/organizations/$id.json" }.map(Url(_))
-  private implicit val dateTimeGen = genDateTime.map(ZenDateTime(_))
+  private implicit val externalIdGen: Gen[ExternalId] = Gen.uuid.map(ExternalId(_))
+  private implicit val ticketUrlGen: Gen[Url] = Gen.uuid.map { id => s"http://initech.zendesk.com/api/v2/tickets/$id.json" }.map(Url(_))
+  private implicit val userUrlGen: Gen[Url] = Gen.posNum[Long].map { id => s"http://initech.zendesk.com/api/v2/users/$id.json" }.map(Url(_))
+  private implicit val orgUrlGen: Gen[Url] = Gen.posNum[Long].map { id => s"http://initech.zendesk.com/api/v2/organizations/$id.json" }.map(Url(_))
+  private implicit val dateTimeGen: Gen[ZenDateTime] = genDateTime.map(ZenDateTime(_))
+  private implicit val optionalDateTimeGen: Gen[Option[ZenDateTime]] = Gen.option(genDateTime.map(ZenDateTime(_)))
 
-  private implicit val orgGen = for {
+  private implicit val orgGen: Gen[Organization] = for {
     id <- idGen
     url <- orgUrlGen
     externalId <- externalIdGen
@@ -54,7 +55,7 @@ object TestDataGen {
   private implicit val roleGen: Gen[Role] = Gen.oneOf(Admin, EndUser, Agent)
   private implicit val orgIdGen: Gen[Option[OrganizationId]] = Gen.option(Gen.posNum[Long].map(OrganizationId(_)))
 
-  private implicit val userGen = for {
+  private implicit val userGen: Gen[User] = for {
     id <- idGen
     url <- userUrlGen
     externalId <- externalIdGen
@@ -96,7 +97,56 @@ object TestDataGen {
     role = role
   )
 
+  private implicit val typeGen: Gen[Option[Type]] = Gen.option(Gen.oneOf(Incident, Problem, Question, Task))
+  private implicit val priorityGen: Gen[Priority] = Gen.oneOf(Urgent, High, Normal, Low)
+  private implicit val statusGen: Gen[Status] = Gen.oneOf(Closed, Hold, Open, Pending, Solved)
+  private implicit val viaGen: Gen[Via] = Gen.oneOf(Web, Voice, Chat)
+
+  private implicit val ticketIdGen: Gen[TicketId] = Gen.uuid.map(TicketId(_))
+  private implicit val subjectGen: Gen[Subject] = Gen.alphaStr.map(Subject(_))
+  private implicit val descriptionGen: Gen[Option[Description]] = Gen.option(Gen.alphaStr.map(Description(_)))
+  private implicit val submitterIdGen: Gen[SubmitterId] = Gen.posNum[Long].map(SubmitterId(_))
+  private implicit val assigneeIdGen: Gen[Option[AssigneeId]] = Gen.option(Gen.posNum[Long].map(AssigneeId(_)))
+  private implicit val hasIncidentsGen: Gen[HasIncidents] = Gen.oneOf(true, false).map(HasIncidents(_))
+
+  private implicit val ticketGen: Gen[Ticket] = for {
+    ticketId <- ticketIdGen
+    url <- ticketUrlGen
+    externalId <- externalIdGen
+    createdAt <- dateTimeGen
+    ticketType <- typeGen
+    subject <- subjectGen
+    description <- descriptionGen
+    priority <- priorityGen
+    status <- statusGen
+    submitterId <- submitterIdGen
+    assigneeId <- assigneeIdGen
+    organizationId <- orgIdGen
+    tags <- tagsGen
+    hasIncidents <- hasIncidentsGen
+    dueAt <- optionalDateTimeGen
+    via <- viaGen
+  } yield Ticket(
+    id = ticketId,
+    url = url,
+    externalId = externalId,
+    createdAt = createdAt,
+    `type` = ticketType,
+    subject = subject,
+    description = description,
+    priority = priority,
+    status = status,
+    submitterId = submitterId,
+    assigneeId = assigneeId,
+    organizationId = organizationId,
+    tags = tags,
+    hasIncidents = hasIncidents,
+    dueAt = dueAt,
+    via = via
+  )
+
   implicit val orgArbitrary: Arbitrary[Organization] = Arbitrary(orgGen)
   implicit val userArbitrary: Arbitrary[User] = Arbitrary(userGen)
+  implicit val ticketArbitrary: Arbitrary[Ticket] = Arbitrary(ticketGen)
 }
 

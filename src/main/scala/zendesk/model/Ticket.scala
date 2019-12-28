@@ -11,15 +11,15 @@ case class Ticket(
                    createdAt: ZenDateTime,
                    `type`: Option[Type],
                    subject: Subject,
-                   description: Description,
+                   description: Option[Description],
                    priority: Priority,
                    status: Status,
                    submitterId: SubmitterId,
-                   assigneeId: AssigneeId,
-                   organizationId: OrganizationId,
+                   assigneeId: Option[AssigneeId],
+                   organizationId: Option[OrganizationId],
                    tags: List[Tag],
                    hasIncidents: HasIncidents,
-                   dueAt: ZenDateTime,
+                   dueAt: Option[ZenDateTime],
                    via: Via
                  )
 
@@ -50,15 +50,15 @@ object Ticket {
     createdAt <- c.downField("created_at").as[ZenDateTime]
     ticketType <- c.downField("type").as[Option[Type]]
     subject <- c.downField("subject").as[Subject]
-    description <- c.downField("description").as[Description]
+    description <- c.downField("description").as[Option[Description]]
     priority <- c.downField("priority").as[Priority]
     status <- c.downField("status").as[Status]
     submitterId <- c.downField("submitter_id").as[SubmitterId]
-    assigneeId <- c.downField("assignee_id").as[AssigneeId]
-    organizationId <- c.downField("organization_id").as[OrganizationId]
+    assigneeId <- c.downField("assignee_id").as[Option[AssigneeId]]
+    organizationId <- c.downField("organization_id").as[Option[OrganizationId]]
     tags <- c.downField("tags").as[List[Tag]]
     hasIncidents <- c.downField("has_incidents").as[HasIncidents]
-    dueAt <- c.downField("due_at").as[ZenDateTime]
+    dueAt <- c.downField("due_at").as[Option[ZenDateTime]]
     via <- c.downField("via").as[Via]
   } yield {
     new Ticket(

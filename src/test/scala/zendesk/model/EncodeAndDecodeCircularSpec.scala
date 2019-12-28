@@ -5,7 +5,7 @@ import io.circe.parser.decode
 import io.circe.syntax._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.helper.TestDataGen.{orgArbitrary, userArbitrary}
+import zendesk.helper.TestDataGen.{orgArbitrary, userArbitrary, ticketArbitrary}
 
 class EncodeAndDecodeCircularSpec extends Specification with ScalaCheck {
 
@@ -19,6 +19,12 @@ class EncodeAndDecodeCircularSpec extends Specification with ScalaCheck {
     val result = decodeJson[User](user.asJson.noSpaces, User.decodeUser)
 
     user must beEqualTo(result.get)
+  }.set(minTestsOk = 200, workers = 3)
+
+  "Ticket object should be able to do circular JSON Encode/Decode" >> prop { (ticket: Ticket) =>
+    val result = decodeJson[Ticket](ticket.asJson.noSpaces, Ticket.decodeTicket)
+
+    ticket must beEqualTo(result.get)
   }.set(minTestsOk = 200, workers = 3)
 
   private def decodeJson[T](rawJson: String, decoder: Decoder[T]): Option[T] =

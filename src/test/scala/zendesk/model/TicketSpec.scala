@@ -41,15 +41,15 @@ class TicketSpec extends Specification {
     createdAt = ZenDateTime(DateTime.parse("2016-04-28T11:19:34-10:00")),
     `type` = Some(Incident),
     subject = Subject("A Catastrophe in Korea (North)"),
-    description = Description("Nostrud ad sit velit cupidatat laboris ipsum nisi amet laboris"),
+    description = Some(Description("Nostrud ad sit velit cupidatat laboris ipsum nisi amet laboris")),
     priority = High,
     status = Pending,
     submitterId = SubmitterId(38),
-    assigneeId = AssigneeId(24),
-    organizationId = OrganizationId(116),
+    assigneeId = Some(AssigneeId(24)),
+    organizationId = Some(OrganizationId(116)),
     tags = tags,
     hasIncidents = HasIncidents(false),
-    dueAt = ZenDateTime(DateTime.parse("2016-07-31T02:37:50-10:00")),
+    dueAt = Some(ZenDateTime(DateTime.parse("2016-07-31T02:37:50-10:00"))),
     via = Web
   )
 
