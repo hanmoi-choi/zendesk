@@ -42,17 +42,17 @@ object TestDataGen {
   )
 
   private implicit val activeGen: Gen[Active] = Gen.oneOf(true, false).map(Active(_))
-  private implicit val verifiedGen: Gen[Verified] = Gen.oneOf(true, false).map(Verified(_))
+  private implicit val verifiedGen: Gen[Option[Verified]] = Gen.option(Gen.oneOf(true, false).map(Verified(_)))
   private implicit val sharedGen: Gen[Shared] = Gen.oneOf(true, false).map(Shared(_))
   private implicit val suspendedGen: Gen[Suspended] = Gen.oneOf(true, false).map(Suspended(_))
-  private implicit val localeGen: Gen[Locale] = Gen.oneOf("en-AU", "en-UK", "ko-KO").map(Locale(_))
-  private implicit val timezoneGen: Gen[Timezone] = Gen.oneOf("Melbourne", "Sydney", "Filand").map(Timezone(_))
+  private implicit val localeGen: Gen[Option[Locale]] = Gen.option(Gen.oneOf("en-AU", "en-UK", "ko-KO").map(Locale(_)))
+  private implicit val timezoneGen: Gen[Option[Timezone]] = Gen.option(Gen.oneOf("Melbourne", "Sydney", "Filand").map(Timezone(_)))
   private implicit val signatureGen: Gen[Signature] = Gen.alphaStr.map(Signature(_))
-  private implicit val aliasGen: Gen[Alias] = Gen.alphaStr.map(Alias(_))
-  private implicit val emailGen: Gen[Email] = Gen.alphaStr.map(Email(_))
+  private implicit val aliasGen: Gen[Option[Alias]] = Gen.option(Gen.alphaStr.map(Alias(_)))
+  private implicit val emailGen: Gen[Option[Email]] = Gen.option(Gen.alphaStr.map(Email(_)))
   private implicit val phoneGen: Gen[Phone] = Gen.alphaStr.map(Phone(_))
   private implicit val roleGen: Gen[Role] = Gen.oneOf(Admin, EndUser, Agent)
-  private implicit val orgIdGen: Gen[OrganizationId] = Gen.posNum[Long].map(OrganizationId(_))
+  private implicit val orgIdGen: Gen[Option[OrganizationId]] = Gen.option(Gen.posNum[Long].map(OrganizationId(_)))
 
   private implicit val userGen = for {
     id <- idGen
@@ -79,7 +79,7 @@ object TestDataGen {
     url = url,
     externalId = externalId,
     name = name,
-    alias: Alias,
+    alias = alias,
     createdAt = createdAt,
     active = active,
     verified = verified,

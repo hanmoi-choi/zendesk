@@ -32,7 +32,6 @@ libraryDependencies ++= Seq(
   "joda-time" % "joda-time" % "2.10.5",
 
   // Test
-  "org.scalatest" % "scalatest_2.13" % "3.1.0" % "test",
   "org.specs2" %% "specs2-core" % "4.8.1" % "test",
   "org.specs2" %% "specs2-matcher" % "4.8.1" % "test",
   "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test",
