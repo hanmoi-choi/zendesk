@@ -1,10 +1,10 @@
-package zendesk.model
+package zendesk.model.value
 
 import java.time.ZonedDateTime
 
 import org.specs2.mutable.Specification
 
-class BasicTypesSpec extends Specification{
+class DateTimeSpec extends Specification{
 
   "DateTime format" >> {
     /*

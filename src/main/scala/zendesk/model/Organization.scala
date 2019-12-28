@@ -2,7 +2,7 @@ package zendesk.model
 
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder, HCursor, Json}
-import zendesk.model.BasicTypes._
+import zendesk.model.value._
 
 case class Organization(
                        id: Id,
