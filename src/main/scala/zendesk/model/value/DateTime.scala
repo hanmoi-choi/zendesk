@@ -9,7 +9,7 @@ case class DateTime(value: ZonedDateTime) {
   private val indexBeforeTimezoneInfo = 19
 
   override def toString: String = {
-    val (datetime, timezone)  = value.toString.splitAt(indexBeforeTimezoneInfo)
+    val (datetime, timezone) = value.toString.splitAt(indexBeforeTimezoneInfo)
     s"$datetime $timezone"
   }
 }

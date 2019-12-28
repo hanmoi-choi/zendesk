@@ -4,7 +4,7 @@ import java.time.ZonedDateTime
 
 import org.specs2.mutable.Specification
 
-class DateTimeSpec extends Specification{
+class DateTimeSpec extends Specification {
 
   "DateTime format" >> {
     /*

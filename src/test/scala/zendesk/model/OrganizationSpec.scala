@@ -3,11 +3,11 @@ package zendesk.model
 import java.time.ZonedDateTime
 import java.util.UUID
 
+import cats.syntax.either._
 import io.circe._
 import io.circe.syntax._
 import org.specs2.mutable.Specification
-import cats.syntax.either._
-import zendesk.model.value.{DateTime, Details, DomainName, ExternalId, Id, Name, SharedTickets, Tag, Url}
+import zendesk.model.value._
 
 class OrganizationSpec extends Specification {
   private val rawJson =

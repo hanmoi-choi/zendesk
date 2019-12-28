@@ -3,13 +3,13 @@ package zendesk.model
 import java.time.ZonedDateTime
 import java.util.UUID
 
+import cats.syntax.either._
 import io.circe._
 import io.circe.syntax._
-import cats.syntax.either._
 import org.specs2.mutable.Specification
 import zendesk.model.value._
 
-class UserSpec  extends Specification {
+class UserSpec extends Specification {
   private val rawJson =
     """{
       |  "_id" : 1,

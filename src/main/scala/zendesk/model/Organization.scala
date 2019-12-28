@@ -5,15 +5,15 @@ import io.circe.{Decoder, Encoder, HCursor, Json}
 import zendesk.model.value._
 
 case class Organization(
-                       id: Id,
-                       url: Url,
-                       externalId: ExternalId,
-                       name: Name,
-                       domainNames: List[DomainName],
-                       createdAt: DateTime,
-                       details: Details,
-                       sharedTickets: SharedTickets,
-                       tags: List[Tag]
+                         id: Id,
+                         url: Url,
+                         externalId: ExternalId,
+                         name: Name,
+                         domainNames: List[DomainName],
+                         createdAt: DateTime,
+                         details: Details,
+                         sharedTickets: SharedTickets,
+                         tags: List[Tag]
                        )
 
 object Organization {
