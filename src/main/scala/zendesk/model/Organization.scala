@@ -14,7 +14,7 @@ case class Organization(
                          details: Details,
                          sharedTickets: SharedTickets,
                          tags: List[Tag]
-                       )
+                       ) extends Searchable
 
 object Organization {
   implicit val encodeOrg: Encoder[Organization] = (org: Organization) => Json.obj(

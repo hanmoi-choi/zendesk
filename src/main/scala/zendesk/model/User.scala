@@ -24,7 +24,7 @@ case class User(
                  tags: List[Tag],
                  suspended: Suspended,
                  role: Role
-               )
+               ) extends Searchable
 
 object User {
   implicit val encodeUser: Encoder[User] = (user: User) => Json.obj(

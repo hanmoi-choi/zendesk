@@ -21,7 +21,7 @@ case class Ticket(
                    hasIncidents: HasIncidents,
                    dueAt: Option[ZenDateTime],
                    via: Via
-                 )
+                 ) extends Searchable
 
 object Ticket {
   implicit val encodeTicket: Encoder[Ticket] = (tk: Ticket) => Json.obj(

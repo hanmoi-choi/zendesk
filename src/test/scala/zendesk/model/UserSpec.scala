@@ -7,72 +7,23 @@ import io.circe._
 import io.circe.syntax._
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
+import zendesk.helper.SampleDataGen
 import zendesk.model.value._
 
 class UserSpec extends Specification {
-  private val rawJson =
-    """{
-      |  "_id" : 1,
-      |  "url" : "http://initech.zendesk.com/api/v2/users/1.json",
-      |  "external_id" : "74341f74-9c79-49d5-9611-87ef9b6eb75f",
-      |  "name" : "Francisca Rasmussen",
-      |  "alias" : "Miss Coffey",
-      |  "created_at" : "2016-05-21T11:10:28 -10:00",
-      |  "active" : true,
-      |  "verified" : true,
-      |  "shared" : false,
-      |  "locale" : "en-AU",
-      |  "timezone" : "Sri Lanka",
-      |  "last_login_at" : "2016-05-21T11:10:28 -10:00",
-      |  "email" : "coffeyrasmussen@flotonic.com",
-      |  "phone" : "8335-422-718",
-      |  "signature" : "Don't Worry Be Happy!",
-      |  "organization_id" : 119,
-      |  "tags" : [
-      |    "Springville",
-      |    "Sutton",
-      |    "Diaperville"
-      |  ],
-      |  "suspended" : true,
-      |  "role" : "admin"
-      |}""".stripMargin
-  private val tags = List(Tag("Springville"), Tag("Sutton"), Tag("Diaperville"))
-  private val expectedUser = User(
-    id = Id(1),
-    url = Url("http://initech.zendesk.com/api/v2/users/1.json"),
-    externalId = ExternalId(UUID.fromString("74341f74-9c79-49d5-9611-87ef9b6eb75f")),
-    name = Name("Francisca Rasmussen"),
-    alias = Some(Alias("Miss Coffey")),
-    createdAt = ZenDateTime(DateTime.parse("2016-05-21T11:10:28-10:00")),
-    active = Active(true),
-    verified = Some(Verified(true)),
-    shared = Shared(false),
-    locale = Some(Locale("en-AU")),
-    timezone = Some(Timezone("Sri Lanka")),
-    lastLoginAt = ZenDateTime(DateTime.parse("2016-05-21T11:10:28-10:00")),
-    email = Some(Email("coffeyrasmussen@flotonic.com")),
-    phone = Phone("8335-422-718"),
-    signature = Signature("Don't Worry Be Happy!"),
-    organizationId = Some(OrganizationId(119)),
-    tags = tags,
-    suspended = Suspended(true),
-    role = Admin
-  )
+  "JSON string for a user should be decoded to User object" >> {
+    val result: Either[Error, User] = io.circe.parser.decode[User](SampleDataGen.rawUserJson)
 
-
-  "JSON string for a organization should be decoded to Organization object" >> {
-    val result: Either[Error, User] = io.circe.parser.decode[User](rawJson)
-
-    "result should be expected Organization Object" >> {
-      result must beEqualTo(expectedUser.asRight)
+    "result should be expected User Object" >> {
+      result must beEqualTo(SampleDataGen.user.asRight)
     }
   }
 
-  "A organization object should be encoded to Json String" >> {
-    val result = expectedUser.asJson.spaces2
+  "A user object should be encoded to Json String" >> {
+    val result = SampleDataGen.user.asJson.spaces2
 
-    "result should be expected Organization Object" >> {
-      result must beEqualTo(rawJson)
+    "result should be expected User Object" >> {
+      result must beEqualTo(SampleDataGen.rawUserJson)
     }
   }
 }
