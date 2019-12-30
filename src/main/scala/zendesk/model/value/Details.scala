@@ -2,7 +2,7 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Details(value: String)
+case class Details(value: String) extends SearchValue
 
 object Details {
   implicit val encodeDetails: Encoder[Details] = Encoder.encodeString.contramap[Details](_.value)

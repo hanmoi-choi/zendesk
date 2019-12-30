@@ -12,7 +12,7 @@ import io.circe.{Decoder, Encoder}
   "solved"
 ]
  */
-sealed case class Status(name: String)
+sealed case class Status(name: String) extends SearchValue
 
 object Closed extends Status("closed")
 

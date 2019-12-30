@@ -5,7 +5,7 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import zendesk.model.value
 
-case class ZenDateTime(value: DateTime) {
+case class ZenDateTime(value: DateTime) extends SearchValue {
   private val dateTimeFormat = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss")
   private val offsetFormat = DateTimeFormat.forPattern("Z")
 

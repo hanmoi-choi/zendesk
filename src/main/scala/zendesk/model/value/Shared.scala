@@ -2,7 +2,7 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Shared(value: Boolean)
+case class Shared(value: Boolean) extends SearchValue
 
 object Shared {
   implicit val encodeShared: Encoder[Shared] = Encoder.encodeBoolean.contramap[Shared](_.value)

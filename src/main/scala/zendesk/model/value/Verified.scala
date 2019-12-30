@@ -2,7 +2,7 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Verified(value: Boolean)
+case class Verified(value: Boolean) extends SearchValue
 
 object Verified {
   implicit val encodeVerified: Encoder[Verified] = Encoder.encodeBoolean.contramap[Verified](_.value)

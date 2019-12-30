@@ -13,7 +13,7 @@ import io.circe.{Decoder, Encoder}
   "task"
 ]
  */
-sealed case class Type(name: String)
+sealed case class Type(name: String) extends SearchValue
 
 object Incident extends Type("incident")
 

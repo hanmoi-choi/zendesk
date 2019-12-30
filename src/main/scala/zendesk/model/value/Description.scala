@@ -2,7 +2,7 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Description(value: String)
+case class Description(value: String) extends SearchValue
 
 
 object Description {

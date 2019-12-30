@@ -5,7 +5,7 @@ import org.scalacheck.{Arbitrary, Gen}
 import zendesk.model.value._
 import zendesk.model.{Organization, Ticket, User}
 
-object TestDataGen {
+object PropertyTestDataGen {
 
   private implicit val idGen: Gen[Id] = Gen.posNum[Long].map(Id(_))
   private implicit val nameGen: Gen[Name] = Gen.alphaStr.map(Name(_))

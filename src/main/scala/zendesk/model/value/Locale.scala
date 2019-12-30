@@ -2,7 +2,7 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Locale(value: String)
+case class Locale(value: String) extends SearchValue
 
 object Locale {
   implicit val encodeLocale: Encoder[Locale] = Encoder.encodeString.contramap[Locale](_.value)

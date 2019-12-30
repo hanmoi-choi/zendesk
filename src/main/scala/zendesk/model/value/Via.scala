@@ -10,7 +10,7 @@ import io.circe.{Decoder, Encoder}
   "web"
 ]
  */
-sealed case class Via(name: String)
+sealed case class Via(name: String) extends SearchValue
 
 object Web extends Via("web")
 

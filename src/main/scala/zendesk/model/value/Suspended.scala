@@ -2,7 +2,7 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Suspended(value: Boolean)
+case class Suspended(value: Boolean) extends SearchValue
 
 object Suspended {
   implicit val encodeSuspended: Encoder[Suspended] = Encoder.encodeBoolean.contramap[Suspended](_.value)
