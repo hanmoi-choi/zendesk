@@ -3,8 +3,8 @@ package zendesk.util
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.helper.DataWithFileGen
-import zendesk.model.{Organization, Ticket, User}
 import zendesk.model.value.{EmptyStringSearchField, QueryParams, SearchObject}
+import zendesk.model.{Organization, Ticket, User}
 
 import scala.util.Random
 
@@ -41,19 +41,10 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
         result must contain(randomPickedUpTicket)
       }
 
-
       "should be able to search with 'type'" >> {
         val result: Vector[Ticket] = db.query[Ticket](QueryParams(SearchObject.Ticket, "type", randomPickedUpTicket.`type`.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpTicket)
       }
-
-      //      "should be able to search with 'domainName'" >> {
-      //        val result: Vector[Ticket] = db.query[Ticket](QueryParams(SearchObject.Ticket, "domainName", randomPickedUpTicket.domainNames))
-      //        result must contain(randomPickedUpTicket)
-      //      }
-
-
-
 
       "should be able to search with 'subject'" >> {
         val result: Vector[Ticket] =
@@ -116,10 +107,14 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
         result must contain(randomPickedUpTicket)
       }
 
-      //      "should be able to search with 'tags'" >> {
-      //        val result: Vector[Ticket] = db.query[Ticket](QueryParams(SearchObject.Ticket, "tags", randomPickedUpTicket.tags))
-      //        result must contain(randomPickedUpTicket)
-      //      }
+      "should be able to search with 'tags'" >> {
+        randomPickedUpTicket.tags.map { tag =>
+          val result: Vector[Ticket] =
+            db.query[Ticket](QueryParams(SearchObject.Ticket, "tags", tag))
+
+          result must contain(randomPickedUpTicket)
+        }
+      }
     }
 
     "Search Organization" >> {
@@ -146,15 +141,23 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
         result must contain(randomPickedUpOrg)
       }
 
-//      "should be able to search with 'domainName'" >> {
-//        val result: Vector[Organization] = db.query[Organization](QueryParams(SearchObject.Organization, "domainName", randomPickedUpOrg.domainNames))
-//        result must contain(randomPickedUpOrg)
-//      }
+      "should be able to search with 'domainName'" >> {
+        randomPickedUpOrg.domainNames.map { domainName =>
+          val result: Vector[Organization] =
+            db.query[Organization](QueryParams(SearchObject.Organization, "domainNames", domainName))
 
-      //      "should be able to search with 'tags'" >> {
-      //        val result: Vector[Organization] = db.query[Organization](QueryParams(SearchObject.Organization, "tags", randomPickedUpOrg.tags))
-      //        result must contain(randomPickedUpOrg)
-      //      }
+          result must contain(randomPickedUpOrg)
+        }
+      }
+
+      "should be able to search with 'tags'" >> {
+        randomPickedUpOrg.tags.map { tag =>
+          val result: Vector[Organization] =
+            db.query[Organization](QueryParams(SearchObject.Organization, "tags", tag))
+
+          result must contain(randomPickedUpOrg)
+        }
+      }
 
       "should be able to search with 'createdAt'" >> {
         val result: Vector[Organization] =
@@ -173,8 +176,6 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
           db.query[Organization](QueryParams(SearchObject.Organization, "sharedTickets", randomPickedUpOrg.sharedTickets))
         result must contain(randomPickedUpOrg)
       }
-
-
     }
 
     "Search Users" >> {
@@ -273,16 +274,14 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
         result must contain(randomPickedUpUser)
       }
 
-//      "should be able to search with 'tags'" >> {
-//        val result: Vector[User] =
-//          db.query[User](QueryParams(SearchObject.User, "tags", randomPickedUpUser.tags.headOption.orNull))
-//
-//        result must contain(randomPickedUpUser)
-//      }
+      "should be able to search with 'tags'" >> {
+        randomPickedUpUser.tags.map { tag =>
+          val result: Vector[User] =
+            db.query[User](QueryParams(SearchObject.User, "tags", tag))
+
+          result must contain(randomPickedUpUser)
+        }
+      }
     }
-
-    //    userTable.put("signature", data.groupBy(_.signature))
-    //    userTable.put("organizationId", data.groupBy(_.organizationId.getOrElse(EmptyStringSearchField)))
-
   }
 }

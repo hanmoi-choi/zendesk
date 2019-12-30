@@ -4,42 +4,42 @@ import org.specs2.mutable.Specification
 import zendesk.helper.SampleDataGen
 import zendesk.model.{Organization, Ticket, User}
 
-class SearchableMessageGeneratorSpec extends Specification{
+class SearchableMessageGeneratorSpec extends Specification {
   "forObject Returns list of fields with which the object could be searched." >> {
-    "for User object"  >> {
+    "for User object" >> {
       val title = "Search Users with"
 
       val result = SearchableMessageGenerator.forObject[User](SampleDataGen.user, title)
       val expectedNames =
         s"""
-          |-------------------------
-          |${title}
-          |-------------------------
-          |id
-          |url
-          |externalId
-          |name
-          |alias
-          |createdAt
-          |active
-          |verified
-          |shared
-          |locale
-          |timezone
-          |lastLoginAt
-          |email
-          |phone
-          |signature
-          |organizationId
-          |tags
-          |suspended
-          |role
-          |
-          |""".stripMargin
+           |-------------------------
+           |${title}
+           |-------------------------
+           |id
+           |url
+           |externalId
+           |name
+           |alias
+           |createdAt
+           |active
+           |verified
+           |shared
+           |locale
+           |timezone
+           |lastLoginAt
+           |email
+           |phone
+           |signature
+           |organizationId
+           |tags
+           |suspended
+           |role
+           |
+           |""".stripMargin
 
       result must beEqualTo(expectedNames)
     }
-    "for Ticket object"  >> {
+    "for Ticket object" >> {
       val title = "Search Tickets with"
 
       val result = SearchableMessageGenerator.forObject[Ticket](SampleDataGen.ticket, title)
@@ -69,7 +69,7 @@ class SearchableMessageGeneratorSpec extends Specification{
 
       result must beEqualTo(expectedNames)
     }
-    "for Organization object"  >> {
+    "for Organization object" >> {
       val title = "Search Organizations with"
 
       val result = SearchableMessageGenerator.forObject[Organization](SampleDataGen.organization, title)

@@ -3,8 +3,8 @@ package zendesk.helper
 import java.util.UUID
 
 import org.joda.time.DateTime
+import zendesk.model.value._
 import zendesk.model.{Organization, Ticket, User}
-import zendesk.model.value.{Active, Admin, Alias, AssigneeId, Description, Details, DomainName, Email, ExternalId, HasIncidents, High, Id, Incident, Locale, Name, OrganizationId, Pending, Phone, Shared, SharedTickets, Signature, Subject, SubmitterId, Suspended, Tag, TicketId, Timezone, Url, Verified, Web, ZenDateTime}
 
 object SampleDataGen {
   val rawUserJson =

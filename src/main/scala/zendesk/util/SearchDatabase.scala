@@ -1,6 +1,6 @@
 package zendesk.util
 
-import zendesk.model.value.{EmptyStringSearchField, QueryParams, SearchObject, SearchValue}
+import zendesk.model.value._
 import zendesk.model.{Organization, Searchable, Ticket, User}
 
 import scala.collection.mutable.{HashMap => MMap}
@@ -28,7 +28,15 @@ case class SearchDatabase() {
 
   private val ticketTable: MMap[SearchTerm, Map[SearchValue, Vector[Ticket]]] = MMap()
 
+  private def groupAndExtractValues[T <: SearchValue, V <: Searchable](
+                                                                        data: Vector[(T, V)]
+                                                                      ): Map[T, Vector[V]] = {
+    data.groupBy(_._1).view.mapValues(_.map(_._2)).toMap
+  }
+
   def createUsersTable(data: Vector[User]): Unit = {
+    val usersGroupedByTag: Map[SearchValue, Vector[User]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
+
     userTable.put("id", data.groupBy(_.id))
     userTable.put("url", data.groupBy(_.url))
     userTable.put("externalId", data.groupBy(_.externalId))
@@ -45,12 +53,15 @@ case class SearchDatabase() {
     userTable.put("phone", data.groupBy(_.phone))
     userTable.put("signature", data.groupBy(_.signature))
     userTable.put("organizationId", data.groupBy(_.organizationId.getOrElse(EmptyStringSearchField)))
-//    userTable.put("tags", data.groupBy(_.tags))
+    userTable.put("tags", usersGroupedByTag)
     userTable.put("suspended", data.groupBy(_.suspended))
     userTable.put("role", data.groupBy(_.role))
   }
 
   def createOrganizationsTable(data: Vector[Organization]): Unit = {
+    val orgsGroupedByTag: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
+    val orgsGroupedByDomainName: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(data.flatMap(_.pairWithDomainName()))
+
     organizationTable.put("id", data.groupBy(_.id))
     organizationTable.put("url", data.groupBy(_.url))
     organizationTable.put("externalId", data.groupBy(_.externalId))
@@ -59,11 +70,13 @@ case class SearchDatabase() {
     organizationTable.put("details", data.groupBy(_.details))
     organizationTable.put("sharedTickets", data.groupBy(_.sharedTickets))
 
-    //    organizationTable.put("tags", data.groupBy(_.id))
-    //    organizationTable.put("domainNames", data.groupBy(_.id))
+    organizationTable.put("tags", orgsGroupedByTag)
+    organizationTable.put("domainNames", orgsGroupedByDomainName)
   }
 
   def createTicketTable(data: Vector[Ticket]): Unit = {
+    val ticketsGroupedByTag: Map[SearchValue, Vector[Ticket]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
+
     ticketTable.put("id", data.groupBy(_.id))
     ticketTable.put("url", data.groupBy(_.url))
     ticketTable.put("externalId", data.groupBy(_.externalId))
@@ -76,7 +89,7 @@ case class SearchDatabase() {
     ticketTable.put("submitterId", data.groupBy(_.submitterId))
     ticketTable.put("assigneeId", data.groupBy(_.assigneeId.getOrElse(EmptyStringSearchField)))
     ticketTable.put("organizationId", data.groupBy(_.organizationId.getOrElse(EmptyStringSearchField)))
-//    ticketTable.put("tags", data.groupBy(_.tags))
+    ticketTable.put("tags", ticketsGroupedByTag)
     ticketTable.put("hasIncidents", data.groupBy(_.hasIncidents))
     ticketTable.put("dueAt", data.groupBy(_.dueAt.getOrElse(EmptyStringSearchField)))
     ticketTable.put("via", data.groupBy(_.via))
@@ -85,9 +98,9 @@ case class SearchDatabase() {
 
 object SearchDatabase {
   def apply(
-           userData: Vector[User] = Vector.empty,
-           organizationData: Vector[Organization] = Vector.empty,
-           ticketData: Vector[Ticket] = Vector.empty
+             userData: Vector[User] = Vector.empty,
+             organizationData: Vector[Organization] = Vector.empty,
+             ticketData: Vector[Ticket] = Vector.empty
            ): SearchDatabase = {
     val db = SearchDatabase()
     db.createUsersTable(userData)

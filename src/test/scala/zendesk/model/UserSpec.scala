@@ -1,14 +1,10 @@
 package zendesk.model
 
-import java.util.UUID
-
 import cats.syntax.either._
 import io.circe._
 import io.circe.syntax._
-import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import zendesk.helper.SampleDataGen
-import zendesk.model.value._
 
 class UserSpec extends Specification {
   "JSON string for a user should be decoded to User object" >> {

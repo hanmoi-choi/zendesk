@@ -1,10 +1,10 @@
 package zendesk.helper
 
-import scala.io.Source
 import io.circe
 import io.circe.Decoder
 import io.circe.parser.decode
-import zendesk.model.User
+
+import scala.io.Source
 
 object DataWithFileGen {
   private def readFileAsString(path: String): String = {

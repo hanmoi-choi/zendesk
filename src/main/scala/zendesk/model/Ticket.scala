@@ -21,7 +21,9 @@ case class Ticket(
                    hasIncidents: HasIncidents,
                    dueAt: Option[ZenDateTime],
                    via: Via
-                 ) extends Searchable
+                 ) extends Searchable {
+  def pairWithTag(): List[(Tag, Ticket)] = tags.map((_, this))
+}
 
 object Ticket {
   implicit val encodeTicket: Encoder[Ticket] = (tk: Ticket) => Json.obj(

@@ -24,7 +24,10 @@ case class User(
                  tags: List[Tag],
                  suspended: Suspended,
                  role: Role
-               ) extends Searchable
+               ) extends Searchable {
+
+  def pairWithTag(): List[(Tag, User)] = tags.map((_, this))
+}
 
 object User {
   implicit val encodeUser: Encoder[User] = (user: User) => Json.obj(

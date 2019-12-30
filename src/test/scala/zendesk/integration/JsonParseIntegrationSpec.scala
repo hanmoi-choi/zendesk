@@ -2,10 +2,10 @@ package zendesk.integration
 
 import org.specs2.mutable.Specification
 import zendesk.helper.DataWithFileGen
-import zendesk.model.{Organization, Ticket, User}
-import zendesk.model.User.decodeUser
-import zendesk.model.Ticket.decodeTicket
 import zendesk.model.Organization.decodeOrg
+import zendesk.model.Ticket.decodeTicket
+import zendesk.model.User.decodeUser
+import zendesk.model.{Organization, Ticket, User}
 
 
 class JsonParseIntegrationSpec extends Specification {

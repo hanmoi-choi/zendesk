@@ -14,7 +14,12 @@ case class Organization(
                          details: Details,
                          sharedTickets: SharedTickets,
                          tags: List[Tag]
-                       ) extends Searchable
+                       ) extends Searchable {
+
+  def pairWithTag(): List[(Tag, Organization)] = tags.map((_, this))
+
+  def pairWithDomainName(): List[(DomainName, Organization)] = domainNames.map((_, this))
+}
 
 object Organization {
   implicit val encodeOrg: Encoder[Organization] = (org: Organization) => Json.obj(
