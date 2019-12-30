@@ -13,19 +13,19 @@ class EncodeAndDecodeCircularSpec extends Specification with ScalaCheck {
     val result = decodeJson[Organization](organization.asJson.noSpaces, Organization.decodeOrg)
 
     organization must beEqualTo(result.get)
-  }.set(minTestsOk = 200, workers = 3)
+  }.set(minTestsOk = 100, workers = 3)
 
   "User object should be able to do circular JSON Encode/Decode" >> prop { (user: User) =>
     val result = decodeJson[User](user.asJson.noSpaces, User.decodeUser)
 
     user must beEqualTo(result.get)
-  }.set(minTestsOk = 200, workers = 3)
+  }.set(minTestsOk = 100, workers = 3)
 
   "Ticket object should be able to do circular JSON Encode/Decode" >> prop { (ticket: Ticket) =>
     val result = decodeJson[Ticket](ticket.asJson.noSpaces, Ticket.decodeTicket)
 
     ticket must beEqualTo(result.get)
-  }.set(minTestsOk = 200, workers = 3)
+  }.set(minTestsOk = 100, workers = 3)
 
   private def decodeJson[T](rawJson: String, decoder: Decoder[T]): Option[T] =
     decode[T](rawJson)(decoder).toOption

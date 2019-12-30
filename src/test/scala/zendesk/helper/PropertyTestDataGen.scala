@@ -148,5 +148,7 @@ object PropertyTestDataGen {
   implicit val orgArbitrary: Arbitrary[Organization] = Arbitrary(orgGen)
   implicit val userArbitrary: Arbitrary[User] = Arbitrary(userGen)
   implicit val ticketArbitrary: Arbitrary[Ticket] = Arbitrary(ticketGen)
+
+  implicit val usersArbitrary: Arbitrary[List[User]] = Arbitrary(Gen.listOfN(20000, userGen))
 }
 

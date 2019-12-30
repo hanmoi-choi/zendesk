@@ -35,7 +35,7 @@ object SampleDataGen {
       |}""".stripMargin
 
   private val userTags = List(Tag("Springville"), Tag("Sutton"), Tag("Diaperville"))
-  val user = User(
+  val user: User = User(
     id = Id(1),
     url = Url("http://initech.zendesk.com/api/v2/users/1.json"),
     externalId = ExternalId(UUID.fromString("74341f74-9c79-49d5-9611-87ef9b6eb75f")),
@@ -57,7 +57,7 @@ object SampleDataGen {
     role = Admin
   )
 
-  val rawTicketJson =
+  val rawTicketJson: String =
     """{
       |  "_id" : "436bf9b0-1147-4c0a-8439-6f79833bff5b",
       |  "url" : "http://initech.zendesk.com/api/v2/tickets/436bf9b0-1147-4c0a-8439-6f79833bff5b.json",
@@ -79,8 +79,8 @@ object SampleDataGen {
       |  "due_at" : "2016-07-31T02:37:50 -10:00",
       |  "via" : "web"
       |}""".stripMargin
-  val ticketTags = List(Tag("Ohio"), Tag("Pennsylvania"))
-  val ticket = Ticket(
+  private val ticketTags = List(Tag("Ohio"), Tag("Pennsylvania"))
+  val ticket: Ticket = Ticket(
     id = TicketId(UUID.fromString("436bf9b0-1147-4c0a-8439-6f79833bff5b")),
     url = Url("http://initech.zendesk.com/api/v2/tickets/436bf9b0-1147-4c0a-8439-6f79833bff5b.json"),
     externalId = ExternalId(UUID.fromString("9210cdc9-4bee-485f-a078-35396cd74063")),
@@ -100,7 +100,7 @@ object SampleDataGen {
   )
 
 
-  val rawOrganizationJson =
+  val rawOrganizationJson: String =
     """{
       |  "_id" : 101,
       |  "url" : "http://initech.zendesk.com/api/v2/organizations/101.json",
@@ -124,7 +124,7 @@ object SampleDataGen {
       |}""".stripMargin
   private val domainName = List(DomainName("kage.com"), DomainName("ecratic.com"), DomainName("endipin.com"), DomainName("zentix.com"))
   private val orgTags = List(Tag("Fulton"), Tag("West"), Tag("Rodriguez"), Tag("Farley"))
-  val organization = Organization(
+  val organization: Organization = Organization(
     id = Id(101),
     url = Url("http://initech.zendesk.com/api/v2/organizations/101.json"),
     externalId = ExternalId(UUID.fromString("9270ed79-35eb-4a38-a46f-35725197ea8d")),
