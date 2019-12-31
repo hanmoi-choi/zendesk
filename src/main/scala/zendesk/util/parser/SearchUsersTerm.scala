@@ -25,6 +25,3 @@ object SearchUsersTerm {
   case object Quit extends SearchUsersTerm
 }
 
-
-
-
