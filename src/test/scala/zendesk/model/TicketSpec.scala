@@ -9,7 +9,6 @@ import zendesk.helper.SampleDataGen
 
 class TicketSpec extends Specification {
 
-
   "JSON string for a ticket should be decoded to Ticket object" >> {
     val result: Either[Error, Ticket] = io.circe.parser.decode[Ticket](SampleDataGen.rawTicketJson)
 
