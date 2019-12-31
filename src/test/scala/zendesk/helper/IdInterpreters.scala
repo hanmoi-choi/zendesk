@@ -4,7 +4,7 @@ import cats.Id
 import cats.syntax.either._
 import zendesk.dsl.{Console, UserInputParser}
 import zendesk.model.AppError
-import zendesk.util.parser.{Parser, SearchOptionCommand}
+import zendesk.util.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -32,8 +32,15 @@ object IdInterpreters {
 
   implicit object IdEitherUserInputParser extends UserInputParser[Id] {
     override def parseSearchOption(value: String)
-                                  (implicit P: Parser[SearchOptionCommand]
-                                  ): Id[Either[AppError, SearchOptionCommand]] = {
+                                  (implicit P: Parser[ApplicationOptionCommand]
+                                  ): Id[Either[AppError, ApplicationOptionCommand]] = {
+      P.doParse(value)
+    }
+
+    override def parseSearchObject(value: String)
+                                  (
+                                    implicit P: Parser[SearchObjectCommand]
+                                  ): Id[Either[AppError, SearchObjectCommand]] = {
       P.doParse(value)
     }
   }

@@ -16,14 +16,14 @@ object MessageFactory {
       |                                                                 |_|  |_|
       |""".stripMargin
 
-  val searchOptions: String =
+  val appOptionsMessage: String =
     """
       |* Press '1' to search; 'Users', 'Tickets' or 'Organizations'
       |* Press '2' to view all searchable fields
       |* Type 'quit' to exit
       |""".stripMargin
 
-  val searchMessage: String =
+  val searchObjectsOptionMessage: String =
     """
       |* Press '1' to search 'Users'
       |* Press '2' to search 'Tickets'

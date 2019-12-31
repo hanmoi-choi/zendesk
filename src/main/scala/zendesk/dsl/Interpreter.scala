@@ -2,7 +2,7 @@ package zendesk.dsl
 
 import cats.effect.IO
 import zendesk.model.AppError
-import zendesk.util.parser.{Parser, SearchOptionCommand}
+import zendesk.util.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 
 import scala.io.StdIn
 import cats.syntax.either._
@@ -10,8 +10,13 @@ import cats.syntax.either._
 object Interpreter {
   implicit object IoEitherUserInputParser extends UserInputParser[IO] {
     override def parseSearchOption(value: String)
-                                  (implicit P: Parser[SearchOptionCommand]
-                                  ): IO[Either[AppError, SearchOptionCommand]] = {
+                                  (implicit P: Parser[ApplicationOptionCommand]
+                                  ): IO[Either[AppError, ApplicationOptionCommand]] = {
+      IO { P.doParse(value) }
+    }
+
+    override def parseSearchObject(value: String)(implicit P: Parser[SearchObjectCommand]
+    ): IO[Either[AppError, SearchObjectCommand]] = {
       IO { P.doParse(value) }
     }
   }
