@@ -17,8 +17,12 @@ scalacOptions in Test ++= Seq("-Yrangepos")
 
 val catVersion = "2.0.0"
 val circeVersion = "0.12.3"
+val spec2Verion = "4.8.1"
 
 libraryDependencies ++= Seq(
+  // Parser Combinator
+  "com.lihaoyi" %% "fastparse" % "2.2.2",
+
   // cats
   "org.typelevel" %% "cats-core" % catVersion,
   "org.typelevel" %% "cats-effect" % catVersion,
@@ -32,9 +36,9 @@ libraryDependencies ++= Seq(
   "joda-time" % "joda-time" % "2.10.5",
 
   // Test
-  "org.specs2" %% "specs2-core" % "4.8.1" % "test",
-  "org.specs2" %% "specs2-matcher" % "4.8.1" % "test",
-  "org.specs2" %% "specs2-scalacheck" % "4.8.1" % "test",
+  "org.specs2" %% "specs2-core" % spec2Verion % "test",
+  "org.specs2" %% "specs2-matcher" % spec2Verion % "test",
+  "org.specs2" %% "specs2-scalacheck" % spec2Verion % "test",
   "com.47deg" %% "scalacheck-toolbox-datetime" % "0.3.1" % "test"
 
 )

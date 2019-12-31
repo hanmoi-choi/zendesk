@@ -1,6 +1,6 @@
-package zendesk.service
+package zendesk.dsl
 
-trait ConsoleService[F[_]] {
+trait Console[F[_]] {
   def print(string: String): F[Unit]
   def read(): F[String]
 }
