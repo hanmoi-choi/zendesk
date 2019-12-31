@@ -1,4 +1,4 @@
-package zendesk
+package zendesk.util
 
 object MessageFactory {
 

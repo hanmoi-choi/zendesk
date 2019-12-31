@@ -1,9 +1,12 @@
 # Zendesk Search App
+This repo is to submit my code exercise to Zendesk.
+Zendesk describes that it is fine for me to use Public repo for my exercise.
+
 
 # Assumption
 1. For me this is malformed ISO8601 format, `"2016-05-21T11:10:28 -10:00"` but assumed that it is on purpose.
   - There should not be `space` before timezone adjustment, `-10:00`
-  
+
 2. As description says I assumed that I don't need to concern about RAM resource much.
 
 3. I assumed that I am allowed to use library for better search performance so will use the given data structure like map.
@@ -18,7 +21,7 @@ In the job description, FP is desired skill so thought that I could apply my bes
 - But in REA, my team did our best to help new developer's learning journey for Scala so should be fine I reckon.
 
 ## Search performance
- 
+
 
 
 
@@ -26,7 +29,7 @@ In the job description, FP is desired skill so thought that I could apply my bes
 - [Circe]()
 - [Cats]()
 - [Cats-Effect]()
-- [Spec2]() 
+- [Spec2]()
 - [Scala Check]() for Simple Property Check
 
 # Dev Env

@@ -14,7 +14,6 @@ case class SearchDatabase() {
       case SearchObject.User => userTable
       case SearchObject.Ticket => ticketTable
       case SearchObject.Organization => organizationTable
-
     }
 
     table.getOrElse(queryParams.searchTerm, Map.empty)
