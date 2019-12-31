@@ -13,7 +13,7 @@ object SearchOptionCommandParser {
   def parseCommand[_: P]: P[SearchOptionCommand] = P(parseSearchZendesk | parseViewSearchableFields | parseQuit)
 
 
-  def parseSearchOptionCommand(command: String): Either[AppError, SearchOptionCommand] = {
+  def doParse(command: String): Either[AppError, SearchOptionCommand] = {
     parse(command, parseCommand(_)) match {
       case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchOptionCommand").asLeft
       case Parsed.Success(v, _) => v.asRight
