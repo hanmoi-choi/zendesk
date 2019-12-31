@@ -2,14 +2,30 @@
 This repo is to submit my code exercise to Zendesk.
 Zendesk describes that it is fine for me to use Public repo for my exercise.
 
-
 # Assumption
 1. For me this is malformed ISO8601 format, `"2016-05-21T11:10:28 -10:00"` but assumed that it is on purpose.
   - There should not be `space` before timezone adjustment, `-10:00`
 
-2. As description says I assumed that I don't need to concern about RAM resource much.
+2. I decided Optional field myself based on the given data; users, tickets, and organizations
+   
+   - Users
+     - `alias`: Option[Alias],
+     - `verified`: Option[Verified],
+     - `locale`: Option[Locale],
+     - `timezone`: Option[Timezone],
+     - `email`: Option[Email],
+     - `organizationId`: Option[OrganizationId],
+     
+   - Organizations
+     - None
+     
+   - Tickets
+     - `type`: Option[Type],
+     - `description`: Option[Description],
+     - `assigneeId`: Option[AssigneeId],
+     - `organizationId`: Option[OrganizationId],
+     - `dueAt`: Option[ZenDateTime],
 
-3. I assumed that I am allowed to use library for better search performance so will use the given data structure like map.
 
 
 # Approach
@@ -23,14 +39,13 @@ In the job description, FP is desired skill so thought that I could apply my bes
 ## Search performance
 
 
-
-
 ## Libraries
-- [Circe]()
-- [Cats]()
-- [Cats-Effect]()
-- [Spec2]()
-- [Scala Check]() for Simple Property Check
+- [Circe](https://circe.github.io/circe/) to parse Json data files; users.json, tickets.json, and organizations.json
+- [Cats](https://typelevel.org/cats/) for general FP type classes like Either.
+- [Cats-Effect](https://typelevel.org/cats-effect/) for IO Monad
+- [Spec2](https://etorreborre.github.io/specs2/) this is just personal preference. I found that this style is better than scala-test but could be opinionated
+- [Scala Check](http://www.scalacheck.org/) for Simple Property Check
+- [FastParser](http://www.lihaoyi.com/fastparse/#FastParse2.2.2) to parse Console Input, Using Regex makes code quit hard understand
 
 # Dev Env
 
