@@ -16,7 +16,7 @@ object MessageFactory {
       |                                                                 |_|  |_|
       |""".stripMargin
 
-  val helpMessage: String =
+  val searchOptions: String =
     """
       |* Press '1' to search; 'Users', 'Tickets' or 'Organizations'
       |* Press '2' to view all searchable fields

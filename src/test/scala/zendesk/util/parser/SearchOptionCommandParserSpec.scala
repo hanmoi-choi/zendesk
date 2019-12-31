@@ -5,7 +5,7 @@ import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.model.ParseFailure
 import zendesk.util.parser.SearchOptionCommand.{Quit, SearchZendesk, ViewSearchableFields}
-import zendesk.util.parser.SearchOptionCommandParser.doParse
+import zendesk.util.parser.ParserImplements.SearchOptionCommandParser._
 
 import scala.language.postfixOps
 
@@ -33,7 +33,7 @@ class SearchOptionCommandParserSpec extends Specification with ScalaCheck{
     "any other string inputs" >> prop { invalidCommand: String =>
       (invalidCommand != "1" && invalidCommand != "2" && invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
         val result = doParse(invalidCommand)
-        val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchOptionCommand").asLeft
+        val expectedError = ParseFailure(s"Cannot parse '$invalidCommand' as SearchOptionCommand").asLeft
 
         result must beEqualTo(expectedError)
       }
