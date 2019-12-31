@@ -30,8 +30,8 @@ class SearchOptionCommandParserSpec extends Specification with ScalaCheck{
       }
     }
 
-    "any other string inputs" >> prop { command: String =>
-      (command != "1" && command != "2" && command.toLowerCase != "quit") ==> prop { invalidCommand: String =>
+    "any other string inputs" >> prop { invalidCommand: String =>
+      (invalidCommand != "1" && invalidCommand != "2" && invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
         val result = doParse(invalidCommand)
         val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchOptionCommand").asLeft
 

@@ -7,17 +7,22 @@ import zendesk.util.parser.SearchObjectCommand.{Quit, SearchOrganizations, Searc
 
 
 object SearchObjectCommandParser {
-  def parseSearchUsers[_: P]: P[SearchUsers.type] = P("1").map(_ => SearchUsers)
-  def parseSearchTickets[_: P]: P[SearchTickets.type] = P("2").map(_ => SearchTickets)
-  def parseSearchOrganizations[_: P]: P[SearchOrganizations.type] = P("3").map(_ => SearchOrganizations)
-  def parseQuit[_: P]: P[Quit.type] = P(IgnoreCase("quit")).map(_ => Quit)
-  def parseCommand[_: P]: P[SearchObjectCommand] =
-    P(parseSearchUsers | parseSearchTickets | parseSearchOrganizations | parseQuit)
+  private def parseSearchUsers[_: P] = P("1").map(_ => SearchUsers)
+  private def parseSearchTickets[_: P] = P("2").map(_ => SearchTickets)
+  private def parseSearchOrganizations[_: P] = P("3").map(_ => SearchOrganizations)
+  private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
+
+  private def parseCommand[_: P]: P[SearchObjectCommand] =
+    P(parseSearchUsers
+      | parseSearchTickets
+      | parseSearchOrganizations
+      | parseQuit
+    )
 
 
   def doParse(command: String): Either[AppError, SearchObjectCommand] = {
     parse(command, parseCommand(_)) match {
-      case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchTermCommand").asLeft
+      case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchObjectCommand").asLeft
       case Parsed.Success(v, _) => v.asRight
     }
   }

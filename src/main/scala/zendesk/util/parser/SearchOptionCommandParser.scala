@@ -7,10 +7,15 @@ import cats.syntax.either._
 
 
 object SearchOptionCommandParser {
-  def parseSearchZendesk[_: P]: P[SearchZendesk.type] = P("1").map(_ => SearchZendesk)
-  def parseViewSearchableFields[_: P]: P[ViewSearchableFields.type] = P("2").map(_ => ViewSearchableFields)
-  def parseQuit[_: P]: P[Quit.type] = P(IgnoreCase("quit")).map(_ => Quit)
-  def parseCommand[_: P]: P[SearchOptionCommand] = P(parseSearchZendesk | parseViewSearchableFields | parseQuit)
+  private def parseSearchZendesk[_: P] = P("1").map(_ => SearchZendesk)
+  private def parseViewSearchableFields[_: P] = P("2").map(_ => ViewSearchableFields)
+  private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
+
+  private def parseCommand[_: P] =
+    P( parseSearchZendesk
+      | parseViewSearchableFields
+      | parseQuit
+    )
 
 
   def doParse(command: String): Either[AppError, SearchOptionCommand] = {

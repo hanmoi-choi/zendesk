@@ -11,7 +11,7 @@ import scala.language.postfixOps
 
 class SearchObjectCommandParserSpec extends Specification with ScalaCheck{
 
-  "Parse Zendesk SearchOptionCommand" >> {
+  "Parse Zendesk SearchObjectCommand" >> {
     "Should parse '1' as 'SearchUsers' command" >> {
       doParse("1") must beEqualTo(SearchUsers.asRight)
     }
@@ -34,10 +34,10 @@ class SearchObjectCommandParserSpec extends Specification with ScalaCheck{
       }
     }
 
-    "any other string inputs" >> prop { command: String =>
-      (command != "1" && command != "2" && command != "3" && command.toLowerCase != "quit") ==> prop { invalidCommand: String =>
+    "any other string inputs" >> prop { invalidCommand: String =>
+      (invalidCommand != "1" && invalidCommand != "2" && invalidCommand != "3" && invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
         val result = doParse(invalidCommand)
-        val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchTermCommand").asLeft
+        val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchObjectCommand").asLeft
         
         result must beEqualTo(expectedError)
       }
