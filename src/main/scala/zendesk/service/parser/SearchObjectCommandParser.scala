@@ -5,7 +5,7 @@ import fastparse._
 import zendesk.model.{AppError, ParseFailure}
 import zendesk.service.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
 
-object SearchObjectCommandParser {
+case class SearchObjectCommandParser() extends Parser[SearchObjectCommand] {
   private def parseSearchUsers[_: P] = P("1").map(_ => SearchUsers)
 
   private def parseSearchTickets[_: P] = P("2").map(_ => SearchTickets)
@@ -23,7 +23,7 @@ object SearchObjectCommandParser {
 
   def doParse(command: String): Either[AppError, SearchObjectCommand] = {
     parse(command, parseCommand(_)) match {
-      case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchObjectCommand").asLeft
+      case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse '$command' as SearchObjectCommand").asLeft
       case Parsed.Success(v, _) => v.asRight
     }
   }

@@ -8,13 +8,21 @@ import org.specs2.specification.BeforeEach
 import zendesk.model.ParseFailure
 import zendesk.service.parser.ApplicationOptionCommand.{ApplicationZendesk, Quit, ViewSearchableFields}
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
-import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
+import zendesk.service.parser.{
+  ApplicationOptionCommand,
+  ApplicationOptionCommandParser,
+  SearchObjectCommand,
+  SearchObjectCommandParser
+}
 import zendesk.util.MessageFactory
 
 class SearchProgramSpec extends Specification with EitherMatchers with ResultMatchers with BeforeEach {
   sequential
 
   import zendesk.helper.IdInterpreters._
+
+  implicit private val applicationOptionCommandParser = ApplicationOptionCommandParser()
+  implicit private val searchObjectCommandParser = SearchObjectCommandParser()
 
   val idProgram = new SearchProgram[Id]()
 

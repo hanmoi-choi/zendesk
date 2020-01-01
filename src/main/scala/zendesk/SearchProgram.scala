@@ -5,11 +5,13 @@ import cats.data.EitherT
 import zendesk.dsl.Console._
 import zendesk.dsl.UserInputParser._
 import zendesk.dsl.{Console, UserInputParser}
-import zendesk.service.parser.ParserImplementation.{ApplicationOptionCommandParser, SearchObjectCommandParser}
-import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
+import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 import zendesk.util.MessageFactory
 
-class SearchProgram[F[_]: Monad: Console: UserInputParser] {
+case class SearchProgram[F[_]: Monad: Console: UserInputParser]()(
+  implicit applicationOptionCommandParser: Parser[ApplicationOptionCommand],
+  searchObjectCommandParser: Parser[SearchObjectCommand]
+) {
 
   def processSelectApplicationOptions(): F[Either[model.AppError, ApplicationOptionCommand]] = {
     val parserResult: EitherT[F, model.AppError, ApplicationOptionCommand] =

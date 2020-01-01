@@ -3,8 +3,11 @@ package zendesk
 import cats.data.EitherT
 import cats.effect.{ExitCode, IO, IOApp}
 import zendesk.dsl.Interpreter._
+import zendesk.service.parser.{ApplicationOptionCommandParser, SearchObjectCommandParser}
 
 object Main extends IOApp {
+  implicit private val applicationOptionCommandParser = ApplicationOptionCommandParser()
+  implicit private val searchObjectCommandParser = SearchObjectCommandParser()
 
   override def run(args: List[String]): IO[ExitCode] = {
 
