@@ -4,13 +4,13 @@ import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.model.ParseFailure
-import zendesk.service.parser.SearchTicketsTerm._
-import zendesk.service.parser.SearchTicketsTermParser.doParse
+import zendesk.service.parser.TermsToSearchTickets._
+import zendesk.service.parser.TermsToSearchTicketsParser.doParse
 
 import scala.language.postfixOps
 
 
-class SearchTicketsTermParserSpec extends Specification with ScalaCheck {
+class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
   "should parse 'id' as 'Id' term" >> {
     "as lowercase" >> {
       doParse("id") must beEqualTo(TicketId.asRight)

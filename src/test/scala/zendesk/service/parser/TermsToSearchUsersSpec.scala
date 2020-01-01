@@ -7,10 +7,10 @@ import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import zendesk.model.InvalidArgumentError
 import zendesk.model.value.EmptyStringSearchField
-import zendesk.service.parser.SearchUsersTerm._
+import zendesk.service.parser.TermsToSearchUsers._
 
 
-class SearchUsersTermSpec extends Specification {
+class TermsToSearchUsersSpec extends Specification {
   private val emptyStringError = InvalidArgumentError("Empty string is not allowed for this term").asLeft
 
   "Convert string value to SearchValue object" >> {

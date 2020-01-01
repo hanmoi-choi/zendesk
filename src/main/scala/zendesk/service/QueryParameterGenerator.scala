@@ -6,9 +6,9 @@ import zendesk.service.parser.SearchObjectCommand._
 import zendesk.service.parser._
 
 case class QueryParameterGenerator(
-                                    usersTermParser: Parser[SearchUsersTerm],
-                                    ticketsTermParser: Parser[SearchTicketsTerm],
-                                    organizationsTermParser: Parser[SearchOrganizationsTerm],
+                                    usersTermParser: Parser[TermsToSearchUsers],
+                                    ticketsTermParser: Parser[TermsToSearchTickets],
+                                    organizationsTermParser: Parser[TermsToSearchOrganizations],
                                   ) {
 
   def generate(searchObjectCommand: SearchObjectCommand,

@@ -6,12 +6,12 @@ import cats.syntax.either._
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import zendesk.model.InvalidArgumentError
-import zendesk.service.parser.SearchOrganizationsTerm._
+import zendesk.service.parser.TermsToSearchOrganizations._
 
 //createdAt: ZenDateTime,
 //sharedTickets: SharedTickets,
 
-class SearchOrganizationsTermSpec extends Specification {
+class TermsToSearchOrganizationsSpec extends Specification {
   private val emptyStringError = InvalidArgumentError("Empty string is not allowed for this term").asLeft
 
   "Convert string value to SearchValue object" >> {

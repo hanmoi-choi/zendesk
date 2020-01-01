@@ -3,9 +3,9 @@ package zendesk.service.parser
 import cats.syntax.either._
 import fastparse._
 import zendesk.model.{AppError, ParseFailure}
-import zendesk.service.parser.SearchUsersTerm._
+import zendesk.service.parser.TermsToSearchUsers._
 
-object SearchUsersTermParser extends Parser[SearchUsersTerm] {
+object TermsToSearchUsersParser extends Parser[TermsToSearchUsers] {
   private def parseId[_: P] = P(IgnoreCase("id")).map(_ => Id)
 
   private def parseUrl[_: P] = P(IgnoreCase("url")).map(_ => Url)
@@ -46,7 +46,7 @@ object SearchUsersTermParser extends Parser[SearchUsersTerm] {
 
   private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
 
-  def parseTerm[_: P]: P[SearchUsersTerm] = P(
+  def parseTerm[_: P]: P[TermsToSearchUsers] = P(
     parseId
       | parseUrl
       | parseExternalId
@@ -70,7 +70,7 @@ object SearchUsersTermParser extends Parser[SearchUsersTerm] {
   )
 
 
-  def doParse(command: String): Either[AppError, SearchUsersTerm] = {
+  def doParse(command: String): Either[AppError, TermsToSearchUsers] = {
     parse(command, parseTerm(_)) match {
       case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchUsersTerm").asLeft
       case Parsed.Success(v, _) => v.asRight

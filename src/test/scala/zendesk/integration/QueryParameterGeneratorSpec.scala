@@ -10,7 +10,7 @@ import zendesk.model.value.{Id, TicketId}
 import zendesk.model.{QueryParams, Searchable}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
-import zendesk.service.parser.{SearchOrganizationsTermParser, SearchTicketsTermParser, SearchUsersTermParser}
+import zendesk.service.parser.{TermsToSearchOrganizationsParser, TermsToSearchTicketsParser, TermsToSearchUsersParser}
 
 /*
  Comprehensive tests is covered at each `Parser` so this test will be make sure generator return expected value simply.
@@ -18,9 +18,9 @@ import zendesk.service.parser.{SearchOrganizationsTermParser, SearchTicketsTermP
 
 class QueryParameterGeneratorSpec extends Specification with ScalaCheck {
   private val generator = QueryParameterGenerator(
-    SearchUsersTermParser,
-    SearchTicketsTermParser,
-    SearchOrganizationsTermParser
+    TermsToSearchUsersParser,
+    TermsToSearchTicketsParser,
+    TermsToSearchOrganizationsParser
   )
 
   "Query parameter to search users" >> {

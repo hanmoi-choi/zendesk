@@ -7,36 +7,36 @@ import org.joda.time.DateTime
 import zendesk.model.AppError
 import zendesk.model.value.SearchValue
 
-sealed trait SearchTicketsTerm {
+sealed trait TermsToSearchTickets {
   def asSearchValue(value: String): Either[AppError, SearchValue]
 }
 
-object SearchTicketsTerm {
+object TermsToSearchTickets {
 
   import zendesk.service.parser.Parser._
 
-  case object TicketId extends SearchTicketsTerm {
+  case object TicketId extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintNonEmptyString[UUID](v, UUID.fromString, zendesk.model.value.TicketId(_), "UUID")
       }
   }
 
-  case object Url extends SearchTicketsTerm {
+  case object Url extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) {
         zendesk.model.value.Url(_).asRight
       }
   }
 
-  case object ExternalId extends SearchTicketsTerm {
+  case object ExternalId extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintNonEmptyString[UUID](v, UUID.fromString, zendesk.model.value.ExternalId(_), "UUID")
       }
   }
 
-  case object Type extends SearchTicketsTerm {
+  case object Type extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Type](
@@ -45,21 +45,21 @@ object SearchTicketsTerm {
       }
   }
 
-  case object Subject extends SearchTicketsTerm {
+  case object Subject extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) {
         zendesk.model.value.Subject(_).asRight
       }
   }
 
-  case object Description extends SearchTicketsTerm {
+  case object Description extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) {
         zendesk.model.value.Description(_).asRight
       }
   }
 
-  case object Priority extends SearchTicketsTerm {
+  case object Priority extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Priority](
@@ -68,7 +68,7 @@ object SearchTicketsTerm {
       }
   }
 
-  case object Status extends SearchTicketsTerm {
+  case object Status extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Status](
@@ -77,49 +77,49 @@ object SearchTicketsTerm {
       }
   }
 
-  case object SubmitterId extends SearchTicketsTerm {
+  case object SubmitterId extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintNonEmptyString[Int](v, Integer.parseInt, zendesk.model.value.SubmitterId(_), "Integer")
       }
   }
 
-  case object AssigneeId extends SearchTicketsTerm {
+  case object AssigneeId extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
         parseTypeConstraintNonEmptyString[Int](v, Integer.parseInt, zendesk.model.value.AssigneeId(_), "Integer")
       }
   }
 
-  case object OrganizationId extends SearchTicketsTerm {
+  case object OrganizationId extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
         parseTypeConstraintNonEmptyString[Int](v, Integer.parseInt, zendesk.model.value.OrganizationId(_), "Integer")
       }
   }
 
-  case object Tags extends SearchTicketsTerm {
+  case object Tags extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) {
         zendesk.model.value.Tag(_).asRight
       }
   }
 
-  case object HasIncidents extends SearchTicketsTerm {
+  case object HasIncidents extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
         parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.HasIncidents(_), "Boolean")
       }
   }
 
-  case object DueAt extends SearchTicketsTerm {
+  case object DueAt extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
         parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
       }
   }
 
-  case object Via extends SearchTicketsTerm {
+  case object Via extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Via](
@@ -128,7 +128,7 @@ object SearchTicketsTerm {
       }
   }
 
-  case object Quit extends SearchTicketsTerm {
+  case object Quit extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
   }
 
