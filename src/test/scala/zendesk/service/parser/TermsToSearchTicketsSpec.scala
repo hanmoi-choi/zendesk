@@ -170,7 +170,8 @@ class TermsToSearchTicketsSpec extends Specification {
             "Valid input, datetime" >> {
               val dataTimeString = "2016-04-15T05:19:46 -10:00"
               val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
-              DueAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+              DueAt.asSearchValue(dataTimeString) must beEqualTo(
+                zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
             }
 
             "Invalid input, non-datetime" >> {
@@ -188,7 +189,8 @@ class TermsToSearchTicketsSpec extends Specification {
             "Valid input, datetime" >> {
               val dataTimeString = "2016-04-15T05:19:46 -10:00"
               val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
-              CreatedAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+              CreatedAt.asSearchValue(dataTimeString) must beEqualTo(
+                zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
             }
 
             "Invalid input, non-datetime" >> {
@@ -213,7 +215,8 @@ class TermsToSearchTicketsSpec extends Specification {
             }
 
             "Invalid input, non-enum" >> {
-              val asLeft = InvalidArgumentError("'a' is not Type('incident', 'problem', 'question', 'task') value").asLeft
+              val asLeft =
+                InvalidArgumentError("'a' is not Type('incident', 'problem', 'question', 'task') value").asLeft
 
               Type.asSearchValue("a") must beEqualTo(asLeft)
             }
@@ -252,7 +255,8 @@ class TermsToSearchTicketsSpec extends Specification {
             }
 
             "Invalid input, non-enum" >> {
-              val asLeft = InvalidArgumentError("'a' is not Status('closed', 'hold', 'open', 'pending', 'solved') value").asLeft
+              val asLeft =
+                InvalidArgumentError("'a' is not Status('closed', 'hold', 'open', 'pending', 'solved') value").asLeft
               Status.asSearchValue("a") must beEqualTo(asLeft)
             }
           }

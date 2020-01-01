@@ -6,7 +6,6 @@ import zendesk.dsl.Interpreter._
 
 object Main extends IOApp {
 
-
   override def run(args: List[String]): IO[ExitCode] = {
 
     val ioProgram = new SearchProgram[IO]()

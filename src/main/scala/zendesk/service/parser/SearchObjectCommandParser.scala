@@ -5,7 +5,6 @@ import fastparse._
 import zendesk.model.{AppError, ParseFailure}
 import zendesk.service.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
 
-
 object SearchObjectCommandParser {
   private def parseSearchUsers[_: P] = P("1").map(_ => SearchUsers)
 
@@ -16,12 +15,11 @@ object SearchObjectCommandParser {
   private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
 
   private def parseCommand[_: P]: P[SearchObjectCommand] =
-    P(parseSearchUsers
-      | parseSearchTickets
-      | parseSearchOrganizations
-      | parseQuit
-    )
-
+    P(
+      parseSearchUsers
+        | parseSearchTickets
+        | parseSearchOrganizations
+        | parseQuit)
 
   def doParse(command: String): Either[AppError, SearchObjectCommand] = {
     parse(command, parseCommand(_)) match {

@@ -32,4 +32,3 @@ class TypeSpec extends Specification {
     }
   }
 }
-

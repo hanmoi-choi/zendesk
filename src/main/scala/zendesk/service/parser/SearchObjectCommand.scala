@@ -13,5 +13,3 @@ object SearchObjectCommand {
   case object Quit extends SearchObjectCommand
 
 }
-
-

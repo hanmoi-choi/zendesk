@@ -35,11 +35,12 @@ class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
     }
 
     "any other string inputs" >> prop { invalidCommand: String =>
-      (invalidCommand != "1" && invalidCommand != "2" && invalidCommand != "3" && invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
-        val result = doParse(invalidCommand)
-        val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchObjectCommand").asLeft
+      (invalidCommand != "1" && invalidCommand != "2" && invalidCommand != "3" && invalidCommand.toLowerCase != "quit") ==> prop {
+        _: String =>
+          val result = doParse(invalidCommand)
+          val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchObjectCommand").asLeft
 
-        result must beEqualTo(expectedError)
+          result must beEqualTo(expectedError)
       }
     }.set(minTestsOk = 50, workers = 3)
 

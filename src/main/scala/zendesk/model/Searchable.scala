@@ -1,7 +1,6 @@
 package zendesk.model
 
-trait Searchable {
-}
+trait Searchable {}
 
 object Searchable {
   type SearchKey = String

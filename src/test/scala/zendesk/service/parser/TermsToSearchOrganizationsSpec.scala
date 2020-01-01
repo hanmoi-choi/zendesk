@@ -133,7 +133,8 @@ class TermsToSearchOrganizationsSpec extends Specification {
           "Valid input, datetime" >> {
             val dataTimeString = "2016-04-15T05:19:46 -10:00"
             val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
-            CreatedAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+            CreatedAt.asSearchValue(dataTimeString) must beEqualTo(
+              zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
           }
 
           "Invalid input, non-datetime" >> {

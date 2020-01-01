@@ -99,7 +99,6 @@ object SampleDataGen {
     via = Web
   )
 
-
   val rawOrganizationJson: String =
     """{
       |  "_id" : 101,
@@ -122,7 +121,8 @@ object SampleDataGen {
       |    "Farley"
       |  ]
       |}""".stripMargin
-  private val domainName = List(DomainName("kage.com"), DomainName("ecratic.com"), DomainName("endipin.com"), DomainName("zentix.com"))
+  private val domainName =
+    List(DomainName("kage.com"), DomainName("ecratic.com"), DomainName("endipin.com"), DomainName("zentix.com"))
   private val orgTags = List(Tag("Fulton"), Tag("West"), Tag("Rodriguez"), Tag("Farley"))
   val organization: Organization = Organization(
     id = Id(101),

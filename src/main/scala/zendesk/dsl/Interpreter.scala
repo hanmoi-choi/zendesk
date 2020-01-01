@@ -10,16 +10,15 @@ import scala.io.StdIn
 object Interpreter {
 
   implicit object IoEitherUserInputParser extends UserInputParser[IO] {
-    override def parseSearchOption(value: String)
-                                  (implicit P: Parser[ApplicationOptionCommand]
-                                  ): IO[Either[AppError, ApplicationOptionCommand]] = {
+    override def parseSearchOption(value: String)(
+      implicit P: Parser[ApplicationOptionCommand]): IO[Either[AppError, ApplicationOptionCommand]] = {
       IO {
         P.doParse(value)
       }
     }
 
-    override def parseSearchObject(value: String)(implicit P: Parser[SearchObjectCommand]
-    ): IO[Either[AppError, SearchObjectCommand]] = {
+    override def parseSearchObject(value: String)(
+      implicit P: Parser[SearchObjectCommand]): IO[Either[AppError, SearchObjectCommand]] = {
       IO {
         P.doParse(value)
       }

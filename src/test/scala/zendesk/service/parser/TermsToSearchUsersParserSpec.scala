@@ -192,37 +192,32 @@ class TermsToSearchUsersParserSpec extends Specification with ScalaCheck {
     }
   }
 
+  "any other string inputs" >> prop { invalidCommand: String =>
+    (invalidCommand != "id" &&
+    invalidCommand.toLowerCase != "url" &&
+    invalidCommand.toLowerCase != "externalId" &&
+    invalidCommand.toLowerCase != "name" &&
+    invalidCommand.toLowerCase != "alias" &&
+    invalidCommand.toLowerCase != "createdAt" &&
+    invalidCommand.toLowerCase != "active" &&
+    invalidCommand.toLowerCase != "verified" &&
+    invalidCommand.toLowerCase != "shared" &&
+    invalidCommand.toLowerCase != "locale" &&
+    invalidCommand.toLowerCase != "timezone" &&
+    invalidCommand.toLowerCase != "lastLoginAt" &&
+    invalidCommand.toLowerCase != "email" &&
+    invalidCommand.toLowerCase != "phone" &&
+    invalidCommand.toLowerCase != "signature" &&
+    invalidCommand.toLowerCase != "organizationId" &&
+    invalidCommand.toLowerCase != "tags" &&
+    invalidCommand.toLowerCase != "suspended" &&
+    invalidCommand.toLowerCase != "role" &&
+    invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
+      val result = doParse(invalidCommand)
+      val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchUsersTerm").asLeft
 
-  "any other string inputs" >> prop {
-    invalidCommand: String =>
-      (invalidCommand != "id" &&
-        invalidCommand.toLowerCase != "url" &&
-        invalidCommand.toLowerCase != "externalId" &&
-        invalidCommand.toLowerCase != "name" &&
-        invalidCommand.toLowerCase != "alias" &&
-        invalidCommand.toLowerCase != "createdAt" &&
-        invalidCommand.toLowerCase != "active" &&
-        invalidCommand.toLowerCase != "verified" &&
-        invalidCommand.toLowerCase != "shared" &&
-        invalidCommand.toLowerCase != "locale" &&
-        invalidCommand.toLowerCase != "timezone" &&
-        invalidCommand.toLowerCase != "lastLoginAt" &&
-        invalidCommand.toLowerCase != "email" &&
-        invalidCommand.toLowerCase != "phone" &&
-        invalidCommand.toLowerCase != "signature" &&
-        invalidCommand.toLowerCase != "organizationId" &&
-        invalidCommand.toLowerCase != "tags" &&
-        invalidCommand.toLowerCase != "suspended" &&
-        invalidCommand.toLowerCase != "role" &&
-        invalidCommand.toLowerCase != "quit"
-        ) ==> prop {
-        _: String =>
-
-          val result = doParse(invalidCommand)
-          val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchUsersTerm").asLeft
-
-          result must beEqualTo(expectedError)
-      }
+      result must beEqualTo(expectedError)
+    }
   }.set(minTestsOk = 50, workers = 3)
 
 }

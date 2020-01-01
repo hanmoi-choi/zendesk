@@ -4,8 +4,8 @@ import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.helper.DataWithFileGen
 import zendesk.model
-import zendesk.model.value.EmptyStringSearchField
 import zendesk.model._
+import zendesk.model.value.EmptyStringSearchField
 
 import scala.util.Random
 
@@ -27,12 +27,14 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
       }
 
       "should be able to search with 'url'" >> {
-        val result: Vector[Ticket] = db.query[Ticket](model.QueryParams(Searchable.Tickets, "url", randomPickedUpTicket.url))
+        val result: Vector[Ticket] =
+          db.query[Ticket](model.QueryParams(Searchable.Tickets, "url", randomPickedUpTicket.url))
         result must contain(randomPickedUpTicket)
       }
 
       "should be able to search with 'externalId'" >> {
-        val result: Vector[Ticket] = db.query[Ticket](model.QueryParams(Searchable.Tickets, "externalId", randomPickedUpTicket.externalId))
+        val result: Vector[Ticket] =
+          db.query[Ticket](model.QueryParams(Searchable.Tickets, "externalId", randomPickedUpTicket.externalId))
         result must contain(randomPickedUpTicket)
       }
 
@@ -43,7 +45,8 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
       }
 
       "should be able to search with 'type'" >> {
-        val result: Vector[Ticket] = db.query[Ticket](model.QueryParams(Searchable.Tickets, "type", randomPickedUpTicket.`type`.getOrElse(EmptyStringSearchField)))
+        val result: Vector[Ticket] = db.query[Ticket](
+          model.QueryParams(Searchable.Tickets, "type", randomPickedUpTicket.`type`.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpTicket)
       }
 
@@ -55,7 +58,11 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'description'" >> {
         val result: Vector[Ticket] =
-          db.query[Ticket](model.QueryParams(Searchable.Tickets, "description", randomPickedUpTicket.description.getOrElse(EmptyStringSearchField)))
+          db.query[Ticket](
+            model.QueryParams(
+              Searchable.Tickets,
+              "description",
+              randomPickedUpTicket.description.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpTicket)
       }
 
@@ -79,16 +86,23 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'assigneeId'" >> {
         val result: Vector[Ticket] =
-          db.query[Ticket](model.QueryParams(Searchable.Tickets, "assigneeId", randomPickedUpTicket.assigneeId.getOrElse(EmptyStringSearchField)))
+          db.query[Ticket](
+            model.QueryParams(
+              Searchable.Tickets,
+              "assigneeId",
+              randomPickedUpTicket.assigneeId.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpTicket)
       }
 
       "should be able to search with 'organizationId'" >> {
         val result: Vector[Ticket] =
-          db.query[Ticket](model.QueryParams(Searchable.Tickets, "organizationId", randomPickedUpTicket.organizationId.getOrElse(EmptyStringSearchField)))
+          db.query[Ticket](
+            model.QueryParams(
+              Searchable.Tickets,
+              "organizationId",
+              randomPickedUpTicket.organizationId.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpTicket)
       }
-
 
       "should be able to search with 'hasIncidents'" >> {
         val result: Vector[Ticket] =
@@ -98,7 +112,9 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'dueAt'" >> {
         val result: Vector[Ticket] =
-          db.query[Ticket](model.QueryParams(Searchable.Tickets, "dueAt", randomPickedUpTicket.dueAt.getOrElse(EmptyStringSearchField)))
+          db.query[Ticket](
+            model
+              .QueryParams(Searchable.Tickets, "dueAt", randomPickedUpTicket.dueAt.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpTicket)
       }
 
@@ -122,23 +138,27 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
       val randomPickedUpOrg = Random.shuffle(organizations).head
 
       "should be able to search with 'id'" >> {
-        val result: Vector[Organization] = db.query[Organization](model.QueryParams(Searchable.Organizations, "id", randomPickedUpOrg.id))
+        val result: Vector[Organization] =
+          db.query[Organization](model.QueryParams(Searchable.Organizations, "id", randomPickedUpOrg.id))
 
         result must contain(randomPickedUpOrg)
       }
 
       "should be able to search with 'url'" >> {
-        val result: Vector[Organization] = db.query[Organization](model.QueryParams(Searchable.Organizations, "url", randomPickedUpOrg.url))
+        val result: Vector[Organization] =
+          db.query[Organization](model.QueryParams(Searchable.Organizations, "url", randomPickedUpOrg.url))
         result must contain(randomPickedUpOrg)
       }
 
       "should be able to search with 'externalId'" >> {
-        val result: Vector[Organization] = db.query[Organization](model.QueryParams(Searchable.Organizations, "externalId", randomPickedUpOrg.externalId))
+        val result: Vector[Organization] = db.query[Organization](
+          model.QueryParams(Searchable.Organizations, "externalId", randomPickedUpOrg.externalId))
         result must contain(randomPickedUpOrg)
       }
 
       "should be able to search with 'name'" >> {
-        val result: Vector[Organization] = db.query[Organization](model.QueryParams(Searchable.Organizations, "name", randomPickedUpOrg.name))
+        val result: Vector[Organization] =
+          db.query[Organization](model.QueryParams(Searchable.Organizations, "name", randomPickedUpOrg.name))
         result must contain(randomPickedUpOrg)
       }
 
@@ -174,7 +194,8 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'sharedTickets'" >> {
         val result: Vector[Organization] =
-          db.query[Organization](model.QueryParams(Searchable.Organizations, "sharedTickets", randomPickedUpOrg.sharedTickets))
+          db.query[Organization](
+            model.QueryParams(Searchable.Organizations, "sharedTickets", randomPickedUpOrg.sharedTickets))
         result must contain(randomPickedUpOrg)
       }
     }
@@ -194,7 +215,8 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
       }
 
       "should be able to search with 'externalId'" >> {
-        val result: Vector[User] = db.query[User](model.QueryParams(Searchable.Users, "externalId", randomPickedUpUser.externalId))
+        val result: Vector[User] =
+          db.query[User](model.QueryParams(Searchable.Users, "externalId", randomPickedUpUser.externalId))
         result must contain(randomPickedUpUser)
       }
 
@@ -205,7 +227,8 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'alias'" >> {
         val result: Vector[User] =
-          db.query[User](model.QueryParams(Searchable.Users, "alias", randomPickedUpUser.alias.getOrElse(EmptyStringSearchField)))
+          db.query[User](
+            model.QueryParams(Searchable.Users, "alias", randomPickedUpUser.alias.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpUser)
       }
 
@@ -223,7 +246,9 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'verified'" >> {
         val result: Vector[User] =
-          db.query[User](model.QueryParams(Searchable.Users, "verified", randomPickedUpUser.verified.getOrElse(EmptyStringSearchField)))
+          db.query[User](
+            model
+              .QueryParams(Searchable.Users, "verified", randomPickedUpUser.verified.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpUser)
       }
 
@@ -235,13 +260,16 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'locale'" >> {
         val result: Vector[User] =
-          db.query[User](model.QueryParams(Searchable.Users, "locale", randomPickedUpUser.locale.getOrElse(EmptyStringSearchField)))
+          db.query[User](
+            model.QueryParams(Searchable.Users, "locale", randomPickedUpUser.locale.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpUser)
       }
 
       "should be able to search with 'timezone'" >> {
         val result: Vector[User] =
-          db.query[User](model.QueryParams(Searchable.Users, "timezone", randomPickedUpUser.timezone.getOrElse(EmptyStringSearchField)))
+          db.query[User](
+            model
+              .QueryParams(Searchable.Users, "timezone", randomPickedUpUser.timezone.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpUser)
       }
 
@@ -253,7 +281,8 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'email'" >> {
         val result: Vector[User] =
-          db.query[User](model.QueryParams(Searchable.Users, "email", randomPickedUpUser.email.getOrElse(EmptyStringSearchField)))
+          db.query[User](
+            model.QueryParams(Searchable.Users, "email", randomPickedUpUser.email.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpUser)
       }
 
@@ -271,7 +300,11 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
       "should be able to search with 'organizationId'" >> {
         val result: Vector[User] =
-          db.query[User](model.QueryParams(Searchable.Users, "organizationId", randomPickedUpUser.organizationId.getOrElse(EmptyStringSearchField)))
+          db.query[User](
+            model.QueryParams(
+              Searchable.Users,
+              "organizationId",
+              randomPickedUpUser.organizationId.getOrElse(EmptyStringSearchField)))
         result must contain(randomPickedUpUser)
       }
 

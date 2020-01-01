@@ -101,26 +101,22 @@ class TermsToSearchOrganizationsParserSpec extends Specification with ScalaCheck
     }
   }
 
-  "any other string inputs" >> prop {
-    invalidCommand: String =>
-      (invalidCommand != "id" &&
-        invalidCommand.toLowerCase != "url" &&
-        invalidCommand.toLowerCase != "externalId" &&
-        invalidCommand.toLowerCase != "name" &&
-        invalidCommand.toLowerCase != "createdAt" &&
-        invalidCommand.toLowerCase != "tags" &&
-        invalidCommand.toLowerCase != "domainNames" &&
-        invalidCommand.toLowerCase != "details" &&
-        invalidCommand.toLowerCase != "sharedTickets" &&
-        invalidCommand.toLowerCase != "quit"
-        ) ==> prop {
-        _: String =>
+  "any other string inputs" >> prop { invalidCommand: String =>
+    (invalidCommand != "id" &&
+    invalidCommand.toLowerCase != "url" &&
+    invalidCommand.toLowerCase != "externalId" &&
+    invalidCommand.toLowerCase != "name" &&
+    invalidCommand.toLowerCase != "createdAt" &&
+    invalidCommand.toLowerCase != "tags" &&
+    invalidCommand.toLowerCase != "domainNames" &&
+    invalidCommand.toLowerCase != "details" &&
+    invalidCommand.toLowerCase != "sharedTickets" &&
+    invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
+      val result = doParse(invalidCommand)
+      val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchOrganizationsTerm").asLeft
 
-          val result = doParse(invalidCommand)
-          val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchOrganizationsTerm").asLeft
-
-          result must beEqualTo(expectedError)
-      }
+      result must beEqualTo(expectedError)
+    }
   }.set(minTestsOk = 50, workers = 3)
 
 }

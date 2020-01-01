@@ -9,14 +9,14 @@ import zendesk.service.parser.ParserImplementation.{ApplicationOptionCommandPars
 import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
 import zendesk.util.MessageFactory
 
-class SearchProgram[F[_] : Monad : Console : UserInputParser] {
+class SearchProgram[F[_]: Monad: Console: UserInputParser] {
 
   def processSelectApplicationOptions(): F[Either[model.AppError, ApplicationOptionCommand]] = {
     val parserResult: EitherT[F, model.AppError, ApplicationOptionCommand] =
       for {
-        _ <- EitherT(out(MessageFactory.appOptionsMessage))
+        _         <- EitherT(out(MessageFactory.appOptionsMessage))
         userInput <- EitherT(in())
-        result <- EitherT(parseSearchOption(userInput))
+        result    <- EitherT(parseSearchOption(userInput))
       } yield result
 
     parserResult.value
@@ -25,9 +25,9 @@ class SearchProgram[F[_] : Monad : Console : UserInputParser] {
   def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] = {
     val parserResult: EitherT[F, model.AppError, SearchObjectCommand] =
       for {
-        _ <- EitherT(out(MessageFactory.searchObjectsOptionMessage))
+        _         <- EitherT(out(MessageFactory.searchObjectsOptionMessage))
         userInput <- EitherT(in())
-        result <- EitherT(parseSearchObject(userInput))
+        result    <- EitherT(parseSearchObject(userInput))
       } yield result
 
     parserResult.value

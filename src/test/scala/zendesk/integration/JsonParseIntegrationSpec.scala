@@ -7,7 +7,6 @@ import zendesk.model.Ticket.decodeTicket
 import zendesk.model.User.decodeUser
 import zendesk.model.{Organization, Ticket, User}
 
-
 class JsonParseIntegrationSpec extends Specification {
   "JSON string for users, data/users.json file" >> {
     val users = DataWithFileGen.getDataFromFile[User]("./data/users.json")

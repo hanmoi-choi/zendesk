@@ -11,9 +11,9 @@ trait Console[F[_]] {
 object Console {
   def apply[F[_]](implicit C: Console[F]): Console[F] = C
 
-  def out[F[_] : Console](value: String): F[Either[AppError, Unit]] =
+  def out[F[_]: Console](value: String): F[Either[AppError, Unit]] =
     Console[F].out(value)
 
-  def in[F[_] : Console](): F[Either[AppError, String]] =
+  def in[F[_]: Console](): F[Either[AppError, String]] =
     Console[F].in()
 }

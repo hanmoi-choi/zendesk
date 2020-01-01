@@ -54,7 +54,11 @@ object TermsToSearchUsers {
   case object CreatedAt extends TermsToSearchUsers {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
+        parseTypeConstraintNonEmptyString[DateTime](
+          trimWhiteSpace(v),
+          DateTime.parse,
+          zendesk.model.value.ZenDateTime(_),
+          "DateTime")
       }
   }
 
@@ -97,7 +101,11 @@ object TermsToSearchUsers {
   case object LastLoginAt extends TermsToSearchUsers {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
+        parseTypeConstraintNonEmptyString[DateTime](
+          trimWhiteSpace(v),
+          DateTime.parse,
+          zendesk.model.value.ZenDateTime(_),
+          "DateTime")
       }
   }
 
@@ -147,7 +155,9 @@ object TermsToSearchUsers {
     override def asSearchValue(value: String): Either[AppError, SearchValue] = {
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Role](
-          v, zendesk.model.value.Role.fromString, "Role('admin', 'agent', 'end-user')"
+          v,
+          zendesk.model.value.Role.fromString,
+          "Role('admin', 'agent', 'end-user')"
         )
       }
     }
@@ -158,4 +168,3 @@ object TermsToSearchUsers {
   }
 
 }
-

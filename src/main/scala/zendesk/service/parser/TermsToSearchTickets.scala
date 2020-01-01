@@ -40,7 +40,9 @@ object TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Type](
-          v, zendesk.model.value.Type.fromString, "Type('incident', 'problem', 'question', 'task')"
+          v,
+          zendesk.model.value.Type.fromString,
+          "Type('incident', 'problem', 'question', 'task')"
         )
       }
   }
@@ -63,7 +65,9 @@ object TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Priority](
-          v, zendesk.model.value.Priority.fromString, "Priority('urgent', 'high', 'normal', 'low')"
+          v,
+          zendesk.model.value.Priority.fromString,
+          "Priority('urgent', 'high', 'normal', 'low')"
         )
       }
   }
@@ -72,7 +76,9 @@ object TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Status](
-          v, zendesk.model.value.Status.fromString, "Status('closed', 'hold', 'open', 'pending', 'solved')"
+          v,
+          zendesk.model.value.Status.fromString,
+          "Status('closed', 'hold', 'open', 'pending', 'solved')"
         )
       }
   }
@@ -115,7 +121,11 @@ object TermsToSearchTickets {
   case object DueAt extends TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
+        parseTypeConstraintNonEmptyString[DateTime](
+          trimWhiteSpace(v),
+          DateTime.parse,
+          zendesk.model.value.ZenDateTime(_),
+          "DateTime")
       }
   }
 
@@ -123,7 +133,9 @@ object TermsToSearchTickets {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
         parseTypeConstraintEnumString[zendesk.model.value.Via](
-          v, zendesk.model.value.Via.fromString, "Via('web', 'chat', 'voice')"
+          v,
+          zendesk.model.value.Via.fromString,
+          "Via('web', 'chat', 'voice')"
         )
       }
   }
@@ -133,6 +145,3 @@ object TermsToSearchTickets {
   }
 
 }
-
-
-

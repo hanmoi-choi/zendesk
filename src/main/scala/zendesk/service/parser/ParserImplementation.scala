@@ -16,10 +16,10 @@ object ParserImplementation {
     private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => ApplicationOptionCommand.Quit)
 
     private def parseCommand[_: P] =
-      P(parseSearchZendesk
-        | parseViewSearchableFields
-        | parseQuit
-      )
+      P(
+        parseSearchZendesk
+          | parseViewSearchableFields
+          | parseQuit)
 
     def doParse(command: String): Either[AppError, ApplicationOptionCommand] = {
       parse(command, parseCommand(_)) match {
@@ -39,11 +39,11 @@ object ParserImplementation {
     private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => SearchObjectCommand.Quit)
 
     private def parseCommand[_: P]: P[SearchObjectCommand] =
-      P(parseSearchUsers
-        | parseSearchTickets
-        | parseSearchOrganizations
-        | parseQuit
-      )
+      P(
+        parseSearchUsers
+          | parseSearchTickets
+          | parseSearchOrganizations
+          | parseQuit)
 
     def doParse(command: String): Either[AppError, SearchObjectCommand] = {
       parse(command, parseCommand(_)) match {

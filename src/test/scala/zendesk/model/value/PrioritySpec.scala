@@ -33,4 +33,3 @@ class PrioritySpec extends Specification {
   }
 
 }
-

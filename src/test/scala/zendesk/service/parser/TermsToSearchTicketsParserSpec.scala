@@ -9,7 +9,6 @@ import zendesk.service.parser.TermsToSearchTicketsParser.doParse
 
 import scala.language.postfixOps
 
-
 class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
   "should parse 'id' as 'Id' term" >> {
     "as lowercase" >> {
@@ -65,7 +64,6 @@ class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
     }
   }
 
-
   "should parse 'priority' as 'Priority' term" >> {
     "as lowercase" >> {
       doParse("priority") must beEqualTo(Priority.asRight)
@@ -74,7 +72,6 @@ class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
       doParse("PRIORITY") must beEqualTo(Priority.asRight)
     }
   }
-
 
   "should parse 'status' as 'Status' term" >> {
     "as lowercase" >> {
@@ -159,33 +156,29 @@ class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
     }
   }
 
-  "any other string inputs" >> prop {
-    invalidCommand: String =>
-      (invalidCommand != "id" &&
-        invalidCommand.toLowerCase != "url" &&
-        invalidCommand.toLowerCase != "externalId" &&
-        invalidCommand.toLowerCase != "createdAt" &&
-        invalidCommand.toLowerCase != "type" &&
-        invalidCommand.toLowerCase != "subject" &&
-        invalidCommand.toLowerCase != "description" &&
-        invalidCommand.toLowerCase != "priority" &&
-        invalidCommand.toLowerCase != "status" &&
-        invalidCommand.toLowerCase != "submitterId" &&
-        invalidCommand.toLowerCase != "assigneeId" &&
-        invalidCommand.toLowerCase != "organizationId" &&
-        invalidCommand.toLowerCase != "tags" &&
-        invalidCommand.toLowerCase != "hasIncidents" &&
-        invalidCommand.toLowerCase != "dueAt" &&
-        invalidCommand.toLowerCase != "via" &&
-        invalidCommand.toLowerCase != "quit"
-        ) ==> prop {
-        _: String =>
+  "any other string inputs" >> prop { invalidCommand: String =>
+    (invalidCommand != "id" &&
+    invalidCommand.toLowerCase != "url" &&
+    invalidCommand.toLowerCase != "externalId" &&
+    invalidCommand.toLowerCase != "createdAt" &&
+    invalidCommand.toLowerCase != "type" &&
+    invalidCommand.toLowerCase != "subject" &&
+    invalidCommand.toLowerCase != "description" &&
+    invalidCommand.toLowerCase != "priority" &&
+    invalidCommand.toLowerCase != "status" &&
+    invalidCommand.toLowerCase != "submitterId" &&
+    invalidCommand.toLowerCase != "assigneeId" &&
+    invalidCommand.toLowerCase != "organizationId" &&
+    invalidCommand.toLowerCase != "tags" &&
+    invalidCommand.toLowerCase != "hasIncidents" &&
+    invalidCommand.toLowerCase != "dueAt" &&
+    invalidCommand.toLowerCase != "via" &&
+    invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
+      val result = doParse(invalidCommand)
+      val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchTicketsTerm").asLeft
 
-          val result = doParse(invalidCommand)
-          val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchTicketsTerm").asLeft
-
-          result must beEqualTo(expectedError)
-      }
+      result must beEqualTo(expectedError)
+    }
   }.set(minTestsOk = 50, workers = 3)
 
 }

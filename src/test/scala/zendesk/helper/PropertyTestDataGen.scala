@@ -14,22 +14,34 @@ object PropertyTestDataGen {
   private implicit val sharedTicketsGen: Gen[SharedTickets] = Gen.oneOf(true, false).map(SharedTickets(_))
   private implicit val tagsGen: Gen[List[Tag]] = Gen.listOf(Gen.alphaStr.map(Tag(_)))
   private implicit val externalIdGen: Gen[ExternalId] = Gen.uuid.map(ExternalId(_))
-  private implicit val ticketUrlGen: Gen[Url] = Gen.uuid.map { id => s"http://initech.zendesk.com/api/v2/tickets/$id.json" }.map(Url(_))
-  private implicit val userUrlGen: Gen[Url] = Gen.posNum[Long].map { id => s"http://initech.zendesk.com/api/v2/users/$id.json" }.map(Url(_))
-  private implicit val orgUrlGen: Gen[Url] = Gen.posNum[Long].map { id => s"http://initech.zendesk.com/api/v2/organizations/$id.json" }.map(Url(_))
+  private implicit val ticketUrlGen: Gen[Url] = Gen.uuid.map { id =>
+    s"http://initech.zendesk.com/api/v2/tickets/$id.json"
+  }.map(Url(_))
+  private implicit val userUrlGen: Gen[Url] = Gen
+    .posNum[Long]
+    .map { id =>
+      s"http://initech.zendesk.com/api/v2/users/$id.json"
+    }
+    .map(Url(_))
+  private implicit val orgUrlGen: Gen[Url] = Gen
+    .posNum[Long]
+    .map { id =>
+      s"http://initech.zendesk.com/api/v2/organizations/$id.json"
+    }
+    .map(Url(_))
   private implicit val dateTimeGen: Gen[ZenDateTime] = genDateTime.map(ZenDateTime(_))
   private implicit val optionalDateTimeGen: Gen[Option[ZenDateTime]] = Gen.option(genDateTime.map(ZenDateTime(_)))
 
   private implicit val orgGen: Gen[Organization] = for {
-    id <- idGen
-    url <- orgUrlGen
-    externalId <- externalIdGen
-    name <- nameGen
-    domainNames <- domainNamesGen
-    details <- detailsGen
+    id            <- idGen
+    url           <- orgUrlGen
+    externalId    <- externalIdGen
+    name          <- nameGen
+    domainNames   <- domainNamesGen
+    details       <- detailsGen
     sharedTickets <- sharedTicketsGen
-    tags <- tagsGen
-    createdAt <- dateTimeGen
+    tags          <- tagsGen
+    createdAt     <- dateTimeGen
   } yield Organization(
     id = id,
     url = url,
@@ -47,7 +59,8 @@ object PropertyTestDataGen {
   private implicit val sharedGen: Gen[Shared] = Gen.oneOf(true, false).map(Shared(_))
   private implicit val suspendedGen: Gen[Suspended] = Gen.oneOf(true, false).map(Suspended(_))
   private implicit val localeGen: Gen[Option[Locale]] = Gen.option(Gen.oneOf("en-AU", "en-UK", "ko-KO").map(Locale(_)))
-  private implicit val timezoneGen: Gen[Option[Timezone]] = Gen.option(Gen.oneOf("Melbourne", "Sydney", "Filand").map(Timezone(_)))
+  private implicit val timezoneGen: Gen[Option[Timezone]] =
+    Gen.option(Gen.oneOf("Melbourne", "Sydney", "Filand").map(Timezone(_)))
   private implicit val signatureGen: Gen[Signature] = Gen.alphaStr.map(Signature(_))
   private implicit val aliasGen: Gen[Option[Alias]] = Gen.option(Gen.alphaStr.map(Alias(_)))
   private implicit val emailGen: Gen[Option[Email]] = Gen.option(Gen.alphaStr.map(Email(_)))
@@ -56,25 +69,25 @@ object PropertyTestDataGen {
   private implicit val orgIdGen: Gen[Option[OrganizationId]] = Gen.option(Gen.posNum[Long].map(OrganizationId(_)))
 
   private implicit val userGen: Gen[User] = for {
-    id <- idGen
-    url <- userUrlGen
-    externalId <- externalIdGen
-    name <- nameGen
-    alias <- aliasGen
-    createdAt <- dateTimeGen
-    active <- activeGen
-    verified <- verifiedGen
-    shared <- sharedGen
-    tags <- tagsGen
-    locale <- localeGen
-    timezone <- timezoneGen
-    lastLoginAt <- dateTimeGen
-    email <- emailGen
-    phone <- phoneGen
-    signature <- signatureGen
+    id             <- idGen
+    url            <- userUrlGen
+    externalId     <- externalIdGen
+    name           <- nameGen
+    alias          <- aliasGen
+    createdAt      <- dateTimeGen
+    active         <- activeGen
+    verified       <- verifiedGen
+    shared         <- sharedGen
+    tags           <- tagsGen
+    locale         <- localeGen
+    timezone       <- timezoneGen
+    lastLoginAt    <- dateTimeGen
+    email          <- emailGen
+    phone          <- phoneGen
+    signature      <- signatureGen
     organizationId <- orgIdGen
-    suspended <- suspendedGen
-    role <- roleGen
+    suspended      <- suspendedGen
+    role           <- roleGen
   } yield User(
     id = id,
     url = url,
@@ -110,22 +123,22 @@ object PropertyTestDataGen {
   private implicit val hasIncidentsGen: Gen[HasIncidents] = Gen.oneOf(true, false).map(HasIncidents(_))
 
   private implicit val ticketGen: Gen[Ticket] = for {
-    ticketId <- ticketIdGen
-    url <- ticketUrlGen
-    externalId <- externalIdGen
-    createdAt <- dateTimeGen
-    ticketType <- typeGen
-    subject <- subjectGen
-    description <- descriptionGen
-    priority <- priorityGen
-    status <- statusGen
-    submitterId <- submitterIdGen
-    assigneeId <- assigneeIdGen
+    ticketId       <- ticketIdGen
+    url            <- ticketUrlGen
+    externalId     <- externalIdGen
+    createdAt      <- dateTimeGen
+    ticketType     <- typeGen
+    subject        <- subjectGen
+    description    <- descriptionGen
+    priority       <- priorityGen
+    status         <- statusGen
+    submitterId    <- submitterIdGen
+    assigneeId     <- assigneeIdGen
     organizationId <- orgIdGen
-    tags <- tagsGen
-    hasIncidents <- hasIncidentsGen
-    dueAt <- optionalDateTimeGen
-    via <- viaGen
+    tags           <- tagsGen
+    hasIncidents   <- hasIncidentsGen
+    dueAt          <- optionalDateTimeGen
+    via            <- viaGen
   } yield Ticket(
     id = ticketId,
     url = url,
@@ -151,4 +164,3 @@ object PropertyTestDataGen {
 
   implicit val usersArbitrary: Arbitrary[List[User]] = Arbitrary(Gen.listOfN(20000, userGen))
 }
-

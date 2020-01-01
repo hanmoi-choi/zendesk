@@ -39,7 +39,6 @@ object TermsToSearchOrganizationsParser extends Parser[TermsToSearchOrganization
       | parseQuit
   )
 
-
   def doParse(command: String): Either[AppError, TermsToSearchOrganizations] = {
     parse(command, parseTerm(_)) match {
       case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchOrganizationsTerm").asLeft

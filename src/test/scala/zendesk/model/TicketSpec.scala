@@ -6,7 +6,6 @@ import io.circe.syntax._
 import org.specs2.mutable.Specification
 import zendesk.helper.SampleDataGen
 
-
 class TicketSpec extends Specification {
 
   "JSON string for a ticket should be decoded to Ticket object" >> {

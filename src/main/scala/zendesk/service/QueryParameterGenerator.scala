@@ -6,14 +6,15 @@ import zendesk.service.parser.SearchObjectCommand._
 import zendesk.service.parser._
 
 case class QueryParameterGenerator(
-                                    usersTermParser: Parser[TermsToSearchUsers],
-                                    ticketsTermParser: Parser[TermsToSearchTickets],
-                                    organizationsTermParser: Parser[TermsToSearchOrganizations],
-                                  ) {
+  usersTermParser: Parser[TermsToSearchUsers],
+  ticketsTermParser: Parser[TermsToSearchTickets],
+  organizationsTermParser: Parser[TermsToSearchOrganizations]
+) {
 
-  def generate(searchObjectCommand: SearchObjectCommand,
-               searchTermInput: String,
-               searchValueInput: String): Either[AppError, QueryParams] = {
+  def generate(
+    searchObjectCommand: SearchObjectCommand,
+    searchTermInput: String,
+    searchValueInput: String): Either[AppError, QueryParams] = {
     searchObjectCommand match {
       case SearchUsers => handleValueForUsers(searchTermInput, searchValueInput)
       case SearchTickets => handleValueForTickets(searchTermInput, searchValueInput)
@@ -23,7 +24,7 @@ case class QueryParameterGenerator(
 
   private def handleValueForUsers(searchTermInput: String, searchValueInput: String): Either[AppError, QueryParams] =
     for {
-      userTerm <- usersTermParser.doParse(searchTermInput)
+      userTerm    <- usersTermParser.doParse(searchTermInput)
       searchValue <- userTerm.asSearchValue(searchValueInput)
     } yield model.QueryParams(
       searchKey = Searchable.Users,
@@ -31,9 +32,11 @@ case class QueryParameterGenerator(
       searchValue = searchValue
     )
 
-  private def handleValueForTickets(searchTermInput: String, searchValueInput: String): scala.Either[AppError, QueryParams] =
+  private def handleValueForTickets(
+    searchTermInput: String,
+    searchValueInput: String): scala.Either[AppError, QueryParams] =
     for {
-      ticketTerm <- ticketsTermParser.doParse(searchTermInput)
+      ticketTerm  <- ticketsTermParser.doParse(searchTermInput)
       searchValue <- ticketTerm.asSearchValue(searchValueInput)
     } yield model.QueryParams(
       searchKey = Searchable.Tickets,
@@ -41,10 +44,12 @@ case class QueryParameterGenerator(
       searchValue = searchValue
     )
 
-  private def handleValueForOrganizations(searchTermInput: String, searchValueInput: String): scala.Either[AppError, QueryParams] =
+  private def handleValueForOrganizations(
+    searchTermInput: String,
+    searchValueInput: String): scala.Either[AppError, QueryParams] =
     for {
       organizationTerm <- organizationsTermParser.doParse(searchTermInput)
-      searchValue <- organizationTerm.asSearchValue(searchValueInput)
+      searchValue      <- organizationTerm.asSearchValue(searchValueInput)
     } yield model.QueryParams(
       searchKey = Searchable.Organizations,
       searchTerm = searchValue.getClass.getSimpleName,

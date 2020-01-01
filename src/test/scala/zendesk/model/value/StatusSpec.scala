@@ -39,4 +39,3 @@ class StatusSpec extends Specification {
   }
 
 }
-

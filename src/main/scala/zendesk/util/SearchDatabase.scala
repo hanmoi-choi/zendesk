@@ -1,7 +1,7 @@
 package zendesk.util
 
-import zendesk.model.value._
 import zendesk.model._
+import zendesk.model.value._
 
 import scala.collection.mutable.{HashMap => MMap}
 
@@ -16,7 +16,8 @@ case class SearchDatabase() {
       case Searchable.Organizations => organizationTable
     }
 
-    table.getOrElse(queryParams.searchTerm.toLowerCase, Map.empty)
+    table
+      .getOrElse(queryParams.searchTerm.toLowerCase, Map.empty)
       .getOrElse(queryParams.searchValue, Vector.empty)
       .asInstanceOf[Vector[T]]
   }
@@ -28,8 +29,8 @@ case class SearchDatabase() {
   private val ticketTable: MMap[SearchTerm, Map[SearchValue, Vector[Ticket]]] = MMap()
 
   private def groupAndExtractValues[T <: SearchValue, V <: Searchable](
-                                                                        data: Vector[(T, V)]
-                                                                      ): Map[T, Vector[V]] = {
+    data: Vector[(T, V)]
+  ): Map[T, Vector[V]] = {
     data.groupBy(_._1).view.mapValues(_.map(_._2)).toMap
   }
 
@@ -59,7 +60,8 @@ case class SearchDatabase() {
 
   def createOrganizationsTable(data: Vector[Organization]): Unit = {
     val orgsGroupedByTag: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
-    val orgsGroupedByDomainName: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(data.flatMap(_.pairWithDomainName()))
+    val orgsGroupedByDomainName: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(
+      data.flatMap(_.pairWithDomainName()))
 
     organizationTable.put("id".toLowerCase, data.groupBy(_.id))
     organizationTable.put("url".toLowerCase, data.groupBy(_.url))
@@ -96,10 +98,10 @@ case class SearchDatabase() {
 
 object SearchDatabase {
   def apply(
-             userData: Vector[User] = Vector.empty,
-             organizationData: Vector[Organization] = Vector.empty,
-             ticketData: Vector[Ticket] = Vector.empty
-           ): SearchDatabase = {
+    userData: Vector[User] = Vector.empty,
+    organizationData: Vector[Organization] = Vector.empty,
+    ticketData: Vector[Ticket] = Vector.empty
+  ): SearchDatabase = {
     val db = SearchDatabase()
     db.createUsersTable(userData)
     db.createOrganizationsTable(organizationData)
@@ -108,4 +110,3 @@ object SearchDatabase {
     db
   }
 }
-

@@ -31,16 +31,14 @@ object IdInterpreters {
   }
 
   implicit object IdEitherUserInputParser extends UserInputParser[Id] {
-    override def parseSearchOption(value: String)
-                                  (implicit P: Parser[ApplicationOptionCommand]
-                                  ): Id[Either[AppError, ApplicationOptionCommand]] = {
+    override def parseSearchOption(value: String)(
+      implicit P: Parser[ApplicationOptionCommand]): Id[Either[AppError, ApplicationOptionCommand]] = {
       P.doParse(value)
     }
 
-    override def parseSearchObject(value: String)
-                                  (
-                                    implicit P: Parser[SearchObjectCommand]
-                                  ): Id[Either[AppError, SearchObjectCommand]] = {
+    override def parseSearchObject(value: String)(
+      implicit P: Parser[SearchObjectCommand]
+    ): Id[Either[AppError, SearchObjectCommand]] = {
       P.doParse(value)
     }
   }

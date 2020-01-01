@@ -53,7 +53,11 @@ object TermsToSearchOrganizations {
   case object CreatedAt extends TermsToSearchOrganizations {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
+        parseTypeConstraintNonEmptyString[DateTime](
+          trimWhiteSpace(v),
+          DateTime.parse,
+          zendesk.model.value.ZenDateTime(_),
+          "DateTime")
       }
   }
 

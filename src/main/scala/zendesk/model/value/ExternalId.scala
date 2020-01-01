@@ -9,6 +9,7 @@ case class ExternalId(value: UUID) extends SearchValue
 
 object ExternalId {
   implicit val encodeExternalId: Encoder[ExternalId] = Encoder.encodeString.contramap[ExternalId](_.value.toString)
-  implicit val decodeExternalId: Decoder[ExternalId] = Decoder.decodeString.map(s => value.ExternalId(UUID.fromString(s)))
+  implicit val decodeExternalId: Decoder[ExternalId] =
+    Decoder.decodeString.map(s => value.ExternalId(UUID.fromString(s)))
 
 }

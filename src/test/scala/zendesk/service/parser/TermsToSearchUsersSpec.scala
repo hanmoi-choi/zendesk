@@ -9,7 +9,6 @@ import zendesk.model.InvalidArgumentError
 import zendesk.model.value.EmptyStringSearchField
 import zendesk.service.parser.TermsToSearchUsers._
 
-
 class TermsToSearchUsersSpec extends Specification {
   private val emptyStringError = InvalidArgumentError("Empty string is not allowed for this term").asLeft
 
@@ -66,7 +65,6 @@ class TermsToSearchUsersSpec extends Specification {
           Tags.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Tag("foobar").asRight)
         }
       }
-
 
       "Url" >> {
         "empty string is not allowed" >> {
@@ -224,7 +222,8 @@ class TermsToSearchUsersSpec extends Specification {
             }
 
             "Invalid input, non-boolean" >> {
-              Role.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
+              Role.asSearchValue("a") must beEqualTo(
+                InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
             }
           }
         }
@@ -259,7 +258,8 @@ class TermsToSearchUsersSpec extends Specification {
             "Valid input, datetime" >> {
               val dataTimeString = "2016-04-15T05:19:46 -10:00"
               val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
-              LastLoginAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+              LastLoginAt.asSearchValue(dataTimeString) must beEqualTo(
+                zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
             }
 
             "Invalid input, non-datetime" >> {
@@ -275,7 +275,8 @@ class TermsToSearchUsersSpec extends Specification {
             "Valid input, datetime" >> {
               val dataTimeString = "2016-04-15T05:19:46 -10:00"
               val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
-              CreatedAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+              CreatedAt.asSearchValue(dataTimeString) must beEqualTo(
+                zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
             }
 
             "Invalid input, non-datetime" >> {
@@ -299,7 +300,8 @@ class TermsToSearchUsersSpec extends Specification {
             }
 
             "Invalid input, non-enum" >> {
-              Role.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
+              Role.asSearchValue("a") must beEqualTo(
+                InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
             }
           }
         }
