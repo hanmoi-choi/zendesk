@@ -2,14 +2,10 @@ package zendesk.service.parser
 
 import java.util.UUID
 
-import zendesk.model.value.{EmptyStringSearchField, SearchValue}
-import zendesk.model.{AppError, InvalidArgumentError}
-
-import scala.util.{Failure, Success, Try}
 import cats.syntax.either._
 import org.joda.time.DateTime
-
-import scala.util.Try
+import zendesk.model.AppError
+import zendesk.model.value.SearchValue
 
 sealed trait SearchUsersTerm {
   def asSearchValue(value: String): Either[AppError, SearchValue]
@@ -95,11 +91,13 @@ object SearchUsersTerm {
       emptyStringAsEmptyStringSearchField(value) {
         zendesk.model.value.Timezone(_).asRight
       }
-
   }
 
   case object LastLoginAt extends SearchUsersTerm {
-    override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
+    override def asSearchValue(value: String): Either[AppError, SearchValue] =
+      prohibitEmptyString(value) { v =>
+        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime" )
+      }
   }
 
   case object Email extends SearchUsersTerm {

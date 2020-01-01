@@ -2,7 +2,7 @@ package zendesk.service
 
 import zendesk.model.AppError
 import zendesk.model.value.QueryParams
-import zendesk.model.value.SearchObject.User
+import zendesk.model.value.SearchObject.{Ticket, User}
 import zendesk.service.parser.SearchObjectCommand._
 import zendesk.service.parser._
 
@@ -32,7 +32,7 @@ case class QueryParameterGenerator(
     for {
       ticketTerm <- ticketsTermParser.doParse(searchTermInput)
       searchValue <- ticketTerm.asSearchValue(searchValueInput)
-    } yield QueryParams(User, searchValue.getClass.getSimpleName, searchValue)
+    } yield QueryParams(Ticket, searchValue.getClass.getSimpleName, searchValue)
 
   private def handleValueForOrganizations(searchTerm: String, searchValue: String): scala.Either[AppError, QueryParams] = ???
 

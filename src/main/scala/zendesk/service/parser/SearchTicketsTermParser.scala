@@ -6,7 +6,7 @@ import zendesk.model.{AppError, ParseFailure}
 import zendesk.service.parser.SearchTicketsTerm._
 
 object SearchTicketsTermParser extends Parser[SearchTicketsTerm]{
-  private def parseId[_: P] = P(IgnoreCase("id")).map(_ => Id)
+  private def parseId[_: P] = P(IgnoreCase("id")).map(_ => TicketId)
   private def parseUrl[_: P] = P(IgnoreCase("url")).map(_ => Url)
   private def parseExternalId[_: P] = P(IgnoreCase("externalId")).map(_ => ExternalId)
   private def parseType[_: P] = P(IgnoreCase("type")).map(_ => Type)

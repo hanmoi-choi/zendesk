@@ -7,7 +7,7 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
   - There should not be `space` before timezone adjustment, `-10:00`
 
 2. I decided Optional field myself based on the given data; users, tickets, and organizations
-   
+
    - Users
      - `alias`: Option[Alias],
      - `verified`: Option[Verified],
@@ -15,10 +15,10 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
      - `timezone`: Option[Timezone],
      - `email`: Option[Email],
      - `organizationId`: Option[OrganizationId],
-     
+
    - Organizations
      - None
-     
+
    - Tickets
      - `type`: Option[Type],
      - `description`: Option[Description],
@@ -26,10 +26,10 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
      - `organizationId`: Option[OrganizationId],
      - `dueAt`: Option[ZenDateTime],
 
-
+3. For this statement, `The user should also be able to search for empty values, e.g. where description is empty.`.
+   In the data, description is nullable value so assumed that only nullable value could searchable with `Empty string value`, which is stated at #2.
 
 # Approach
-I did my best to produce production-like code.
 
 ## Functional Programming
 In the job description, FP is desired skill so thought that I could apply my best knowledge of FP for my code exercise.
@@ -37,7 +37,6 @@ In the job description, FP is desired skill so thought that I could apply my bes
 - But in REA, my team did our best to help new developer's learning journey for Scala so should be fine I reckon.
 
 ## Search performance
-
 
 ## Libraries
 - [Circe](https://circe.github.io/circe/) to parse Json data files; users.json, tickets.json, and organizations.json

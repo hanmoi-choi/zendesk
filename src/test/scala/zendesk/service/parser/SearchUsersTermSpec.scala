@@ -251,6 +251,22 @@ class SearchUsersTermSpec extends Specification {
 
       "Should be DateTime value" >> {
         "when non-empty string value is acceptable" >> {
+          "LastLoginAt" >> {
+            "empty string is not allowed" >> {
+              LastLoginAt.asSearchValue("") must beEqualTo(emptyStringError)
+            }
+
+            "Valid input, datetime" >> {
+              val dataTimeString = "2016-04-15T05:19:46 -10:00"
+              val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
+              LastLoginAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+            }
+
+            "Invalid input, non-datetime" >> {
+              LastLoginAt.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not DateTime value").asLeft)
+            }
+          }
+
           "CreatedAt" >> {
             "empty string is not allowed" >> {
               CreatedAt.asSearchValue("") must beEqualTo(emptyStringError)

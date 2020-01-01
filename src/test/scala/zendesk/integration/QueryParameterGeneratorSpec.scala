@@ -1,9 +1,11 @@
 package zendesk.integration
 
+import java.util.UUID
+
 import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.model.value.{Id, QueryParams}
+import zendesk.model.value.{Id, QueryParams, TicketId}
 import zendesk.model.value.SearchObject.{Ticket, User}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommand.{SearchTickets, SearchUsers}
@@ -23,8 +25,9 @@ class QueryParameterGeneratorSpec extends Specification with ScalaCheck {
   }
 
   "Query parameter to search Tickets" >> {
-    val result = generator.generate(SearchTickets, "id", "1")
+    val uuid = UUID.randomUUID()
+    val result = generator.generate(SearchTickets, "id", uuid.toString)
 
-    result must beEqualTo(QueryParams(Ticket, "Id", Id(1)).asRight)
+    result must beEqualTo(QueryParams(Ticket, "TicketId", TicketId(uuid)).asRight)
   }
 }

@@ -14,10 +14,10 @@ import scala.language.postfixOps
 class SearchTicketsTermParserSpec extends Specification with ScalaCheck {
   "should parse 'id' as 'Id' term" >> {
     "as lowercase" >> {
-      doParse("id") must beEqualTo(Id.asRight)
+      doParse("id") must beEqualTo(TicketId.asRight)
     }
     "as uppercase" >> {
-      doParse("ID") must beEqualTo(Id.asRight)
+      doParse("ID") must beEqualTo(TicketId.asRight)
     }
   }
 

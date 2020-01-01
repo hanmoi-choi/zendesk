@@ -10,229 +10,140 @@ import zendesk.model.value.EmptyStringSearchField
 import zendesk.service.parser.SearchTicketsTerm._
 import zendesk.service.parser.SearchUsersTerm.{CreatedAt, ExternalId}
 
-
-/*
-                  id: TicketId,
-                   url: Url,
-                   externalId: ExternalId,
-                   createdAt: ZenDateTime,
-                   `type`: Option[Type],
-                   subject: Subject,
-                   description: Option[Description],
-                   priority: Priority,
-                   status: Status,
-                   submitterId: SubmitterId,
-                   assigneeId: Option[AssigneeId],
-                   organizationId: Option[OrganizationId],
-                   tags: List[Tag],
-                   hasIncidents: HasIncidents,
-                   dueAt: Option[ZenDateTime],
-                   via: Via
- */
 class SearchTicketsTermSpec extends Specification {
   private val emptyStringError = InvalidArgumentError("Empty string is not allowed for this term").asLeft
 
   "Convert string value to SearchValue object" >> {
-//    "when any string value is acceptable include empty string" >> {
-//      "Alias" >> {
-//        "empty string is allowed but return as 'EmptyStringSearchField'" >> {
-//          Alias.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
-//        }
-//
-//        "any string is allowed" >> {
-//          Alias.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Alias("foobar").asRight)
-//        }
-//      }
-//
-//      "Locale" >> {
-//        "empty string is allowed but return as 'EmptyStringSearchField'" >> {
-//          Locale.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
-//        }
-//
-//        "any string is allowed" >> {
-//          Locale.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Locale("foobar").asRight)
-//        }
-//      }
-//
-//      "Timezone" >> {
-//        "empty string is allowed but return as 'EmptyStringSearchField'" >> {
-//          Timezone.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
-//        }
-//
-//        "any string is allowed" >> {
-//          Timezone.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Timezone("foobar").asRight)
-//        }
-//      }
-//
-//      "Email" >> {
-//        "empty string is allowed but return as 'EmptyStringSearchField'" >> {
-//          Email.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
-//        }
-//
-//        "any string is allowed" >> {
-//          Email.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Email("foobar").asRight)
-//        }
-//      }
-//    }
-//
-//    "when any non-empty string value is acceptable" >> {
-//      "Tag" >> {
-//        "empty string is not allowed" >> {
-//          Tags.asSearchValue("") must beEqualTo(emptyStringError)
-//        }
-//
-//        "any string is allowed" >> {
-//          Tags.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Tag("foobar").asRight)
-//        }
-//      }
-//
-//
-//      "Url" >> {
-//        "empty string is not allowed" >> {
-//          Url.asSearchValue("") must beEqualTo(emptyStringError)
-//        }
-//
-//        "any string is allowed" >> {
-//          Url.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Url("foobar").asRight)
-//        }
-//      }
-//
-//      "Name" >> {
-//        "empty string is not allowed" >> {
-//          Name.asSearchValue("") must beEqualTo(emptyStringError)
-//        }
-//
-//        "any string is allowed" >> {
-//          Name.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Name("foobar").asRight)
-//        }
-//      }
-//
-//      "Phone" >> {
-//        "empty string is not allowed" >> {
-//          Phone.asSearchValue("") must beEqualTo(emptyStringError)
-//        }
-//
-//        "any string is allowed" >> {
-//          Phone.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Phone("foobar").asRight)
-//        }
-//      }
-//
-//      "Signature" >> {
-//        "empty string is not allowed" >> {
-//          Signature.asSearchValue("") must beEqualTo(emptyStringError)
-//        }
-//
-//        "any string is allowed" >> {
-//          Signature.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Signature("foobar").asRight)
-//        }
-//      }
-//    }
-//
-//    "when string value has constraint to be parsable" >> {
-//      //      - `verified`: Option[Verified],
-//      "Should be Integer value" >> {
-//        "when any string value is acceptable include empty string" >> {
-//          "OrganizationId" >> {
-//            "empty string is allowed but return as 'EmptyStringSearchField'" >> {
-//              OrganizationId.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
-//            }
-//
-//            "Valid input, integer" >> {
-//              OrganizationId.asSearchValue("1") must beEqualTo(zendesk.model.value.Id(1).asRight)
-//            }
-//
-//            "Invalid input, non-integer" >> {
-//              OrganizationId.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Integer value").asLeft)
-//            }
-//          }
-//        }
-//
-//        "when non-empty string value is acceptable" >> {
-//          "Id" >> {
-//            "empty string is not allowed" >> {
-//              Id.asSearchValue("") must beEqualTo(emptyStringError)
-//            }
-//
-//            "Valid input, integer" >> {
-//              Id.asSearchValue("1") must beEqualTo(zendesk.model.value.Id(1).asRight)
-//            }
-//
-//            "Invalid input, non-integer" >> {
-//              Id.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Integer value").asLeft)
-//            }
-//          }
-//        }
-//      }
-//
-//      "Should be Boolean value" >> {
-//        "when any string value is acceptable include empty string" >> {
-//          "Verified" >> {
-//            "empty string is allowed but return as 'EmptyStringSearchField'" >> {
-//              Verified.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
-//            }
-//
-//            "Valid input, boolean" >> {
-//              Verified.asSearchValue("true") must beEqualTo(zendesk.model.value.Verified(true).asRight)
-//              Verified.asSearchValue("false") must beEqualTo(zendesk.model.value.Verified(false).asRight)
-//            }
-//
-//            "Invalid input, non-boolean" >> {
-//              Verified.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Boolean value").asLeft)
-//            }
-//          }
-//        }
-//
-//        "when non-empty string value is acceptable" >> {
-//          "Shared" >> {
-//            "empty string is not allowed" >> {
-//              Shared.asSearchValue("") must beEqualTo(emptyStringError)
-//            }
-//
-//            "Valid input, boolean" >> {
-//              Shared.asSearchValue("true") must beEqualTo(zendesk.model.value.Shared(true).asRight)
-//              Shared.asSearchValue("false") must beEqualTo(zendesk.model.value.Shared(false).asRight)
-//            }
-//
-//            "Invalid input, non-boolean" >> {
-//              Shared.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Boolean value").asLeft)
-//            }
-//          }
-//
-//          "Active" >> {
-//            "empty string is not allowed" >> {
-//              Active.asSearchValue("") must beEqualTo(emptyStringError)
-//            }
-//
-//            "Valid input, boolean" >> {
-//              Active.asSearchValue("true") must beEqualTo(zendesk.model.value.Active(true).asRight)
-//              Active.asSearchValue("false") must beEqualTo(zendesk.model.value.Active(false).asRight)
-//            }
-//
-//            "Invalid input, non-boolean" >> {
-//              Active.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Boolean value").asLeft)
-//            }
-//          }
-//
-//          "Suspended" >> {
-//            "empty string is not allowed" >> {
-//              Suspended.asSearchValue("") must beEqualTo(emptyStringError)
-//            }
-//
-//            "Valid input, boolean" >> {
-//              Suspended.asSearchValue("true") must beEqualTo(zendesk.model.value.Suspended(true).asRight)
-//              Suspended.asSearchValue("false") must beEqualTo(zendesk.model.value.Suspended(false).asRight)
-//            }
-//
-//            "Invalid input, non-boolean" >> {
-//              Suspended.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Boolean value").asLeft)
-//            }
-//          }
-//        }
-//      }
+    "when any string value is acceptable include empty string" >> {
+      "Description" >> {
+        "empty string is allowed but return as 'EmptyStringSearchField'" >> {
+          Description.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
+        }
+
+        "any string is allowed" >> {
+          Description.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Description("foobar").asRight)
+        }
+      }
+    }
+
+    "when any non-empty string value is acceptable" >> {
+      "Tag" >> {
+        "empty string is not allowed" >> {
+          Tags.asSearchValue("") must beEqualTo(emptyStringError)
+        }
+
+        "any string is allowed" >> {
+          Tags.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Tag("foobar").asRight)
+        }
+      }
+
+      "Subject" >> {
+        "empty string is not allowed" >> {
+          Subject.asSearchValue("") must beEqualTo(emptyStringError)
+        }
+
+        "any string is allowed" >> {
+          Subject.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Subject("foobar").asRight)
+        }
+      }
+
+      "Url" >> {
+        "empty string is not allowed" >> {
+          Url.asSearchValue("") must beEqualTo(emptyStringError)
+        }
+
+        "any string is allowed" >> {
+          Url.asSearchValue("foobar") must beEqualTo(zendesk.model.value.Url("foobar").asRight)
+        }
+      }
+    }
+
+    "when string value has constraint to be parsable" >> {
+      "Should be Integer value" >> {
+        "when any string value is acceptable include empty string" >> {
+          "OrganizationId" >> {
+            "empty string is allowed but return as 'EmptyStringSearchField'" >> {
+              OrganizationId.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
+            }
+
+            "Valid input, integer" >> {
+              OrganizationId.asSearchValue("1") must beEqualTo(zendesk.model.value.OrganizationId(1).asRight)
+            }
+
+            "Invalid input, non-integer" >> {
+              OrganizationId.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Integer value").asLeft)
+            }
+          }
+
+          "AssigneeId" >> {
+            "empty string is allowed but return as 'EmptyStringSearchField'" >> {
+              AssigneeId.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
+            }
+
+            "Valid input, integer" >> {
+              AssigneeId.asSearchValue("1") must beEqualTo(zendesk.model.value.AssigneeId(1).asRight)
+            }
+
+            "Invalid input, non-integer" >> {
+              AssigneeId.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Integer value").asLeft)
+            }
+          }
+        }
+
+        "when non-empty string value is acceptable" >> {
+          "SubmitterId" >> {
+            "empty string is not allowed" >> {
+              SubmitterId.asSearchValue("") must beEqualTo(emptyStringError)
+            }
+
+            "Valid input, integer" >> {
+              SubmitterId.asSearchValue("1") must beEqualTo(zendesk.model.value.SubmitterId(1).asRight)
+            }
+
+            "Invalid input, non-integer" >> {
+              SubmitterId.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Integer value").asLeft)
+            }
+          }
+        }
+      }
+
+      "Should be Boolean value" >> {
+        "when non-empty string value is acceptable" >> {
+          "HasIncidents" >> {
+            "empty string is allowed but return as 'EmptyStringSearchField'" >> {
+              HasIncidents.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
+            }
+
+            "Valid input, boolean" >> {
+              HasIncidents.asSearchValue("true") must beEqualTo(zendesk.model.value.HasIncidents(true).asRight)
+              HasIncidents.asSearchValue("false") must beEqualTo(zendesk.model.value.HasIncidents(false).asRight)
+            }
+
+            "Invalid input, non-boolean" >> {
+              HasIncidents.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Boolean value").asLeft)
+            }
+          }
+        }
+      }
 
       "Should be UUID value" >> {
         "when non-empty string value is acceptable" >> {
-          "Role" >> {
+          "TicketId" >> {
+            "empty string is not allowed" >> {
+              TicketId.asSearchValue("") must beEqualTo(emptyStringError)
+            }
+
+            "Valid input, uuid" >> {
+              val uuid = UUID.randomUUID()
+              TicketId.asSearchValue(uuid.toString) must beEqualTo(zendesk.model.value.TicketId(uuid).asRight)
+            }
+
+            "Invalid input, non-uuid" >> {
+              TicketId.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not UUID value").asLeft)
+            }
+          }
+
+          "ExternalId" >> {
             "empty string is not allowed" >> {
               ExternalId.asSearchValue("") must beEqualTo(emptyStringError)
             }
@@ -250,25 +161,65 @@ class SearchTicketsTermSpec extends Specification {
       }
 
       "Should be DateTime value" >> {
+        "when any string value is acceptable include empty string" >> {
+          "DueAt" >> {
+            "empty string is not allowed" >> {
+              DueAt.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
+            }
+
+            "Valid input, datetime" >> {
+              val dataTimeString = "2016-04-15T05:19:46 -10:00"
+              val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
+              DueAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+            }
+
+            "Invalid input, non-datetime" >> {
+              DueAt.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not DateTime value").asLeft)
+            }
+          }
+        }
+
         "when non-empty string value is acceptable" >> {
-          "Role" >> {
+          "CreatedAt" >> {
             "empty string is not allowed" >> {
               CreatedAt.asSearchValue("") must beEqualTo(emptyStringError)
             }
 
             "Valid input, datetime" >> {
               val dataTimeString = "2016-04-15T05:19:46 -10:00"
-              val expectedDateTime = new DateTime("2016-04-15T05:19:46-10:00")
+              val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
               CreatedAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
             }
 
             "Invalid input, non-datetime" >> {
-              CreatedAt.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not UUID value").asLeft)
+              CreatedAt.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not DateTime value").asLeft)
             }
           }
         }
       }
+
       "Should be Enum value" >> {
+        "when any string value is acceptable include empty string" >> {
+          "Type" >> {
+            "empty string is not allowed" >> {
+              Type.asSearchValue("") must beEqualTo(EmptyStringSearchField.asRight)
+            }
+
+            "Valid input, enum" >> {
+              Type.asSearchValue("incident") must beEqualTo(zendesk.model.value.Incident.asRight)
+              Type.asSearchValue("problem") must beEqualTo(zendesk.model.value.Problem.asRight)
+              Type.asSearchValue("question") must beEqualTo(zendesk.model.value.Question.asRight)
+              Type.asSearchValue("task") must beEqualTo(zendesk.model.value.Task.asRight)
+            }
+
+            "Invalid input, non-enum" >> {
+              val asLeft = InvalidArgumentError("'a' is not Type('incident', 'problem', 'question', 'task') value").asLeft
+
+              Type.asSearchValue("a") must beEqualTo(asLeft)
+            }
+          }
+        }
+
         "when non-empty string value is acceptable" >> {
           "Via" >> {
             "empty string is not allowed" >> {
@@ -282,7 +233,8 @@ class SearchTicketsTermSpec extends Specification {
             }
 
             "Invalid input, non-enum" >> {
-              Via.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
+              val asLeft = InvalidArgumentError("'a' is not Via('web', 'chat', 'voice') value").asLeft
+              Via.asSearchValue("a") must beEqualTo(asLeft)
             }
           }
 
@@ -292,13 +244,16 @@ class SearchTicketsTermSpec extends Specification {
             }
 
             "Valid input, enum" >> {
-              Status.asSearchValue("admin") must beEqualTo(zendesk.model.value.Admin.asRight)
-              Status.asSearchValue("agent") must beEqualTo(zendesk.model.value.Agent.asRight)
-              Status.asSearchValue("end-user") must beEqualTo(zendesk.model.value.EndUser.asRight)
+              Status.asSearchValue("closed") must beEqualTo(zendesk.model.value.Closed.asRight)
+              Status.asSearchValue("hold") must beEqualTo(zendesk.model.value.Hold.asRight)
+              Status.asSearchValue("open") must beEqualTo(zendesk.model.value.Open.asRight)
+              Status.asSearchValue("pending") must beEqualTo(zendesk.model.value.Pending.asRight)
+              Status.asSearchValue("solved") must beEqualTo(zendesk.model.value.Solved.asRight)
             }
 
             "Invalid input, non-enum" >> {
-              Priority.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
+              val asLeft = InvalidArgumentError("'a' is not Status('closed', 'hold', 'open', 'pending', 'solved') value").asLeft
+              Status.asSearchValue("a") must beEqualTo(asLeft)
             }
           }
 
@@ -308,17 +263,19 @@ class SearchTicketsTermSpec extends Specification {
             }
 
             "Valid input, enum" >> {
-              Priority.asSearchValue("admin") must beEqualTo(zendesk.model.value.Admin.asRight)
-              Priority.asSearchValue("agent") must beEqualTo(zendesk.model.value.Agent.asRight)
-              Priority.asSearchValue("end-user") must beEqualTo(zendesk.model.value.EndUser.asRight)
+              Priority.asSearchValue("urgent") must beEqualTo(zendesk.model.value.Urgent.asRight)
+              Priority.asSearchValue("high") must beEqualTo(zendesk.model.value.High.asRight)
+              Priority.asSearchValue("normal") must beEqualTo(zendesk.model.value.Normal.asRight)
+              Priority.asSearchValue("low") must beEqualTo(zendesk.model.value.Low.asRight)
             }
 
             "Invalid input, non-enum" >> {
-              Priority.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
+              val asLeft = InvalidArgumentError("'a' is not Priority('urgent', 'high', 'normal', 'low') value").asLeft
+              Priority.asSearchValue("a") must beEqualTo(asLeft)
             }
           }
         }
       }
     }
-//  }
+  }
 }
