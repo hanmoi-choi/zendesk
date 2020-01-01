@@ -1,10 +1,13 @@
 package zendesk.service.parser
 
+import java.util.UUID
+
 import zendesk.model.value.{EmptyStringSearchField, SearchValue}
 import zendesk.model.{AppError, InvalidArgumentError}
 
 import scala.util.{Failure, Success, Try}
 import cats.syntax.either._
+import org.joda.time.DateTime
 
 import scala.util.Try
 
@@ -13,47 +16,7 @@ sealed trait SearchUsersTerm {
 }
 
 object SearchUsersTerm {
-
-  private def emptyStringAsEmptyStringSearchField(value: String)
-                                 (
-                                   nonEmptyStringParser: String => Either[AppError, SearchValue]
-                                 ): Either[AppError, SearchValue] = {
-    value match {
-      case "" => EmptyStringSearchField.asRight
-      case _ => nonEmptyStringParser(value)
-    }
-  }
-
-  private def prohibitEmptyString(value: String)
-                                 (
-                                   nonEmptyStringParser: String => Either[AppError, SearchValue]
-                                 ): Either[AppError, SearchValue] = {
-    value match {
-      case "" => InvalidArgumentError("Empty string is not allowed for this term").asLeft
-      case _ => nonEmptyStringParser(value)
-    }
-  }
-
-  private def parseTypeConstraintNonEmptyString[T](value: String,
-                                            parser: String => T,
-                                            generator: T => SearchValue,
-                                            expectedType: String
-                                           ): Either[AppError, SearchValue] = {
-      Try(parser(value)).map(generator(_)) match {
-        case Failure(_) => InvalidArgumentError(s"'$value' is not $expectedType value").asLeft
-        case Success(value) => value.asRight
-      }
-  }
-
-  private def parseTypeConstraintEnumString[T](value: String,
-                                                   parser: String => Option[T],
-                                                   expectedType: String
-                                                  ): Either[AppError, SearchValue] = {
-    parser(value) match {
-      case None => InvalidArgumentError(s"'$value' is not $expectedType value").asLeft
-      case Some(value: SearchValue) => value.asRight
-    }
-  }
+  import zendesk.service.parser.Parser._
 
   case object Id extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] = {
@@ -71,7 +34,10 @@ object SearchUsersTerm {
   }
 
   case object ExternalId extends SearchUsersTerm {
-    override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
+    override def asSearchValue(value: String): Either[AppError, SearchValue] =
+      prohibitEmptyString(value) { v =>
+        parseTypeConstraintNonEmptyString[UUID](v, UUID.fromString, zendesk.model.value.ExternalId(_), "UUID")
+      }
   }
 
   case object Name extends SearchUsersTerm {
@@ -89,7 +55,10 @@ object SearchUsersTerm {
   }
 
   case object CreatedAt extends SearchUsersTerm {
-    override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
+    override def asSearchValue(value: String): Either[AppError, SearchValue] =
+      prohibitEmptyString(value) { v =>
+        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime" )
+      }
   }
 
   case object Active extends SearchUsersTerm {

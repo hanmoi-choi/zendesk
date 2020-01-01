@@ -1,7 +1,7 @@
 package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
-
+import cats.syntax.option._
 
 /*
 ❯ cat tickets.json |jq 'map(.type) | unique'
@@ -25,6 +25,16 @@ object Task extends Type("task")
 
 object Type {
   val all = List(Incident, Problem, Question, Task)
+
+  def fromString(value: String): Option[Type] = {
+    value.toLowerCase() match {
+      case "incident" => Incident.some
+      case "problem" => Problem.some
+      case "question" => Question.some
+      case "task" => Task.some
+      case _ => None
+    }
+  }
 
   implicit val encoderEvent: Encoder[Type] = {
     Encoder[String].contramap(_.name)

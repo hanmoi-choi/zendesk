@@ -22,7 +22,7 @@ object Role {
   val all = List(Admin, EndUser, Agent)
 
   def fromString(value: String): Option[Role] = {
-    value match {
+    value.toLowerCase() match {
       case "admin" => Admin.some
       case "end-user" => EndUser.some
       case "agent" => Agent.some

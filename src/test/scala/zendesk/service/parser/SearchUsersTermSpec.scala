@@ -1,6 +1,9 @@
 package zendesk.service.parser
 
+import java.util.UUID
+
 import cats.syntax.either._
+import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import zendesk.model.InvalidArgumentError
 import zendesk.model.value.EmptyStringSearchField
@@ -8,7 +11,8 @@ import zendesk.service.parser.SearchUsersTerm._
 
 
 class SearchUsersTermSpec extends Specification {
-  val emptyStringError = InvalidArgumentError("Empty string is not allowed for this term").asLeft
+  private val emptyStringError = InvalidArgumentError("Empty string is not allowed for this term").asLeft
+
   "Convert string value to SearchValue object" >> {
     "when any string value is acceptable include empty string" >> {
       "Alias" >> {
@@ -106,7 +110,6 @@ class SearchUsersTermSpec extends Specification {
     }
 
     "when string value has constraint to be parsable" >> {
-      //      - `verified`: Option[Verified],
       "Should be Integer value" >> {
         "when any string value is acceptable include empty string" >> {
           "OrganizationId" >> {
@@ -226,13 +229,65 @@ class SearchUsersTermSpec extends Specification {
           }
         }
       }
+
+      "Should be UUID value" >> {
+        "when non-empty string value is acceptable" >> {
+          "Role" >> {
+            "empty string is not allowed" >> {
+              ExternalId.asSearchValue("") must beEqualTo(emptyStringError)
+            }
+
+            "Valid input, uuid" >> {
+              val uuid = UUID.randomUUID()
+              ExternalId.asSearchValue(uuid.toString) must beEqualTo(zendesk.model.value.ExternalId(uuid).asRight)
+            }
+
+            "Invalid input, non-uuid" >> {
+              ExternalId.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not UUID value").asLeft)
+            }
+          }
+        }
+      }
+
+      "Should be DateTime value" >> {
+        "when non-empty string value is acceptable" >> {
+          "CreatedAt" >> {
+            "empty string is not allowed" >> {
+              CreatedAt.asSearchValue("") must beEqualTo(emptyStringError)
+            }
+
+            "Valid input, datetime" >> {
+              val dataTimeString = "2016-04-15T05:19:46 -10:00"
+              val expectedDateTime = DateTime.parse("2016-04-15T05:19:46-10:00")
+              CreatedAt.asSearchValue(dataTimeString) must beEqualTo(zendesk.model.value.ZenDateTime(expectedDateTime).asRight)
+            }
+
+            "Invalid input, non-datetime" >> {
+              CreatedAt.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not DateTime value").asLeft)
+            }
+          }
+        }
+      }
+
+      "Should be Enum value" >> {
+        "when non-empty string value is acceptable" >> {
+          "Role" >> {
+            "empty string is not allowed" >> {
+              Role.asSearchValue("") must beEqualTo(emptyStringError)
+            }
+
+            "Valid input, enum" >> {
+              Role.asSearchValue("admin") must beEqualTo(zendesk.model.value.Admin.asRight)
+              Role.asSearchValue("agent") must beEqualTo(zendesk.model.value.Agent.asRight)
+              Role.asSearchValue("end-user") must beEqualTo(zendesk.model.value.EndUser.asRight)
+            }
+
+            "Invalid input, non-enum" >> {
+              Role.asSearchValue("a") must beEqualTo(InvalidArgumentError("'a' is not Role('admin', 'agent', 'end-user') value").asLeft)
+            }
+          }
+        }
+      }
     }
   }
 }
-
-//CreatedAt extends SearchUsersTerm {
-
-//LastLoginAt extends SearchUsersTerm {
-
-//Role extends SearchUsersTerm {
-//Quit extends SearchUsersTerm {

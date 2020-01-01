@@ -1,6 +1,7 @@
 package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
+import cats.syntax.option._
 
 /*
 ❯ cat tickets.json |jq 'map(.via) | unique'
@@ -20,6 +21,15 @@ object Voice extends Via("voice")
 
 object Via {
   val all = List(Web, Chat, Voice)
+
+  def fromString(value: String): Option[Via] = {
+    value.toLowerCase() match {
+      case "web" => Web.some
+      case "chat" => Chat.some
+      case "voice" => Voice.some
+      case _ => None
+    }
+  }
 
   implicit val encoderEvent: Encoder[Via] = {
     Encoder[String].contramap(_.name)

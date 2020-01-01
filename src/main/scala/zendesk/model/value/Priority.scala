@@ -1,7 +1,7 @@
 package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
-
+import cats.syntax.option._
 /*
 ❯ cat tickets.json |jq 'map(.priority) | unique'
 [
@@ -23,6 +23,16 @@ object Low extends Priority("low")
 
 object Priority {
   val all = List(Urgent, High, Normal, Low)
+
+  def fromString(value: String): Option[Priority] = {
+    value.toLowerCase() match {
+      case "urgent" => Urgent.some
+      case "high" => High.some
+      case "normal" => Normal.some
+      case "low" => Low.some
+      case _ => None
+    }
+  }
 
   implicit val encoderEvent: Encoder[Priority] = {
     Encoder[String].contramap(_.name)
