@@ -1,4 +1,4 @@
-mainClass in assembly := Some("zendesk.Main")
+mainClass in assembly := Some("zendesk.ZendeskSearchApp")
 
 test in assembly := {}
 

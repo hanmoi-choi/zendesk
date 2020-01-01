@@ -3,30 +3,31 @@ package zendesk.helper
 import cats.Id
 import cats.syntax.either._
 import zendesk.dsl.{Console, UserInputParser}
-import zendesk.model.AppError
+import zendesk.model.{AppError, QueryParams}
+import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{Queue => MQueue}
 
 object IdInterpreters {
 
   implicit object IdConsole extends Console[Id] {
-    var dummyInput: Vector[String] = Vector.empty
-    var dummyOutput: mutable.ListBuffer[String] = ListBuffer.empty
+    var dummyInput: MQueue[String] = MQueue.empty
+    var dummyOutput: mutable.Queue[String] = MQueue.empty
 
     def resetInputAndOutput(): Unit = {
-      dummyInput = Vector.empty
-      dummyOutput = ListBuffer.empty
+      dummyInput = MQueue.empty
+      dummyOutput = MQueue.empty
     }
 
-    override def out(string: String): Id[Either[AppError, Unit]] = {
-      dummyOutput.addOne(string)
+    override def out(message: String): Id[Either[AppError, Unit]] = {
+      dummyOutput.enqueue(message)
       Right(())
     }
 
     override def in(): Id[Either[AppError, String]] = {
-      dummyInput.head.asRight[AppError]
+      dummyInput.dequeue().asRight
     }
   }
 
@@ -41,6 +42,10 @@ object IdInterpreters {
     ): Id[Either[AppError, SearchObjectCommand]] = {
       P.doParse(value)
     }
+
+    override def parseSearchQuery(searchObjectCommand: SearchObjectCommand, termToSearch: String, searchValue: String)(
+      implicit G: QueryParameterGenerator): Id[Either[AppError, QueryParams]] =
+      G.generate(searchObjectCommand, termToSearch, searchValue)
   }
 
 }

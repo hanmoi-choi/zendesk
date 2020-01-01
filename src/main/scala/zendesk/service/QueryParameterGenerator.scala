@@ -55,5 +55,13 @@ case class QueryParameterGenerator(
       searchTerm = searchValue.getClass.getSimpleName,
       searchValue = searchValue
     )
+}
 
+object QueryParameterGenerator {
+  def apply(): QueryParameterGenerator =
+    QueryParameterGenerator(
+      TermsToSearchUsersParser,
+      TermsToSearchTicketsParser,
+      TermsToSearchOrganizationsParser
+    )
 }

@@ -1,6 +1,7 @@
 package zendesk.dsl
 
-import zendesk.model.AppError
+import zendesk.model.{AppError, QueryParams}
+import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 
 trait UserInputParser[F[_]] {
@@ -10,9 +11,8 @@ trait UserInputParser[F[_]] {
   def parseSearchObject(value: String)(
     implicit P: Parser[SearchObjectCommand]): F[Either[AppError, SearchObjectCommand]]
 
-  //  def parseSearchUsersTerm(value: String): F[Either[AppError, SearchUsersTerm]]
-  //  def parseSearchTicketsTerm(value: String): F[Either[AppError, SearchTicketsTerm]]
-  //  def parseSearchOrganizationsTerm(value: String): F[Either[AppError, SearchOrganizationsTerm]]
+  def parseSearchQuery(searchObjectCommand: SearchObjectCommand, termToSearch: String, searchValue: String)(
+    implicit G: QueryParameterGenerator): F[Either[AppError, QueryParams]]
 }
 
 object UserInputParser {
@@ -24,5 +24,12 @@ object UserInputParser {
 
   def parseSearchObject[F[_]: UserInputParser](value: String)(
     implicit P: Parser[SearchObjectCommand]): F[Either[AppError, SearchObjectCommand]] =
-    UserInputParser[F] parseSearchObject value
+    UserInputParser[F].parseSearchObject(value)
+
+  def parseSearchQuery[F[_]: UserInputParser](
+    searchObjectCommand: SearchObjectCommand,
+    termToSearch: String,
+    searchValue: String)(implicit G: QueryParameterGenerator): F[Either[AppError, QueryParams]] =
+    UserInputParser[F].parseSearchQuery(searchObjectCommand, termToSearch, searchValue)
+
 }
