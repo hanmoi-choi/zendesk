@@ -1,9 +1,9 @@
-package zendesk.util.parser
+package zendesk.service.parser
 
 import fastparse._
 import zendesk.model.{AppError, ParseFailure}
 import cats.syntax.either._
-import zendesk.util.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
+import zendesk.service.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
 
 
 object SearchObjectCommandParser {

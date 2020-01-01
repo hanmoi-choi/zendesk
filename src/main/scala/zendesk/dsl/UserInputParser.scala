@@ -3,7 +3,7 @@ package zendesk.dsl
 import cats.{Id, Monad}
 import cats.effect.IO
 import zendesk.model.AppError
-import zendesk.util.parser.{Parser, SearchObjectCommand, ApplicationOptionCommand, SearchOrganizationsTerm, SearchTicketsTerm, SearchUsersTerm}
+import zendesk.service.parser.{Parser, SearchObjectCommand, ApplicationOptionCommand, SearchOrganizationsTerm, SearchTicketsTerm, SearchUsersTerm}
 
 trait UserInputParser[F[_]] {
   def parseSearchOption(value: String)(implicit P: Parser[ApplicationOptionCommand]): F[Either[AppError, ApplicationOptionCommand]]

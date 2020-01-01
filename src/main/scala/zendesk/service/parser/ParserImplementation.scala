@@ -1,10 +1,10 @@
-package zendesk.util.parser
+package zendesk.service.parser
 
 import fastparse._
-import zendesk.util.parser.ApplicationOptionCommand.{ApplicationZendesk, ViewSearchableFields}
+import zendesk.service.parser.ApplicationOptionCommand.{ApplicationZendesk, ViewSearchableFields}
 import zendesk.model.{AppError, ParseFailure}
 import cats.syntax.either._
-import zendesk.util.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
+import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 
 object ParserImplementation {
   implicit object ApplicationOptionCommandParser extends Parser[ApplicationOptionCommand]{

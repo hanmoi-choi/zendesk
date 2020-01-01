@@ -2,7 +2,7 @@ package zendesk.dsl
 
 import cats.effect.IO
 import zendesk.model.AppError
-import zendesk.util.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
+import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 
 import scala.io.StdIn
 import cats.syntax.either._

@@ -5,7 +5,7 @@ import cats.data.EitherT
 import cats.effect.{ExitCode, IO, IOApp}
 import cats.instances.string._
 import cats.syntax.semigroup._
-import util.parser.ParserImplementation._
+import zendesk.service.parser.ParserImplementation._
 import dsl.Interpreter._
 
 object Main extends IOApp {

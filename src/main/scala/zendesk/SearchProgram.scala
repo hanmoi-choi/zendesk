@@ -4,10 +4,10 @@ import cats.Monad
 import cats.data.EitherT
 import zendesk.dsl.{Console, UserInputParser}
 import zendesk.dsl.Console._
-import zendesk.util.parser.ParserImplementation.{ApplicationOptionCommandParser, SearchObjectCommandParser}
+import zendesk.service.parser.ParserImplementation.{ApplicationOptionCommandParser, SearchObjectCommandParser}
 import zendesk.dsl.UserInputParser._
 import zendesk.util.MessageFactory
-import zendesk.util.parser.{ApplicationOptionCommand, SearchObjectCommand}
+import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
 
 class SearchProgram [F[_]: Monad: Console: UserInputParser] {
 

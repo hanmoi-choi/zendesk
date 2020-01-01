@@ -1,11 +1,11 @@
-package zendesk.util.parser
+package zendesk.service.parser
 
 import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.model.ParseFailure
-import zendesk.util.parser.ApplicationOptionCommand.{Quit, ApplicationZendesk, ViewSearchableFields}
-import zendesk.util.parser.ParserImplementation.ApplicationOptionCommandParser._
+import zendesk.service.parser.ApplicationOptionCommand.{Quit, ApplicationZendesk, ViewSearchableFields}
+import zendesk.service.parser.ParserImplementation.ApplicationOptionCommandParser._
 
 import scala.language.postfixOps
 

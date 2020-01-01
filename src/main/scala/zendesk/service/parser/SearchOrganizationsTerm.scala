@@ -1,4 +1,4 @@
-package zendesk.util.parser
+package zendesk.service.parser
 
 sealed trait SearchOrganizationsTerm
 

@@ -1,11 +1,11 @@
-package zendesk.util.parser
+package zendesk.service.parser
 
 import cats.syntax.either._
 import fastparse._
 import zendesk.model.{AppError, ParseFailure}
-import zendesk.util.parser.SearchUsersTerm._
+import zendesk.service.parser.SearchUsersTerm._
 
-object SearchUsersTermParser {
+object SearchUsersTermParser extends Parser[SearchUsersTerm]{
   private def parseId[_: P] = P(IgnoreCase("id")).map(_ => Id)
   private def parseUrl[_: P] = P(IgnoreCase("url")).map(_ => Url)
   private def parseExternalId[_: P] = P(IgnoreCase("externalId")).map(_ => ExternalId)

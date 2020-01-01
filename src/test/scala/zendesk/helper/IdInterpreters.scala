@@ -4,7 +4,7 @@ import cats.Id
 import cats.syntax.either._
 import zendesk.dsl.{Console, UserInputParser}
 import zendesk.model.AppError
-import zendesk.util.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
+import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

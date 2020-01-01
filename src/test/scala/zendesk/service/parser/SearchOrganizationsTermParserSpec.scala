@@ -1,11 +1,11 @@
-package zendesk.util.parser
+package zendesk.service.parser
 
 import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.model.ParseFailure
-import zendesk.util.parser.SearchOrganizationsTerm._
-import zendesk.util.parser.SearchOrganizationsTermParser.doParse
+import zendesk.service.parser.SearchOrganizationsTerm._
+import zendesk.service.parser.SearchOrganizationsTermParser.doParse
 
 import scala.language.postfixOps
 
