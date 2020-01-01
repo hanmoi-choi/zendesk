@@ -2,23 +2,29 @@ package zendesk.util
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.helper.DataWithFileGen
 import zendesk.model
 import zendesk.model._
-import zendesk.model.value.EmptyStringSearchField
+import zendesk.model.value.{EmptyStringSearchField, Id, SubmitterId}
 
 import scala.util.Random
 
 class SearchDatabaseSpec extends Specification with ScalaCheck {
   "Build Search DB from the given Data" >> {
-    val users = DataWithFileGen.getDataFromFile[User]("./data/users.json")
-    val organizations = DataWithFileGen.getDataFromFile[Organization]("./data/organizations.json")
-    val tickets = DataWithFileGen.getDataFromFile[Ticket]("./data/tickets.json")
+    val users = DataFileReader.getDataFromFile[User]("./data/users.json")
+    val organizations = DataFileReader.getDataFromFile[Organization]("./data/organizations.json")
+    val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json")
 
     val db = SearchDatabase(userData = users, organizationData = organizations, ticketData = tickets)
 
     "Search Ticket" >> {
       val randomPickedUpTicket = Random.shuffle(tickets).head
+
+      "should not be able to search with invalid 'submitterId'" >> {
+        val result: Vector[Ticket] =
+          db.query[Ticket](QueryParams(Searchable.Tickets, "submitterId", SubmitterId(99999999999L)))
+
+        result must beEmpty
+      }
 
       "should be able to search with 'id'" >> {
         val result: Vector[Ticket] = db.query[Ticket](QueryParams(Searchable.Tickets, "id", randomPickedUpTicket.id))
@@ -137,6 +143,13 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
     "Search Organization" >> {
       val randomPickedUpOrg = Random.shuffle(organizations).head
 
+      "should not be able to search with invalid 'id'" >> {
+        val result: Vector[Organization] =
+          db.query[Organization](QueryParams(Searchable.Organizations, "id", Id(99999999999L)))
+
+        result must beEmpty
+      }
+
       "should be able to search with 'id'" >> {
         val result: Vector[Organization] =
           db.query[Organization](model.QueryParams(Searchable.Organizations, "id", randomPickedUpOrg.id))
@@ -202,6 +215,13 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
     "Search Users" >> {
       val randomPickedUpUser = Random.shuffle(users).head
+
+      "should not be able to search with invalid 'id'" >> {
+        val result: Vector[User] =
+          db.query[User](QueryParams(Searchable.Users, "id", Id(99999999999L)))
+
+        result must beEmpty
+      }
 
       "should be able to search with 'id'" >> {
         val result: Vector[User] = db.query[User](model.QueryParams(Searchable.Users, "id", randomPickedUpUser.id))

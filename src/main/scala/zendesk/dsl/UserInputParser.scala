@@ -31,5 +31,4 @@ object UserInputParser {
     termToSearch: String,
     searchValue: String)(implicit G: QueryParameterGenerator): F[Either[AppError, QueryParams]] =
     UserInputParser[F].parseSearchQuery(searchObjectCommand, termToSearch, searchValue)
-
 }

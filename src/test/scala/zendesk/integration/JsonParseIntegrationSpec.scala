@@ -1,15 +1,15 @@
 package zendesk.integration
 
 import org.specs2.mutable.Specification
-import zendesk.helper.DataWithFileGen
 import zendesk.model.Organization.decodeOrg
 import zendesk.model.Ticket.decodeTicket
 import zendesk.model.User.decodeUser
 import zendesk.model.{Organization, Ticket, User}
+import zendesk.util.DataFileReader
 
 class JsonParseIntegrationSpec extends Specification {
   "JSON string for users, data/users.json file" >> {
-    val users = DataWithFileGen.getDataFromFile[User]("./data/users.json")
+    val users = DataFileReader.getDataFromFile[User]("./data/users.json")
 
     // ❯ cat data/users.json | jq '. | length'
     // 75
@@ -19,7 +19,7 @@ class JsonParseIntegrationSpec extends Specification {
   }
 
   "JSON string for organizations, data/organizations.json file" >> {
-    val orgs = DataWithFileGen.getDataFromFile[Organization]("./data/organizations.json")
+    val orgs = DataFileReader.getDataFromFile[Organization]("./data/organizations.json")
 
     // ❯ cat data/organizations.json | jq '. | length'
     // 25
@@ -29,7 +29,7 @@ class JsonParseIntegrationSpec extends Specification {
   }
 
   "JSON string for tickets, data/tickets.json file" >> {
-    val tickets = DataWithFileGen.getDataFromFile[Ticket]("./data/tickets.json")
+    val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json")
 
     // ❯ cat data/tickets.json | jq '. | length'
     // 200

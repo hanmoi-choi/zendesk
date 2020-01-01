@@ -1,4 +1,4 @@
-package zendesk.helper
+package zendesk.util
 
 import io.circe
 import io.circe.Decoder
@@ -6,7 +6,7 @@ import io.circe.parser.decode
 
 import scala.io.Source
 
-object DataWithFileGen {
+object DataFileReader {
   private def readFileAsString(path: String): String = {
     val fileContents = Source.fromFile(path)
     val rawJson = fileContents.mkString
