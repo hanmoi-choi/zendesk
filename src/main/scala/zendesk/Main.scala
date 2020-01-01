@@ -1,12 +1,8 @@
 package zendesk
 
-import cats.Id
 import cats.data.EitherT
 import cats.effect.{ExitCode, IO, IOApp}
-import cats.instances.string._
-import cats.syntax.semigroup._
-import zendesk.service.parser.ParserImplementation._
-import dsl.Interpreter._
+import zendesk.dsl.Interpreter._
 
 object Main extends IOApp {
 

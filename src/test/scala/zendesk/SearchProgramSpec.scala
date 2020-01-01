@@ -1,15 +1,15 @@
 package zendesk
 
 import cats.Id
-import org.specs2.mutable.{Spec, Specification}
-import org.specs2.specification.BeforeEach
-import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
-import zendesk.service.parser.ApplicationOptionCommand.{ApplicationZendesk, Quit, ViewSearchableFields}
 import cats.syntax.either._
 import org.specs2.matcher.{EitherMatchers, ResultMatchers}
+import org.specs2.mutable.Specification
+import org.specs2.specification.BeforeEach
 import zendesk.model.ParseFailure
-import zendesk.util.MessageFactory
+import zendesk.service.parser.ApplicationOptionCommand.{ApplicationZendesk, Quit, ViewSearchableFields}
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
+import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
+import zendesk.util.MessageFactory
 
 class SearchProgramSpec extends Specification with EitherMatchers with ResultMatchers with BeforeEach {
   sequential

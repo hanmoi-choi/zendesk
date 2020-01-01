@@ -4,12 +4,12 @@ import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.model.ParseFailure
-import zendesk.service.parser.ApplicationOptionCommand.{Quit, ApplicationZendesk, ViewSearchableFields}
+import zendesk.service.parser.ApplicationOptionCommand.{ApplicationZendesk, Quit, ViewSearchableFields}
 import zendesk.service.parser.ParserImplementation.ApplicationOptionCommandParser._
 
 import scala.language.postfixOps
 
-class ApplicationOptionCommandParserSpec extends Specification with ScalaCheck{
+class ApplicationOptionCommandParserSpec extends Specification with ScalaCheck {
 
   "Parse Zendesk SearchOptionCommand" >> {
     "Should parse '1' as 'SearchZendesk' command" >> {

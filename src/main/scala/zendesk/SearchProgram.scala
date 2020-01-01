@@ -2,16 +2,16 @@ package zendesk
 
 import cats.Monad
 import cats.data.EitherT
-import zendesk.dsl.{Console, UserInputParser}
 import zendesk.dsl.Console._
-import zendesk.service.parser.ParserImplementation.{ApplicationOptionCommandParser, SearchObjectCommandParser}
 import zendesk.dsl.UserInputParser._
-import zendesk.util.MessageFactory
+import zendesk.dsl.{Console, UserInputParser}
+import zendesk.service.parser.ParserImplementation.{ApplicationOptionCommandParser, SearchObjectCommandParser}
 import zendesk.service.parser.{ApplicationOptionCommand, SearchObjectCommand}
+import zendesk.util.MessageFactory
 
-class SearchProgram [F[_]: Monad: Console: UserInputParser] {
+class SearchProgram[F[_] : Monad : Console : UserInputParser] {
 
-  def processSelectApplicationOptions(): F[Either[model.AppError, ApplicationOptionCommand]] ={
+  def processSelectApplicationOptions(): F[Either[model.AppError, ApplicationOptionCommand]] = {
     val parserResult: EitherT[F, model.AppError, ApplicationOptionCommand] =
       for {
         _ <- EitherT(out(MessageFactory.appOptionsMessage))
@@ -22,7 +22,7 @@ class SearchProgram [F[_]: Monad: Console: UserInputParser] {
     parserResult.value
   }
 
-  def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] ={
+  def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] = {
     val parserResult: EitherT[F, model.AppError, SearchObjectCommand] =
       for {
         _ <- EitherT(out(MessageFactory.searchObjectsOptionMessage))

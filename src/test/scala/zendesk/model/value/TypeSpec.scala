@@ -1,7 +1,7 @@
 package zendesk.model.value
 
-import org.specs2.mutable.Specification
 import cats.syntax.option._
+import org.specs2.mutable.Specification
 
 class TypeSpec extends Specification {
   "Type" should {

@@ -12,6 +12,7 @@ sealed trait SearchOrganizationsTerm {
 }
 
 object SearchOrganizationsTerm {
+
   import zendesk.service.parser.Parser._
 
   case object Id extends SearchOrganizationsTerm {
@@ -52,7 +53,7 @@ object SearchOrganizationsTerm {
   case object CreatedAt extends SearchOrganizationsTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime" )
+        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
       }
   }
 
@@ -66,7 +67,7 @@ object SearchOrganizationsTerm {
   case object SharedTickets extends SearchOrganizationsTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.SharedTickets(_), "Boolean" )
+        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.SharedTickets(_), "Boolean")
       }
   }
 

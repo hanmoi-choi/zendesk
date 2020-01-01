@@ -1,7 +1,8 @@
 package zendesk.model.value
 
-import io.circe.{Decoder, Encoder}
 import cats.syntax.option._
+import io.circe.{Decoder, Encoder}
+
 /*
 ❯ cat users.json |jq 'map(.role) | unique'
 [

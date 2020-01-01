@@ -12,6 +12,7 @@ sealed trait SearchUsersTerm {
 }
 
 object SearchUsersTerm {
+
   import zendesk.service.parser.Parser._
 
   case object Id extends SearchUsersTerm {
@@ -53,28 +54,28 @@ object SearchUsersTerm {
   case object CreatedAt extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime" )
+        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
       }
   }
 
   case object Active extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Active(_), "Boolean" )
+        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Active(_), "Boolean")
       }
   }
 
   case object Verified extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
-        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Verified(_), "Boolean" )
+        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Verified(_), "Boolean")
       }
   }
 
   case object Shared extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Shared(_), "Boolean" )
+        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Shared(_), "Boolean")
       }
 
   }
@@ -96,7 +97,7 @@ object SearchUsersTerm {
   case object LastLoginAt extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime" )
+        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
       }
   }
 
@@ -124,7 +125,7 @@ object SearchUsersTerm {
   case object OrganizationId extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
-        parseTypeConstraintNonEmptyString[Int](v, Integer.parseInt, zendesk.model.value.Id(_), "Integer" )
+        parseTypeConstraintNonEmptyString[Int](v, Integer.parseInt, zendesk.model.value.Id(_), "Integer")
       }
   }
 
@@ -138,7 +139,7 @@ object SearchUsersTerm {
   case object Suspended extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       prohibitEmptyString(value) { v =>
-        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Suspended(_), "Boolean" )
+        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.Suspended(_), "Boolean")
       }
   }
 
@@ -155,5 +156,6 @@ object SearchUsersTerm {
   case object Quit extends SearchUsersTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
   }
+
 }
 

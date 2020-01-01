@@ -1,7 +1,7 @@
 package zendesk.util
 
 import zendesk.model.value._
-import zendesk.model.{Organization, Searchable, Ticket, User}
+import zendesk.model._
 
 import scala.collection.mutable.{HashMap => MMap}
 
@@ -10,10 +10,10 @@ case class SearchDatabase() {
   type SearchTerm = String
 
   def query[T](queryParams: QueryParams): Vector[T] = {
-    val table = queryParams.searchObject match {
-      case SearchObject.User => userTable
-      case SearchObject.Ticket => ticketTable
-      case SearchObject.Organization => organizationTable
+    val table = queryParams.searchKey match {
+      case Searchable.Users => userTable
+      case Searchable.Tickets => ticketTable
+      case Searchable.Organizations => organizationTable
     }
 
     table.getOrElse(queryParams.searchTerm.toLowerCase, Map.empty)

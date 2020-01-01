@@ -1,15 +1,14 @@
 package zendesk.service
 
-import zendesk.model.AppError
-import zendesk.model.value.QueryParams
-import zendesk.model.value.SearchObject.{Organization, Ticket, User}
+import zendesk.model
+import zendesk.model.{AppError, QueryParams, Searchable}
 import zendesk.service.parser.SearchObjectCommand._
 import zendesk.service.parser._
 
 case class QueryParameterGenerator(
-                                  usersTermParser: Parser[SearchUsersTerm],
-                                  ticketsTermParser: Parser[SearchTicketsTerm],
-                                  organizationsTermParser: Parser[SearchOrganizationsTerm],
+                                    usersTermParser: Parser[SearchUsersTerm],
+                                    ticketsTermParser: Parser[SearchTicketsTerm],
+                                    organizationsTermParser: Parser[SearchOrganizationsTerm],
                                   ) {
 
   def generate(searchObjectCommand: SearchObjectCommand,
@@ -26,18 +25,30 @@ case class QueryParameterGenerator(
     for {
       userTerm <- usersTermParser.doParse(searchTermInput)
       searchValue <- userTerm.asSearchValue(searchValueInput)
-    } yield QueryParams(User, searchValue.getClass.getSimpleName, searchValue)
+    } yield model.QueryParams(
+      searchKey = Searchable.Users,
+      searchTerm = searchValue.getClass.getSimpleName,
+      searchValue = searchValue
+    )
 
   private def handleValueForTickets(searchTermInput: String, searchValueInput: String): scala.Either[AppError, QueryParams] =
     for {
       ticketTerm <- ticketsTermParser.doParse(searchTermInput)
       searchValue <- ticketTerm.asSearchValue(searchValueInput)
-    } yield QueryParams(Ticket, searchValue.getClass.getSimpleName, searchValue)
+    } yield model.QueryParams(
+      searchKey = Searchable.Tickets,
+      searchTerm = searchValue.getClass.getSimpleName,
+      searchValue = searchValue
+    )
 
   private def handleValueForOrganizations(searchTermInput: String, searchValueInput: String): scala.Either[AppError, QueryParams] =
     for {
       organizationTerm <- organizationsTermParser.doParse(searchTermInput)
       searchValue <- organizationTerm.asSearchValue(searchValueInput)
-    } yield QueryParams(Organization, searchValue.getClass.getSimpleName, searchValue)
+    } yield model.QueryParams(
+      searchKey = Searchable.Organizations,
+      searchTerm = searchValue.getClass.getSimpleName,
+      searchValue = searchValue
+    )
 
 }

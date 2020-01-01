@@ -193,7 +193,6 @@ class SearchUsersTermParserSpec extends Specification with ScalaCheck {
   }
 
 
-
   "any other string inputs" >> prop {
     invalidCommand: String =>
       (invalidCommand != "id" &&

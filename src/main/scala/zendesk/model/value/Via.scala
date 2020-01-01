@@ -1,7 +1,7 @@
 package zendesk.model.value
 
-import io.circe.{Decoder, Encoder}
 import cats.syntax.option._
+import io.circe.{Decoder, Encoder}
 
 /*
 ❯ cat tickets.json |jq 'map(.via) | unique'

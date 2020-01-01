@@ -23,6 +23,7 @@ case class Ticket(
                    via: Via
                  ) extends Searchable {
   def pairWithTag(): List[(Tag, Ticket)] = tags.map((_, this))
+
 }
 
 object Ticket {

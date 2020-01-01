@@ -1,15 +1,18 @@
 package zendesk.service.parser
 
+import cats.syntax.either._
 import fastparse._
 import zendesk.model.{AppError, ParseFailure}
-import cats.syntax.either._
 import zendesk.service.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
 
 
 object SearchObjectCommandParser {
   private def parseSearchUsers[_: P] = P("1").map(_ => SearchUsers)
+
   private def parseSearchTickets[_: P] = P("2").map(_ => SearchTickets)
+
   private def parseSearchOrganizations[_: P] = P("3").map(_ => SearchOrganizations)
+
   private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
 
   private def parseCommand[_: P]: P[SearchObjectCommand] =

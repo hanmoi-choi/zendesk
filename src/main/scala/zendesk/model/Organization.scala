@@ -19,6 +19,7 @@ case class Organization(
   def pairWithTag(): List[(Tag, Organization)] = tags.map((_, this))
 
   def pairWithDomainName(): List[(DomainName, Organization)] = domainNames.map((_, this))
+
 }
 
 object Organization {

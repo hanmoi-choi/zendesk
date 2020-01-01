@@ -10,7 +10,6 @@ import zendesk.service.parser.SearchTicketsTermParser.doParse
 import scala.language.postfixOps
 
 
-
 class SearchTicketsTermParserSpec extends Specification with ScalaCheck {
   "should parse 'id' as 'Id' term" >> {
     "as lowercase" >> {
@@ -65,7 +64,6 @@ class SearchTicketsTermParserSpec extends Specification with ScalaCheck {
       doParse("DESCRIPTION") must beEqualTo(Description.asRight)
     }
   }
-
 
 
   "should parse 'priority' as 'Priority' term" >> {

@@ -2,16 +2,17 @@ package zendesk.service.parser
 
 import java.util.UUID
 
-import zendesk.model.AppError
-import zendesk.model.value.SearchValue
 import cats.syntax.either._
 import org.joda.time.DateTime
+import zendesk.model.AppError
+import zendesk.model.value.SearchValue
 
 sealed trait SearchTicketsTerm {
   def asSearchValue(value: String): Either[AppError, SearchValue]
 }
 
 object SearchTicketsTerm {
+
   import zendesk.service.parser.Parser._
 
   case object TicketId extends SearchTicketsTerm {
@@ -107,14 +108,14 @@ object SearchTicketsTerm {
   case object HasIncidents extends SearchTicketsTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
-        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.HasIncidents(_), "Boolean" )
+        parseTypeConstraintNonEmptyString[Boolean](v, _.toBoolean, zendesk.model.value.HasIncidents(_), "Boolean")
       }
   }
 
   case object DueAt extends SearchTicketsTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] =
       emptyStringAsEmptyStringSearchField(value) { v =>
-        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime" )
+        parseTypeConstraintNonEmptyString[DateTime](trimWhiteSpace(v), DateTime.parse, zendesk.model.value.ZenDateTime(_), "DateTime")
       }
   }
 
@@ -130,6 +131,7 @@ object SearchTicketsTerm {
   case object Quit extends SearchTicketsTerm {
     override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
   }
+
 }
 
 
