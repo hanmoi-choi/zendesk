@@ -2,7 +2,7 @@ package zendesk.service.parser
 
 import cats.syntax.either._
 import fastparse._
-import zendesk.model.{AppError, ParseFailure}
+import zendesk.model.{AppError, ExitAppByUserRequest, ParseFailure}
 import zendesk.service.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
 
 case class SearchObjectCommandParser() extends Parser[SearchObjectCommand] {
@@ -24,6 +24,7 @@ case class SearchObjectCommandParser() extends Parser[SearchObjectCommand] {
   def doParse(command: String): Either[AppError, SearchObjectCommand] = {
     parse(command, parseCommand(_)) match {
       case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse '$command' as SearchObjectCommand").asLeft
+      case Parsed.Success(Quit, _) => ExitAppByUserRequest.asLeft
       case Parsed.Success(v, _) => v.asRight
     }
   }

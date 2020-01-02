@@ -1,9 +1,11 @@
 package zendesk
 
+import cats.data.EitherT
+import cats.syntax.either._
 import cats.effect.{ExitCode, IO, IOApp}
 import zendesk.interpreter.IOInterpreter._
 import zendesk.interpreter.SearchAppModules
-import zendesk.model.{Organization, Ticket, User}
+import zendesk.model.{AppError, Organization, Ticket, User}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommandParser
 import zendesk.util.{DataFileReader, MessageFactory, SearchDatabase}
@@ -23,29 +25,23 @@ object ZendeskSearchApp extends IOApp {
     val modules = new SearchAppModules[IO]()
 
     Console.println(MessageFactory.welcomeMessage)
-    program(modules)
+    val result: IO[Either[AppError, ExitCode]] = program(modules)
 
-    IO(ExitCode.Success)
+    result.map {
+      case Right(_) => ExitCode.Success
+      case _ => ExitCode.Error
+    }
   }
 
-//  @tailrec
-  def program(module: SearchAppModules[IO]): Unit = {
-    ???
-//    val option = module.processSelectApplicationOptions().unsafeRunSync()
-//
-//    option match {
-//      case Right(ApplicationZendesk) => System.out.println("hi")
-//      case Right(ViewSearchableFields) =>
-//        program(module)
-//      case Right(Quit) => System.exit(-1)
-//    }
-    //    val r: EitherT[IO, model.AppError, ExitCode] = for {
-//      _            <- EitherT()
-//      searchObject <- EitherT(module.processSelectSearchObject())
-//      queryParams  <- EitherT(module.processCreateQueryParams(searchObject))
-//      _            <- EitherT(IO { Console.println(queryParams); ().asRight[model.AppError] })
-//      searchResult <- EitherT(moduels.searchData(queryParams))
-//      _            <- EitherT(IO { Console.println(searchResult); ().asRight[model.AppError] })
-//    } yield ExitCode.Success
+  def program(module: SearchAppModules[IO]): IO[Either[AppError, ExitCode]] = {
+    val r: EitherT[IO, model.AppError, ExitCode] = for {
+      searchObject <- EitherT(module.processSelectSearchObject())
+      queryParams  <- EitherT(module.processCreateQueryParams(searchObject))
+      _            <- EitherT(IO { Console.println(queryParams); ().asRight[model.AppError] })
+      searchResult <- EitherT(module.searchData(queryParams))
+      _            <- EitherT(IO { Console.println(searchResult); ().asRight[model.AppError] })
+    } yield ExitCode.Success
+
+    r.value
   }
 }

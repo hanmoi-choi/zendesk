@@ -5,7 +5,7 @@ import io.circe.parser.decode
 import io.circe.syntax._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.helper.PropertyTestDataGen.{orgArbitrary, ticketArbitrary, userArbitrary}
+import zendesk.helper.PropertyTestDataFactory.{orgArbitrary, ticketArbitrary, userArbitrary}
 
 class EncodeAndDecodeCircularSpec extends Specification with ScalaCheck {
 

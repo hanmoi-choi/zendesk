@@ -4,7 +4,7 @@ import java.util.UUID
 
 import cats.syntax.either._
 import org.joda.time.DateTime
-import zendesk.model.AppError
+import zendesk.model.{AppError, ExitAppByUserRequest}
 import zendesk.model.value.SearchValue
 
 sealed trait TermsToSearchOrganizations {
@@ -83,7 +83,7 @@ object TermsToSearchOrganizations {
   }
 
   case object Quit extends TermsToSearchOrganizations {
-    override def asSearchValue(value: String): Either[AppError, SearchValue] = ???
+    override def asSearchValue(value: String): Either[AppError, SearchValue] = ExitAppByUserRequest.asLeft
   }
 
 }

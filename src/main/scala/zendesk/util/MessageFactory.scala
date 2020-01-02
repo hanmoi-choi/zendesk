@@ -16,13 +16,6 @@ object MessageFactory {
       |                                                                 |_|  |_|
       |""".stripMargin
 
-  val appOptionsMessage: String =
-    """
-      |* Press '1' to search; 'Users', 'Tickets' or 'Organizations'
-      |* Press '2' to view all searchable fields
-      |* Type 'quit' to exit
-      |""".stripMargin
-
   val searchObjectsOptionMessage: String =
     """
       |* Press '1' to search 'Users'

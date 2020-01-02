@@ -2,6 +2,7 @@ package zendesk.util
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
+import zendesk.helper.TestDataFactory
 import zendesk.model
 import zendesk.model._
 import zendesk.model.value.{EmptyStringSearchField, Id, SubmitterId}
@@ -18,86 +19,21 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
     "Provides lists of searchable fields for each object" >> {
       "Users" >> {
-        val expectedValue =
-          s"""
-             |-------------------------
-             |Search Users with
-             |-------------------------
-             |id
-             |url
-             |externalId
-             |name
-             |alias
-             |createdAt
-             |active
-             |verified
-             |shared
-             |locale
-             |timezone
-             |lastLoginAt
-             |email
-             |phone
-             |signature
-             |organizationId
-             |tags
-             |suspended
-             |role
-             |
-             |""".stripMargin
         val result = db.listOfSearchableFields(Searchable.Users)
 
-        result must beEqualTo(expectedValue)
+        result must beEqualTo(TestDataFactory.listOfSearchableFieldsForUsers)
       }
 
       "Tickets" >> {
-        val expectedValue =
-          s"""
-             |-------------------------
-             |Search Tickets with
-             |-------------------------
-             |id
-             |url
-             |externalId
-             |createdAt
-             |type
-             |subject
-             |description
-             |priority
-             |status
-             |submitterId
-             |assigneeId
-             |organizationId
-             |tags
-             |hasIncidents
-             |dueAt
-             |via
-             |
-             |""".stripMargin
         val result = db.listOfSearchableFields(Searchable.Tickets)
 
-        result must beEqualTo(expectedValue)
+        result must beEqualTo(TestDataFactory.listOfSearchableFieldsForTickets)
       }
 
       "Organizations" >> {
-        val expectedValue =
-          s"""
-             |-------------------------
-             |Search Organizations with
-             |-------------------------
-             |id
-             |url
-             |externalId
-             |name
-             |domainNames
-             |createdAt
-             |details
-             |sharedTickets
-             |tags
-             |
-             |""".stripMargin
         val result = db.listOfSearchableFields(Searchable.Organizations)
 
-        result must beEqualTo(expectedValue)
+        result must beEqualTo(TestDataFactory.listOfSearchableFieldsForOrganizations)
       }
     }
 

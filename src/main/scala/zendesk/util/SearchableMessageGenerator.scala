@@ -10,7 +10,7 @@ object SearchableMessageGenerator {
        |Search ${obj.getClass.getSimpleName}s with
        |-------------------------
        |${fields.mkString("\n")}
-       |
+       |-------------------------
        |""".stripMargin
   }
 }

@@ -6,7 +6,75 @@ import org.joda.time.DateTime
 import zendesk.model.value._
 import zendesk.model.{Organization, Ticket, User}
 
-object SampleDataGen {
+object TestDataFactory {
+  val listOfSearchableFieldsForUsers =
+    s"""
+       |-------------------------
+       |Search Users with
+       |-------------------------
+       |id
+       |url
+       |externalId
+       |name
+       |alias
+       |createdAt
+       |active
+       |verified
+       |shared
+       |locale
+       |timezone
+       |lastLoginAt
+       |email
+       |phone
+       |signature
+       |organizationId
+       |tags
+       |suspended
+       |role
+       |-------------------------
+       |""".stripMargin
+
+  val listOfSearchableFieldsForTickets =
+    s"""
+       |-------------------------
+       |Search Tickets with
+       |-------------------------
+       |id
+       |url
+       |externalId
+       |createdAt
+       |type
+       |subject
+       |description
+       |priority
+       |status
+       |submitterId
+       |assigneeId
+       |organizationId
+       |tags
+       |hasIncidents
+       |dueAt
+       |via
+       |-------------------------
+       |""".stripMargin
+
+  val listOfSearchableFieldsForOrganizations =
+    s"""
+       |-------------------------
+       |Search Organizations with
+       |-------------------------
+       |id
+       |url
+       |externalId
+       |name
+       |domainNames
+       |createdAt
+       |details
+       |sharedTickets
+       |tags
+       |-------------------------
+       |""".stripMargin
+
   val rawUserJson =
     """{
       |  "_id" : 1,

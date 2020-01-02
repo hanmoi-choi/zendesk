@@ -8,6 +8,7 @@ import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeEach
 import zendesk.helper.IdInterpreters._
+import zendesk.helper.TestDataFactory
 import zendesk.model
 import zendesk.model.value._
 import zendesk.model._
@@ -42,7 +43,8 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
 
         val result: Id[Either[model.AppError, SearchObjectCommand]] = idProgram.processSelectSearchObject()
 
-        IdConsole.dummyOutput must beEqualTo(MQueue(searchObjectsOptionMessage))
+        IdConsole.dummyOutput must beEqualTo(
+          MQueue(searchObjectsOptionMessage, TestDataFactory.listOfSearchableFieldsForUsers))
         result must beEqualTo(SearchUsers.asRight)
       }
 
@@ -51,7 +53,8 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
 
         val result: Id[Either[model.AppError, SearchObjectCommand]] = idProgram.processSelectSearchObject()
 
-        IdConsole.dummyOutput must beEqualTo(MQueue(searchObjectsOptionMessage))
+        IdConsole.dummyOutput must beEqualTo(
+          MQueue(searchObjectsOptionMessage, TestDataFactory.listOfSearchableFieldsForTickets))
         result must beEqualTo(SearchTickets.asRight)
       }
 
@@ -60,7 +63,8 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
 
         val result: Id[Either[model.AppError, SearchObjectCommand]] = idProgram.processSelectSearchObject()
 
-        IdConsole.dummyOutput must beEqualTo(MQueue(searchObjectsOptionMessage))
+        IdConsole.dummyOutput must beEqualTo(
+          MQueue(searchObjectsOptionMessage, TestDataFactory.listOfSearchableFieldsForOrganizations))
         result must beEqualTo(SearchOrganizations.asRight)
       }
 
@@ -70,7 +74,7 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
         val result: Id[Either[model.AppError, SearchObjectCommand]] = idProgram.processSelectSearchObject()
 
         IdConsole.dummyOutput must beEqualTo(MQueue(searchObjectsOptionMessage))
-        result must beEqualTo(SearchObjectCommand.Quit.asRight)
+        result must beEqualTo(ExitAppByUserRequest.asLeft)
       }
     }
 

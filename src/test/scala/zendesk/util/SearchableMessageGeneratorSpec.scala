@@ -1,96 +1,25 @@
 package zendesk.util
 
 import org.specs2.mutable.Specification
-import zendesk.helper.SampleDataGen
+import zendesk.helper.TestDataFactory
 import zendesk.model.{Organization, Ticket, User}
 
 class SearchableMessageGeneratorSpec extends Specification {
   "forObject Returns list of fields with which the object could be searched." >> {
     "for User object" >> {
-      val title = "Search Users with"
+      val result = SearchableMessageGenerator.forObject[User](TestDataFactory.user)
 
-      val result = SearchableMessageGenerator.forObject[User](SampleDataGen.user)
-      val expectedNames =
-        s"""
-           |-------------------------
-           |${title}
-           |-------------------------
-           |id
-           |url
-           |externalId
-           |name
-           |alias
-           |createdAt
-           |active
-           |verified
-           |shared
-           |locale
-           |timezone
-           |lastLoginAt
-           |email
-           |phone
-           |signature
-           |organizationId
-           |tags
-           |suspended
-           |role
-           |
-           |""".stripMargin
-
-      result must beEqualTo(expectedNames)
+      result must beEqualTo(TestDataFactory.listOfSearchableFieldsForUsers)
     }
     "for Ticket object" >> {
-      val title = "Search Tickets with"
+      val result = SearchableMessageGenerator.forObject[Ticket](TestDataFactory.ticket)
 
-      val result = SearchableMessageGenerator.forObject[Ticket](SampleDataGen.ticket)
-      val expectedNames =
-        s"""
-           |-------------------------
-           |${title}
-           |-------------------------
-           |id
-           |url
-           |externalId
-           |createdAt
-           |type
-           |subject
-           |description
-           |priority
-           |status
-           |submitterId
-           |assigneeId
-           |organizationId
-           |tags
-           |hasIncidents
-           |dueAt
-           |via
-           |
-           |""".stripMargin
-
-      result must beEqualTo(expectedNames)
+      result must beEqualTo(TestDataFactory.listOfSearchableFieldsForTickets)
     }
     "for Organization object" >> {
-      val title = "Search Organizations with"
+      val result = SearchableMessageGenerator.forObject[Organization](TestDataFactory.organization)
 
-      val result = SearchableMessageGenerator.forObject[Organization](SampleDataGen.organization)
-      val expectedNames =
-        s"""
-           |-------------------------
-           |${title}
-           |-------------------------
-           |id
-           |url
-           |externalId
-           |name
-           |domainNames
-           |createdAt
-           |details
-           |sharedTickets
-           |tags
-           |
-           |""".stripMargin
-
-      result must beEqualTo(expectedNames)
+      result must beEqualTo(TestDataFactory.listOfSearchableFieldsForOrganizations)
     }
   }
 }

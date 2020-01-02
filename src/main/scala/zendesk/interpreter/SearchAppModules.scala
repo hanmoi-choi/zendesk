@@ -8,6 +8,7 @@ import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model
 import zendesk.model.{QueryParams, Searchable}
 import zendesk.service.QueryParameterGenerator
+import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{Parser, SearchObjectCommand}
 import zendesk.util.{MessageFactory, SearchDatabase}
 
@@ -23,6 +24,13 @@ case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()
         _         <- EitherT(out(MessageFactory.searchObjectsOptionMessage))
         userInput <- EitherT(in())
         result    <- EitherT(parseSearchObject(userInput))
+        key = result match {
+          case SearchUsers => Searchable.Users
+          case SearchTickets => Searchable.Tickets
+          case SearchOrganizations => Searchable.Organizations
+
+        }
+        _ <- EitherT(out(searchDatabase.listOfSearchableFields(key)))
       } yield result
 
     parserResult.value
