@@ -4,7 +4,7 @@ import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import zendesk.model.{ExitAppByUserRequest, ParseFailure}
-import zendesk.service.parser.SearchObjectCommand.{Quit, SearchOrganizations, SearchTickets, SearchUsers}
+import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 
 class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
   private val parser = SearchObjectCommandParser()

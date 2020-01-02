@@ -4,7 +4,7 @@ import cats.effect.IO
 import cats.syntax.either._
 import zendesk.dsl.Repository.queryImpl
 import zendesk.dsl.{Console, Repository, UserInputParser}
-import zendesk.model.{AppError, DataNotfound, Organization, QueryParams, SearchResult, Searchable, Ticket, User}
+import zendesk.model.{AppError, QueryParams, SearchResult}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{Parser, SearchObjectCommand}
 import zendesk.util.Database

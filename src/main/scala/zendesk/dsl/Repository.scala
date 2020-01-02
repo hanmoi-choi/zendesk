@@ -1,12 +1,11 @@
 package zendesk.dsl
 
 import cats.Monad
-import cats.syntax.either._
 import cats.instances.option._
-import cats.instances.vector._
+import cats.syntax.either._
 import zendesk.model.SearchResult.ForeignKey
 import zendesk.model.value.{AssigneeId, Id, OrganizationId, SubmitterId}
-import zendesk.model.{AppError, DataNotfound, Organization, QueryParams, SearchResult, Searchable, Ticket, User}
+import zendesk.model._
 import zendesk.util.Database
 
 trait Repository[F[_]] {

@@ -1,16 +1,12 @@
 package zendesk.interpreter
 
-import java.util.UUID
-
 import cats.Id
 import cats.syntax.either._
-import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeEach
 import zendesk.helper.IdInterpreters._
 import zendesk.helper.TestDataFactory
 import zendesk.model
-import zendesk.model.value._
 import zendesk.model._
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}

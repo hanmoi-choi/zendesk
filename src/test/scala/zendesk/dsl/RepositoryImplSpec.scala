@@ -7,8 +7,8 @@ import org.specs2.mutable.Specification
 import zendesk.dsl.Repository.queryImpl
 import zendesk.helper.TestDataFactory
 import zendesk.model.SearchResult.ForeignKey
-import zendesk.model.{QueryParams, SearchResult, Searchable, Ticket, User}
-import zendesk.model.value.{AssigneeId, Id, OrganizationId, SubmitterId, TicketId}
+import zendesk.model.value._
+import zendesk.model.{QueryParams, SearchResult, Searchable}
 import zendesk.util.Database
 
 class RepositoryImplSpec extends Specification {
