@@ -11,7 +11,9 @@ import io.circe.{Decoder, Encoder}
   "web"
 ]
  */
-sealed case class Via(name: String) extends SearchValue
+sealed case class Via(name: String) extends SearchValue {
+  override def rawValue: String = name
+}
 
 object Web extends Via("web")
 

@@ -5,10 +5,10 @@ import cats.effect.{ExitCode, IO, IOApp}
 import cats.syntax.either._
 import zendesk.interpreter.IOInterpreter._
 import zendesk.interpreter.SearchAppModules
-import zendesk.model.{AppError, Organization, Ticket, User}
+import zendesk.model.{AppError, Database, Organization, Ticket, User}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommandParser
-import zendesk.util.{DataFileReader, Database, MessageFactory}
+import zendesk.util.{DataFileReader, MessageFactory}
 
 object ZendeskSearchApp extends IOApp {
   private val users = DataFileReader.getDataFromFile[User]("./data/users.json")

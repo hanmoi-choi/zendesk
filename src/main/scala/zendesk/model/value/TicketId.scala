@@ -5,7 +5,9 @@ import java.util.UUID
 import io.circe.{Decoder, Encoder}
 import zendesk.model.value
 
-case class TicketId(value: UUID) extends SearchValue
+case class TicketId(value: UUID) extends SearchValue {
+  override def rawValue: String = value.toString
+}
 
 object TicketId {
   implicit val encodeTicketId: Encoder[TicketId] = Encoder.encodeString.contramap[TicketId](_.value.toString)

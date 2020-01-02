@@ -6,7 +6,7 @@ case class SearchResult(
   queryParams: QueryParams,
   primaryObject: Searchable,
   relations: Map[ForeignKey, Vector[Searchable]]
-) {}
+)
 
 object SearchResult {
   sealed trait ForeignKey

@@ -1,7 +1,7 @@
-package zendesk.util
+package zendesk.model
 
-import zendesk.model._
 import zendesk.model.value._
+import zendesk.util.SearchableMessageGenerator
 
 import scala.collection.mutable.{HashMap => MMap}
 
@@ -20,18 +20,18 @@ case class Database() {
     }
 
     table
-      .getOrElse(queryParams.searchTerm.toLowerCase, Map.empty)
-      .getOrElse(queryParams.searchValue, Vector.empty)
+      .getOrElse[Map[SearchValue, Vector[Searchable]]](queryParams.searchTerm.toLowerCase, Map.empty)
+      .getOrElse[Vector[Searchable]](queryParams.searchValue, Vector.empty)
       .asInstanceOf[Vector[T]]
   }
 
   private val listOfSearchableFieldsMap: MMap[Searchable.Keys, ListOfSearchableFields] = MMap()
 
-  private val userTable: MMap[SearchTerm, Map[SearchValue, Vector[User]]] = MMap()
+  private val userTable: MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]] = MMap()
 
-  private val organizationTable: MMap[SearchTerm, Map[SearchValue, Vector[Organization]]] = MMap()
+  private val organizationTable: MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]] = MMap()
 
-  private val ticketTable: MMap[SearchTerm, Map[SearchValue, Vector[Ticket]]] = MMap()
+  private val ticketTable: MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]] = MMap()
 
   private def groupAndExtractValues[T <: SearchValue, V <: Searchable](
     data: Vector[(T, V)]

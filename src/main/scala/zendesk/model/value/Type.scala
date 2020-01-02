@@ -13,7 +13,9 @@ import io.circe.{Decoder, Encoder}
   "task"
 ]
  */
-sealed case class Type(name: String) extends SearchValue
+sealed case class Type(name: String) extends SearchValue {
+  override def rawValue: String = name
+}
 
 object Incident extends Type("incident")
 

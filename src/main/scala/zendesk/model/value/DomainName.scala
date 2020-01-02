@@ -2,7 +2,9 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class DomainName(value: String) extends SearchValue
+case class DomainName(value: String) extends SearchValue {
+  override def rawValue: String = value
+}
 
 object DomainName {
   implicit val encodeDomainName: Encoder[DomainName] = Encoder.encodeString.contramap[DomainName](_.value)

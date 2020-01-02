@@ -12,7 +12,7 @@ import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{SearchObjectCommand, SearchObjectCommandParser}
 import zendesk.util.MessageFactory._
-import zendesk.util.{DataFileReader, Database}
+import zendesk.util.DataFileReader
 
 import scala.collection.mutable.{Queue => MQueue}
 

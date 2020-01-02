@@ -12,7 +12,9 @@ import io.circe.{Decoder, Encoder}
   "urgent"
 ]
  */
-sealed case class Priority(name: String) extends SearchValue
+sealed case class Priority(name: String) extends SearchValue {
+  override def rawValue: String = name
+}
 
 object Urgent extends Priority("urgent")
 

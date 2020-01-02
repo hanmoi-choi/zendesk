@@ -5,8 +5,7 @@ import cats.instances.option._
 import cats.syntax.either._
 import zendesk.model.SearchResult.ForeignKey
 import zendesk.model.value.{AssigneeId, Id, OrganizationId, SubmitterId}
-import zendesk.model._
-import zendesk.util.Database
+import zendesk.model.{Database, _}
 
 trait Repository[F[_]] {
   def query(params: QueryParams)(implicit DB: Database): F[Either[AppError, Vector[SearchResult]]]
@@ -52,15 +51,13 @@ object Repository {
         DB.query[Ticket](QueryParams(Searchable.Tickets, assigneeId.getClass.getSimpleName, assigneeId))
       )
     )
-    val maybeRelations = Monad[Option]
-      .map(user.organizationId) { orgId =>
-        val id = Id(orgId.value)
-        Map(
-          SearchResult.OrganizationIdAtUser ->
-            DB.query[Organization](QueryParams(Searchable.Organizations, id.getClass.getSimpleName, id))
-        )
-      }
-      .getOrElse(Map.empty)
+    val maybeRelations = user.organizationId.map { orgId =>
+      val id = Id(orgId.value)
+      Map(
+        SearchResult.OrganizationIdAtUser ->
+          DB.query[Organization](QueryParams(Searchable.Organizations, id.getClass.getSimpleName, id))
+      )
+    }.getOrElse(Map.empty)
 
     SearchResult(params, user: Searchable, relations ++ maybeRelations)
   }
@@ -87,25 +84,21 @@ object Repository {
       )
     )
 
-    val maybeRelationsForUser = Monad[Option]
-      .map(ticket.assigneeId) { assigneeId =>
-        val id = Id(assigneeId.value)
-        Map(
-          SearchResult.AssigneeId ->
-            DB.query[User](QueryParams(Searchable.Users, id.getClass.getSimpleName, id))
-        )
-      }
-      .getOrElse(Map.empty)
+    val maybeRelationsForUser = ticket.assigneeId.map { assigneeId =>
+      val id = Id(assigneeId.value)
+      Map(
+        SearchResult.AssigneeId ->
+          DB.query[User](QueryParams(Searchable.Users, id.getClass.getSimpleName, id))
+      )
+    }.getOrElse(Map.empty)
 
-    val maybeRelationsForOrg = Monad[Option]
-      .map(ticket.organizationId) { orgId =>
-        val id = Id(orgId.value)
-        Map(
-          SearchResult.OrganizationIdAtTicket ->
-            DB.query[Organization](QueryParams(Searchable.Organizations, id.getClass.getSimpleName, id))
-        )
-      }
-      .getOrElse(Map.empty)
+    val maybeRelationsForOrg = ticket.organizationId.map { orgId =>
+      val id = Id(orgId.value)
+      Map(
+        SearchResult.OrganizationIdAtTicket ->
+          DB.query[Organization](QueryParams(Searchable.Organizations, id.getClass.getSimpleName, id))
+      )
+    }.getOrElse(Map.empty)
 
     SearchResult(params, ticket: Searchable, relations ++ maybeRelationsForUser ++ maybeRelationsForOrg)
   }

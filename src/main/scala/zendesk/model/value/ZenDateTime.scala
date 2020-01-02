@@ -18,6 +18,8 @@ case class ZenDateTime(value: DateTime) extends SearchValue {
   override def hashCode(): Int = toString.hashCode
 
   override def equals(o: Any): Boolean = toString.equals(o.toString)
+
+  override def rawValue: String = toString
 }
 
 object ZenDateTime {

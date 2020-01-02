@@ -11,7 +11,9 @@ import io.circe.{Decoder, Encoder}
   "end-user"
 ]
  */
-sealed case class Role(name: String) extends SearchValue
+sealed case class Role(name: String) extends SearchValue {
+  override def rawValue: String = name
+}
 
 object Admin extends Role("admin")
 

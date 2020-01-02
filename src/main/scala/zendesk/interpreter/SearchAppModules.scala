@@ -6,11 +6,11 @@ import zendesk.dsl.Console._
 import zendesk.dsl.UserInputParser._
 import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model
-import zendesk.model.{QueryParams, SearchResult, Searchable}
+import zendesk.model.{Database, QueryParams, SearchResult, Searchable}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{Parser, SearchObjectCommand}
-import zendesk.util.{Database, MessageFactory}
+import zendesk.util.MessageFactory
 
 case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()(
   implicit searchObjectCommandParser: Parser[SearchObjectCommand],

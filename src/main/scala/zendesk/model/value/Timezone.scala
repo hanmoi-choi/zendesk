@@ -2,7 +2,9 @@ package zendesk.model.value
 
 import io.circe.{Decoder, Encoder}
 
-case class Timezone(value: String) extends SearchValue
+case class Timezone(value: String) extends SearchValue {
+  override def rawValue: String = value.toString
+}
 
 object Timezone {
 

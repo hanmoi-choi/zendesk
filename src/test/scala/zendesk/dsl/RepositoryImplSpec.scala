@@ -8,8 +8,7 @@ import zendesk.dsl.Repository.queryImpl
 import zendesk.helper.TestDataFactory
 import zendesk.model.SearchResult.ForeignKey
 import zendesk.model.value._
-import zendesk.model.{QueryParams, SearchResult, Searchable}
-import zendesk.util.Database
+import zendesk.model.{Database, QueryParams, SearchResult, Searchable}
 
 class RepositoryImplSpec extends Specification {
   "queryImpl - Used for both Id and IO Monad; Don't want to copy and paste for testing" >> {
