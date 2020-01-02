@@ -8,26 +8,14 @@ import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model
 import zendesk.model.{QueryParams, Searchable}
 import zendesk.service.QueryParameterGenerator
-import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
+import zendesk.service.parser.{Parser, SearchObjectCommand}
 import zendesk.util.{MessageFactory, SearchDatabase}
 
 case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()(
-  implicit applicationOptionCommandParser: Parser[ApplicationOptionCommand],
-  searchObjectCommandParser: Parser[SearchObjectCommand],
+  implicit searchObjectCommandParser: Parser[SearchObjectCommand],
   queryParamsGenerator: QueryParameterGenerator,
   searchDatabase: SearchDatabase
 ) {
-
-  def processSelectApplicationOptions(): F[Either[model.AppError, ApplicationOptionCommand]] = {
-    val parserResult: EitherT[F, model.AppError, ApplicationOptionCommand] =
-      for {
-        _         <- EitherT(out(MessageFactory.appOptionsMessage))
-        userInput <- EitherT(in())
-        result    <- EitherT(parseSearchOption(userInput))
-      } yield result
-
-    parserResult.value
-  }
 
   def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] = {
     val parserResult: EitherT[F, model.AppError, SearchObjectCommand] =

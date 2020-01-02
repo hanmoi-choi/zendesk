@@ -5,7 +5,7 @@ import cats.syntax.either._
 import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model.{AppError, DataNotfound, QueryParams, Searchable}
 import zendesk.service.QueryParameterGenerator
-import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
+import zendesk.service.parser.{Parser, SearchObjectCommand}
 import zendesk.util.SearchDatabase
 
 import scala.collection.mutable
@@ -33,11 +33,6 @@ object IdInterpreters {
   }
 
   implicit object IdEitherUserInputParser extends UserInputParser[Id] {
-    override def parseSearchOption(value: String)(
-      implicit P: Parser[ApplicationOptionCommand]): Id[Either[AppError, ApplicationOptionCommand]] = {
-      P.doParse(value)
-    }
-
     override def parseSearchObject(value: String)(
       implicit P: Parser[SearchObjectCommand]
     ): Id[Either[AppError, SearchObjectCommand]] = {

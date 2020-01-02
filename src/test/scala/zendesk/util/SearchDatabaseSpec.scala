@@ -16,6 +16,91 @@ class SearchDatabaseSpec extends Specification with ScalaCheck {
 
     val db = SearchDatabase(userData = users, organizationData = organizations, ticketData = tickets)
 
+    "Provides lists of searchable fields for each object" >> {
+      "Users" >> {
+        val expectedValue =
+          s"""
+             |-------------------------
+             |Search Users with
+             |-------------------------
+             |id
+             |url
+             |externalId
+             |name
+             |alias
+             |createdAt
+             |active
+             |verified
+             |shared
+             |locale
+             |timezone
+             |lastLoginAt
+             |email
+             |phone
+             |signature
+             |organizationId
+             |tags
+             |suspended
+             |role
+             |
+             |""".stripMargin
+        val result = db.listOfSearchableFields(Searchable.Users)
+
+        result must beEqualTo(expectedValue)
+      }
+
+      "Tickets" >> {
+        val expectedValue =
+          s"""
+             |-------------------------
+             |Search Tickets with
+             |-------------------------
+             |id
+             |url
+             |externalId
+             |createdAt
+             |type
+             |subject
+             |description
+             |priority
+             |status
+             |submitterId
+             |assigneeId
+             |organizationId
+             |tags
+             |hasIncidents
+             |dueAt
+             |via
+             |
+             |""".stripMargin
+        val result = db.listOfSearchableFields(Searchable.Tickets)
+
+        result must beEqualTo(expectedValue)
+      }
+
+      "Organizations" >> {
+        val expectedValue =
+          s"""
+             |-------------------------
+             |Search Organizations with
+             |-------------------------
+             |id
+             |url
+             |externalId
+             |name
+             |domainNames
+             |createdAt
+             |details
+             |sharedTickets
+             |tags
+             |
+             |""".stripMargin
+        val result = db.listOfSearchableFields(Searchable.Organizations)
+
+        result must beEqualTo(expectedValue)
+      }
+    }
+
     "Search Ticket" >> {
       val randomPickedUpTicket = Random.shuffle(tickets).head
 

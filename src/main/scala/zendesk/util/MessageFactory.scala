@@ -28,6 +28,7 @@ object MessageFactory {
       |* Press '1' to search 'Users'
       |* Press '2' to search 'Tickets'
       |* Press '3' to search 'Organizations'
+      |* Type 'quit' to exit
       |""".stripMargin
 
   val enterSearchTerm: String = "Enter search term"

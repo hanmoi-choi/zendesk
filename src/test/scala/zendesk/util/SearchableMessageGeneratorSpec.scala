@@ -9,7 +9,7 @@ class SearchableMessageGeneratorSpec extends Specification {
     "for User object" >> {
       val title = "Search Users with"
 
-      val result = SearchableMessageGenerator.forObject[User](SampleDataGen.user, title)
+      val result = SearchableMessageGenerator.forObject[User](SampleDataGen.user)
       val expectedNames =
         s"""
            |-------------------------
@@ -42,7 +42,7 @@ class SearchableMessageGeneratorSpec extends Specification {
     "for Ticket object" >> {
       val title = "Search Tickets with"
 
-      val result = SearchableMessageGenerator.forObject[Ticket](SampleDataGen.ticket, title)
+      val result = SearchableMessageGenerator.forObject[Ticket](SampleDataGen.ticket)
       val expectedNames =
         s"""
            |-------------------------
@@ -72,7 +72,7 @@ class SearchableMessageGeneratorSpec extends Specification {
     "for Organization object" >> {
       val title = "Search Organizations with"
 
-      val result = SearchableMessageGenerator.forObject[Organization](SampleDataGen.organization, title)
+      val result = SearchableMessageGenerator.forObject[Organization](SampleDataGen.organization)
       val expectedNames =
         s"""
            |-------------------------

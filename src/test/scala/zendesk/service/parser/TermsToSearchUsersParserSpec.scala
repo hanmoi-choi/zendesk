@@ -7,8 +7,6 @@ import zendesk.model.ParseFailure
 import zendesk.service.parser.TermsToSearchUsers._
 import zendesk.service.parser.TermsToSearchUsersParser.doParse
 
-import scala.language.postfixOps
-
 class TermsToSearchUsersParserSpec extends Specification with ScalaCheck {
   "should parse 'id' as 'Id' term" >> {
     "as lowercase" >> {

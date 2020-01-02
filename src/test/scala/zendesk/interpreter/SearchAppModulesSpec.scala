@@ -7,29 +7,14 @@ import cats.syntax.either._
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeEach
-import zendesk.model
-import zendesk.model.{
-  DataNotfound,
-  InvalidArgumentError,
-  Organization,
-  ParseFailure,
-  QueryParams,
-  Searchable,
-  Ticket,
-  User
-}
-import zendesk.model.value._
-import zendesk.service.QueryParameterGenerator
-import zendesk.service.parser.ApplicationOptionCommand.{ApplicationZendesk, Quit, ViewSearchableFields}
-import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
-import zendesk.service.parser.{
-  ApplicationOptionCommand,
-  ApplicationOptionCommandParser,
-  SearchObjectCommand,
-  SearchObjectCommandParser
-}
-import zendesk.util.MessageFactory._
 import zendesk.helper.IdInterpreters._
+import zendesk.model
+import zendesk.model.value._
+import zendesk.model._
+import zendesk.service.QueryParameterGenerator
+import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
+import zendesk.service.parser.{SearchObjectCommand, SearchObjectCommandParser}
+import zendesk.util.MessageFactory._
 import zendesk.util.{DataFileReader, SearchDatabase}
 
 import scala.collection.mutable.{Queue => MQueue}
@@ -42,7 +27,6 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
   private val orgs = DataFileReader.getDataFromFile[Organization]("./data/organizations.json")
   private val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json")
 
-  implicit private val applicationOptionCommandParser = ApplicationOptionCommandParser()
   implicit private val searchObjectCommandParser = SearchObjectCommandParser()
   implicit private val queryParameterGenerator = QueryParameterGenerator()
   implicit private val database = SearchDatabase(userData = users, organizationData = orgs, ticketData = tickets)
@@ -50,48 +34,6 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
   val idProgram = new SearchAppModules[Id]()
 
   override protected def before: Any = IdConsole.resetInputAndOutput()
-
-  "processSelectApplicationOptions" >> {
-    "When valid input is provided" >> {
-      "When input is '1' it should parse as ApplicationZendesk" >> {
-        IdConsole.dummyInput = MQueue("1")
-
-        val result: Id[Either[model.AppError, ApplicationOptionCommand]] = idProgram.processSelectApplicationOptions()
-
-        IdConsole.dummyOutput must beEqualTo(MQueue(appOptionsMessage))
-        result must beEqualTo(ApplicationZendesk.asRight)
-      }
-
-      "When input is '2' it should parse as ViewSearchableFields" >> {
-        IdConsole.dummyInput = MQueue("2")
-
-        val result: Id[Either[model.AppError, ApplicationOptionCommand]] = idProgram.processSelectApplicationOptions()
-
-        IdConsole.dummyOutput must beEqualTo(MQueue(appOptionsMessage))
-        result must beEqualTo(ViewSearchableFields.asRight)
-      }
-
-      "When input is 'quit' it should parse as Quit" >> {
-        IdConsole.dummyInput = MQueue("quit")
-
-        val result: Id[Either[model.AppError, ApplicationOptionCommand]] = idProgram.processSelectApplicationOptions()
-
-        IdConsole.dummyOutput must beEqualTo(MQueue(appOptionsMessage))
-        result must beEqualTo(Quit.asRight)
-      }
-    }
-
-    "When invalid input is provided" >> {
-      "When input is '4' it should be failed and return ParseFailure as Left" >> {
-        IdConsole.dummyInput = MQueue("4")
-
-        val result: Id[Either[model.AppError, ApplicationOptionCommand]] = idProgram.processSelectApplicationOptions()
-
-        IdConsole.dummyOutput must beEqualTo(MQueue(appOptionsMessage))
-        result must beEqualTo(ParseFailure("Cannot parse '4' as ApplicationOptionCommand").asLeft)
-      }
-    }
-  }
 
   "processSelectSearchObject" >> {
     "When valid input is provided" >> {

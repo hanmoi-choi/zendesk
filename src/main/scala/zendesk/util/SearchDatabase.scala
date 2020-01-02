@@ -6,8 +6,11 @@ import zendesk.model.value._
 import scala.collection.mutable.{HashMap => MMap}
 
 case class SearchDatabase() {
-
   type SearchTerm = String
+  type ListOfSearchableFields = String
+
+  def listOfSearchableFields(key: Searchable.Keys): ListOfSearchableFields =
+    listOfSearchableFieldsMap.getOrElse(key, "")
 
   def query[T](queryParams: QueryParams): Vector[T] = {
     val table = queryParams.searchKey match {
@@ -22,6 +25,8 @@ case class SearchDatabase() {
       .asInstanceOf[Vector[T]]
   }
 
+  private val listOfSearchableFieldsMap: MMap[Searchable.Keys, ListOfSearchableFields] = MMap()
+
   private val userTable: MMap[SearchTerm, Map[SearchValue, Vector[User]]] = MMap()
 
   private val organizationTable: MMap[SearchTerm, Map[SearchValue, Vector[Organization]]] = MMap()
@@ -35,6 +40,8 @@ case class SearchDatabase() {
   }
 
   def createUsersTable(data: Vector[User]): Unit = {
+    listOfSearchableFieldsMap.put(Searchable.Users, SearchableMessageGenerator.forObject[User](data.head))
+
     val usersGroupedByTag: Map[SearchValue, Vector[User]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
 
     userTable.put("id".toLowerCase, data.groupBy(_.id))
@@ -59,6 +66,8 @@ case class SearchDatabase() {
   }
 
   def createOrganizationsTable(data: Vector[Organization]): Unit = {
+    listOfSearchableFieldsMap
+      .put(Searchable.Organizations, SearchableMessageGenerator.forObject[Organization](data.head))
     val orgsGroupedByTag: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
     val orgsGroupedByDomainName: Map[SearchValue, Vector[Organization]] = groupAndExtractValues(
       data.flatMap(_.pairWithDomainName()))
@@ -75,6 +84,9 @@ case class SearchDatabase() {
   }
 
   def createTicketTable(data: Vector[Ticket]): Unit = {
+    listOfSearchableFieldsMap
+      .put(Searchable.Tickets, SearchableMessageGenerator.forObject[Ticket](data.head))
+
     val ticketsGroupedByTag: Map[SearchValue, Vector[Ticket]] = groupAndExtractValues(data.flatMap(_.pairWithTag()))
 
     ticketTable.put("id".toLowerCase, data.groupBy(_.id))

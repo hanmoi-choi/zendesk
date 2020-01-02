@@ -1,11 +1,11 @@
 package zendesk.interpreter
 
-import cats.syntax.either._
 import cats.effect.IO
+import cats.syntax.either._
 import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model.{AppError, DataNotfound, QueryParams, Searchable}
 import zendesk.service.QueryParameterGenerator
-import zendesk.service.parser.{ApplicationOptionCommand, Parser, SearchObjectCommand}
+import zendesk.service.parser.{Parser, SearchObjectCommand}
 import zendesk.util.SearchDatabase
 
 import scala.io.StdIn
@@ -13,10 +13,6 @@ import scala.io.StdIn
 object IOInterpreter {
 
   implicit object IOUserInputParser extends UserInputParser[IO] {
-    override def parseSearchOption(value: String)(
-      implicit P: Parser[ApplicationOptionCommand]): IO[Either[AppError, ApplicationOptionCommand]] = IO {
-      P.doParse(value)
-    }
 
     override def parseSearchObject(value: String)(
       implicit P: Parser[SearchObjectCommand]): IO[Either[AppError, SearchObjectCommand]] = IO {
