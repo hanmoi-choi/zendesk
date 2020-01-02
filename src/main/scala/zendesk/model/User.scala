@@ -2,7 +2,6 @@ package zendesk.model
 
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder, HCursor, Json}
-import zendesk.model.Searchable.SearchKey
 import zendesk.model.value._
 
 case class User(
@@ -32,9 +31,6 @@ case class User(
 }
 
 object User {
-
-  def searchKey: SearchKey = "Users"
-
   implicit val encodeUser: Encoder[User] = (user: User) =>
     Json.obj(
       ("_id", user.id.asJson),

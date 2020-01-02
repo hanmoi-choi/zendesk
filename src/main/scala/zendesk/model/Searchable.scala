@@ -3,8 +3,6 @@ package zendesk.model
 trait Searchable {}
 
 object Searchable {
-  type SearchKey = String
-
   sealed trait Keys
 
   case object Users extends Keys

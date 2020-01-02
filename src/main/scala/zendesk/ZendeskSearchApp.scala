@@ -8,7 +8,7 @@ import zendesk.interpreter.SearchAppModules
 import zendesk.model.{AppError, Organization, Ticket, User}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommandParser
-import zendesk.util.{DataFileReader, MessageFactory, SearchDatabase}
+import zendesk.util.{DataFileReader, Database, MessageFactory}
 
 import scala.annotation.tailrec
 
@@ -19,7 +19,7 @@ object ZendeskSearchApp extends IOApp {
 
   implicit private val searchObjectCommandParser = SearchObjectCommandParser()
   implicit private val queryParameterGenerator = QueryParameterGenerator()
-  implicit private val database = SearchDatabase(userData = users, organizationData = orgs, ticketData = tickets)
+  implicit private val database = Database(userData = users, organizationData = orgs, ticketData = tickets)
 
   override def run(args: List[String]): IO[ExitCode] = {
     val modules = new SearchAppModules[IO]()

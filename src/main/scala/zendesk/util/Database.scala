@@ -5,7 +5,7 @@ import zendesk.model.value._
 
 import scala.collection.mutable.{HashMap => MMap}
 
-case class SearchDatabase() {
+case class Database() {
   type SearchTerm = String
   type ListOfSearchableFields = String
 
@@ -108,13 +108,13 @@ case class SearchDatabase() {
   }
 }
 
-object SearchDatabase {
+object Database {
   def apply(
     userData: Vector[User] = Vector.empty,
     organizationData: Vector[Organization] = Vector.empty,
     ticketData: Vector[Ticket] = Vector.empty
-  ): SearchDatabase = {
-    val db = SearchDatabase()
+  ): Database = {
+    val db = Database()
     db.createUsersTable(userData)
     db.createOrganizationsTable(organizationData)
     db.createTicketTable(ticketData)

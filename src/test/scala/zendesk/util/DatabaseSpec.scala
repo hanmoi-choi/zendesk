@@ -9,13 +9,13 @@ import zendesk.model.value.{EmptyStringSearchField, Id, SubmitterId}
 
 import scala.util.Random
 
-class SearchDatabaseSpec extends Specification with ScalaCheck {
+class DatabaseSpec extends Specification with ScalaCheck {
   "Build Search DB from the given Data" >> {
     val users = DataFileReader.getDataFromFile[User]("./data/users.json")
     val organizations = DataFileReader.getDataFromFile[Organization]("./data/organizations.json")
     val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json")
 
-    val db = SearchDatabase(userData = users, organizationData = organizations, ticketData = tickets)
+    val db = Database(userData = users, organizationData = organizations, ticketData = tickets)
 
     "Provides lists of searchable fields for each object" >> {
       "Users" >> {

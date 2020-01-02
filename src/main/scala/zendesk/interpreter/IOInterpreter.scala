@@ -2,11 +2,12 @@ package zendesk.interpreter
 
 import cats.effect.IO
 import cats.syntax.either._
+import zendesk.dsl.Repository.queryImpl
 import zendesk.dsl.{Console, Repository, UserInputParser}
-import zendesk.model.{AppError, DataNotfound, QueryParams, Searchable}
+import zendesk.model.{AppError, DataNotfound, Organization, QueryParams, SearchResult, Searchable, Ticket, User}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{Parser, SearchObjectCommand}
-import zendesk.util.SearchDatabase
+import zendesk.util.Database
 
 import scala.io.StdIn
 
@@ -36,15 +37,9 @@ object IOInterpreter {
   }
 
   implicit object IORepository extends Repository[IO] {
-    override def query(params: QueryParams)(implicit DB: SearchDatabase): IO[Either[AppError, Vector[Searchable]]] =
+    override def query(params: QueryParams)(implicit DB: Database): IO[Either[AppError, Vector[SearchResult]]] =
       IO {
-        DB.query(params) match {
-          case Vector() =>
-            val errorMessage =
-              s"${params.searchKey} with Term('${params.searchTerm}') and Value('${params.searchValue}') is not found"
-            DataNotfound(errorMessage).asLeft
-          case v => v.asRight[AppError]
-        }
+        queryImpl(params)
       }
   }
 }

@@ -6,16 +6,16 @@ import zendesk.dsl.Console._
 import zendesk.dsl.UserInputParser._
 import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model
-import zendesk.model.{QueryParams, Searchable}
+import zendesk.model.{QueryParams, SearchResult, Searchable}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{Parser, SearchObjectCommand}
-import zendesk.util.{MessageFactory, SearchDatabase}
+import zendesk.util.{Database, MessageFactory}
 
 case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()(
   implicit searchObjectCommandParser: Parser[SearchObjectCommand],
   queryParamsGenerator: QueryParameterGenerator,
-  searchDatabase: SearchDatabase
+  searchDatabase: Database
 ) {
 
   def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] = {
@@ -49,8 +49,8 @@ case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()
     parserResult.value
   }
 
-  def searchData(queryParams: QueryParams): F[Either[model.AppError, Vector[Searchable]]] = {
-    val parserResult: EitherT[F, model.AppError, Vector[Searchable]] =
+  def searchData(queryParams: QueryParams): F[Either[model.AppError, Vector[SearchResult]]] = {
+    val parserResult: EitherT[F, model.AppError, Vector[SearchResult]] =
       for {
         result <- EitherT(Repository.query(queryParams))
       } yield result

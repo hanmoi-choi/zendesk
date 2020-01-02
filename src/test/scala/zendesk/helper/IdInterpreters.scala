@@ -3,10 +3,10 @@ package zendesk.helper
 import cats.Id
 import cats.syntax.either._
 import zendesk.dsl.{Console, Repository, UserInputParser}
-import zendesk.model.{AppError, DataNotfound, QueryParams, Searchable}
+import zendesk.model.{AppError, DataNotfound, QueryParams, SearchResult, Searchable}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{Parser, SearchObjectCommand}
-import zendesk.util.SearchDatabase
+import zendesk.util.Database
 
 import scala.collection.mutable
 import scala.collection.mutable.{Queue => MQueue}
@@ -45,13 +45,9 @@ object IdInterpreters {
   }
 
   implicit object IORepository extends Repository[Id] {
-    override def query(params: QueryParams)(implicit DB: SearchDatabase): Id[Either[AppError, Vector[Searchable]]] =
-      DB.query(params) match {
-        case Vector() =>
-          val errorMessage =
-            s"${params.searchKey} with Term('${params.searchTerm}') and Value('${params.searchValue}') is not found"
-          DataNotfound(errorMessage).asLeft
-        case v => v.asRight[AppError]
-      }
+    import zendesk.dsl.Repository.queryImpl
+
+    override def query(params: QueryParams)(implicit DB: Database): Id[Either[AppError, Vector[SearchResult]]] =
+      queryImpl(params)
   }
 }
