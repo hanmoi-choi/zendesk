@@ -28,15 +28,33 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
 
 3. For this statement, `The user should also be able to search for empty values, e.g. where description is empty.`.
    In the data, description is nullable value so assumed that only nullable value could searchable with `Empty string value`, which is stated at #2.
+   
+4. I assumed that my UX does not have to be the same as the provided sample.
+   - I wanted to display the searchable fields for objects everytime before selecting field to search.
+   
 
 # Approach
 
 ## Functional Programming
-In the job description, FP is desired skill so thought that I could apply my best knowledge of FP for my code exercise.
-- Admittedly this could decrease some developers' comprehension to my code.
-- But in REA, my team did our best to help new developer's learning journey for Scala so should be fine I reckon.
+In the job description, FP is desired skill so thought that I could do my best with FP.
 
-## Search performance
+Except a few code almost all of code are pure; I did not use mock for testing.
+
+Exceptions are
+1. Read JSON data files
+2. Creating Database data structure.
+3. Main class.
+
+## Diagrams
+
+### Overall dataflow from user input to output
+TBD
+
+### Relationships among object to be used for search
+![](./resources/Relationships.png)
+
+### Data Structure for Database
+TBD
 
 ## Libraries
 - [Circe](https://circe.github.io/circe/) to parse Json data files; users.json, tickets.json, and organizations.json
