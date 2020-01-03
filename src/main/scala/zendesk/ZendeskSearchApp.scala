@@ -36,7 +36,9 @@ object ZendeskSearchApp extends IOApp {
 
     result.map {
       case Right(_) => ExitCode.Success
-      case _ => ExitCode.Error
+      case Left(appError) =>
+        Console.println(AppError.asText(appError))
+        ExitCode.Error
     }
   }
 

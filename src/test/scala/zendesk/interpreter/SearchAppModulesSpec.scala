@@ -208,7 +208,7 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
 
     "When invalid inputs are entered" >> {
       "Inputs are for searching Users with term('id') and value('111111111111111')" >> {
-        val dataNotFound = DataNotfound("Users with Term('Id') and Value('Id(111111111111111)') is not found")
+        val dataNotFound = DataNotfound("Users with Term('Id') and Value('111111111111111') is not found")
         val queryParams = QueryParams(Searchable.Users, "Id", zendesk.model.value.Id(111111111111111L))
 
         val result = idProgram.searchData(queryParams)
@@ -217,7 +217,7 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
 
       "Inputs are for searching Tickets with term('submitterId') and value('111111111111111')" >> {
         val dataNotFound =
-          DataNotfound("Tickets with Term('SubmitterId') and Value('SubmitterId(111111111111111)') is not found")
+          DataNotfound("Tickets with Term('SubmitterId') and Value('111111111111111') is not found")
         val queryParams =
           QueryParams(Searchable.Tickets, "SubmitterId", zendesk.model.value.SubmitterId(111111111111111L))
 
@@ -226,7 +226,7 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
       }
 
       "Inputs are for searching Organizations with term('id') and value('111111111111111')" >> {
-        val dataNotFound = DataNotfound("Organizations with Term('Id') and Value('Id(111111111111111)') is not found")
+        val dataNotFound = DataNotfound("Organizations with Term('Id') and Value('111111111111111') is not found")
         val queryParams = QueryParams(Searchable.Organizations, "Id", zendesk.model.value.Id(111111111111111L))
 
         val result = idProgram.searchData(queryParams)

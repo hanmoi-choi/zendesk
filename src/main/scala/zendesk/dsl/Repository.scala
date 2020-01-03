@@ -19,36 +19,39 @@ object Repository {
     DB.query(params) match {
       case Vector() =>
         val errorMessage =
-          s"${params.searchKey} with Term('${params.searchTerm}') and Value('${params.searchValue}') is not found"
+          s"${params.searchKey} with Term('${params.searchTerm}') and Value('${params.searchValue.rawValue}') is not found"
         DataNotfound(errorMessage).asLeft
 
       case nonEmptyResult =>
-        params.searchKey match {
-          case Searchable.Users =>
-            nonEmptyResult.map((v: User) => retrieveRelationsForUser(params, v)).asRight
+        retrieveRelations(params, nonEmptyResult)
+    }
+  }
 
-          case Searchable.Tickets =>
-            nonEmptyResult.map((v: Ticket) => retrieveRelationsForTicket(params, v)).asRight
+  private def retrieveRelations(params: QueryParams, nonEmptyResult: Vector[Searchable])(
+    implicit DB: Database): Either[DataNotfound, Vector[SearchResult]] = {
+    params.searchKey match {
+      case Searchable.Users =>
+        nonEmptyResult.asInstanceOf[Vector[User]].map(v => retrieveRelationsForUser(params, v)).asRight
 
-          case Searchable.Organizations =>
-            nonEmptyResult.map((v: Organization) => retrieveRelationsForOrganization(params, v)).asRight
-        }
+      case Searchable.Tickets =>
+        nonEmptyResult.asInstanceOf[Vector[Ticket]].map(v => retrieveRelationsForTicket(params, v)).asRight
+
+      case Searchable.Organizations =>
+        nonEmptyResult.asInstanceOf[Vector[Organization]].map(v => retrieveRelationsForOrganization(params, v)).asRight
     }
   }
 
   private def retrieveRelationsForUser(params: QueryParams, user: User)(implicit DB: Database): SearchResult = {
     val submitterId = SubmitterId(user.id.value)
     val assigneeId = AssigneeId(user.id.value)
+
     val relations = Map[ForeignKey, Vector[Searchable]](
-      (
-        SearchResult.SubmitterId,
-        DB.query[Ticket](QueryParams(Searchable.Tickets, submitterId.getClass.getSimpleName, submitterId))
-      ),
-      (
-        SearchResult.AssigneeId,
+      SearchResult.SubmitterId -> DB.query[Ticket](
+        QueryParams(Searchable.Tickets, submitterId.getClass.getSimpleName, submitterId)),
+      SearchResult.AssigneeId ->
         DB.query[Ticket](QueryParams(Searchable.Tickets, assigneeId.getClass.getSimpleName, assigneeId))
-      )
     )
+
     val maybeRelations = user.organizationId.map { orgId =>
       val id = Id(orgId.value)
       Map(
