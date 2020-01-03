@@ -45,10 +45,8 @@ object Parser {
   def parseTypeConstraintEnumString[T](
     value: String,
     parser: String => Option[T],
-    expectedType: String): Either[AppError, SearchValue] = {
-    parser(value) match {
-      case None => InvalidArgumentError(s"'$value' is not $expectedType value").asLeft
-      case Some(value: SearchValue) => value.asRight
-    }
+    expectedType: String): Either[AppError, SearchValue] = parser(value) match {
+    case None => InvalidArgumentError(s"'$value' is not $expectedType value").asLeft
+    case Some(value) => value.asInstanceOf[SearchValue].asRight[AppError]
   }
 }

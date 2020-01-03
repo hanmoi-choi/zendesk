@@ -1,7 +1,8 @@
 package zendesk.service
 
+import cats.syntax.either._
 import zendesk.model
-import zendesk.model.{AppError, QueryParams, Searchable}
+import zendesk.model.{AppError, ExitAppByUserRequest, QueryParams, Searchable}
 import zendesk.service.parser.SearchObjectCommand._
 import zendesk.service.parser._
 
@@ -19,6 +20,7 @@ case class QueryParameterGenerator(
       case SearchUsers => handleValueForUsers(searchTermInput, searchValueInput)
       case SearchTickets => handleValueForTickets(searchTermInput, searchValueInput)
       case SearchOrganizations => handleValueForOrganizations(searchTermInput, searchValueInput)
+      case _ => ExitAppByUserRequest.asLeft
     }
   }
 

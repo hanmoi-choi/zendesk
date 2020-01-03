@@ -39,7 +39,7 @@ case class SearchResultFormatter() {
     val descriptions = relations.toVector.map { relation: (ForeignKey, Vector[Searchable]) =>
       val body = relation._2.map(_.asSimpleDataString).mkString("\n")
 
-      s"""${subHeader(queryParams.searchKey, relation._1)}
+      s"""${subHeader((queryParams.searchKey, relation._1))}
          |$body
          |""".stripMargin
     }.mkString("\n")

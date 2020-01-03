@@ -10,6 +10,4 @@ object SearchObjectCommand {
 
   case object SearchOrganizations extends SearchObjectCommand
 
-  case object Quit extends SearchObjectCommand
-
 }

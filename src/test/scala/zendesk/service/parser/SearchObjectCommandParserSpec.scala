@@ -3,7 +3,7 @@ package zendesk.service.parser
 import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.model.{ExitAppByUserRequest, ParseFailure}
+import zendesk.model.ParseFailure
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 
 class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
@@ -24,11 +24,13 @@ class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
 
     "Should parse 'quit' as 'Quit' command" >> {
       "as uppercase" >> {
-        parser.doParse("QUIT") must beEqualTo(ExitAppByUserRequest.asLeft)
+        val expectedError = ParseFailure("Cannot parse 'QUIT' as SearchObjectCommand")
+        parser.doParse("QUIT") must beEqualTo(expectedError.asLeft)
       }
 
       "as lowercase" >> {
-        parser.doParse("quit") must beEqualTo(ExitAppByUserRequest.asLeft)
+        val expectedError = ParseFailure("Cannot parse 'quit' as SearchObjectCommand")
+        parser.doParse("quit") must beEqualTo(expectedError.asLeft)
       }
     }
 

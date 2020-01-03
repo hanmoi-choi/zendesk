@@ -4,9 +4,9 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
 
 # Assumption
 1. For me this is malformed ISO8601 format, `"2016-05-21T11:10:28 -10:00"` but assumed that it is on purpose.
-  - There should not be `space` before timezone adjustment, `-10:00`
+   - There should not be `space` before timezone adjustment, `-10:00`
 
-2. I decided Optional field myself based on the given data; users, tickets, and organizations
+2. I decided Optional fields myself based on the given data; users, tickets, and organizations
 
    - Users
      - `alias`: Option[Alias],
@@ -26,19 +26,18 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
      - `organizationId`: Option[OrganizationId],
      - `dueAt`: Option[ZenDateTime],
 
-3. For this statement, `The user should also be able to search for empty values, e.g. where description is empty.`.
+3. For this statement, `The user should also be able to search for empty values, e.g. where description is empty`.
    In the data, description is nullable value so assumed that only nullable value could searchable with `Empty string value`, which is stated at #2.
    
 4. I assumed that my UX does not have to be the same as the provided sample.
-   - I wanted to display the searchable fields for objects everytime before selecting field to search.
-   
+   - I wanted to display the searchable fields for objects every time before selecting field to search.
 
 # Approach
 
 ## Functional Programming
 In the job description, FP is desired skill so thought that I could do my best with FP.
 
-Except a few code almost all of code are pure; I did not use mock for testing.
+Except a few codes almost all codes are pure; I did not use mock for testing.
 
 Exceptions are
 1. Read JSON data files

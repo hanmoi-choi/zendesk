@@ -22,9 +22,10 @@ case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()
   def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] = {
     val parserResult =
       for {
-        _         <- EitherT(out(MessageFactory.searchObjectsOptionMessage))
-        userInput <- EitherT(in())
-        result    <- EitherT(parseSearchObject(userInput))
+        _                 <- EitherT(out(MessageFactory.searchObjectsOptionMessage))
+        userInput         <- EitherT(in())
+        noneQuitUserInput <- EitherT(stopIfUserEnteredQuit(userInput))
+        result            <- EitherT(parseSearchObject(noneQuitUserInput))
         key = result match {
           case SearchUsers => Searchable.Users
           case SearchTickets => Searchable.Tickets

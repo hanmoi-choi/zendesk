@@ -10,8 +10,8 @@ scalacOptions ++= Seq(
   "-unchecked", // warn about unchecked type parameters
   "-feature", // warn about misused language features
   "-language:higherKinds", // allow higher kinded types without `import scala.language.higherKinds`
-  "-Xlint" // enable handy linter warnings
-  //  "-Xfatal-warnings"      // turn compiler warnings into errors
+  "-Xlint", // enable handy linter warnings
+  "-Xfatal-warnings"      // turn compiler warnings into errors
 )
 
 scalacOptions in Test ++= Seq("-Yrangepos")
@@ -30,8 +30,10 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-core"    % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser"  % circeVersion,
+
   // Joda time
   "joda-time" % "joda-time" % "2.10.5",
+
   // Test
   "org.specs2" %% "specs2-core"                % spec2Verion % "test",
   "org.specs2" %% "specs2-matcher"             % spec2Verion % "test",
