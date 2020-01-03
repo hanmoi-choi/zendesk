@@ -3,7 +3,7 @@ package zendesk.helper
 import cats.Id
 import cats.syntax.either._
 import zendesk.dsl.{Console, Repository, UserInputParser}
-import zendesk.model.{AppError, Database, QueryParams, SearchResult}
+import zendesk.model.{AppError, Database, ExitAppByUserRequest, QueryParams, SearchResult}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{Parser, SearchObjectCommand}
 
@@ -41,6 +41,12 @@ object IdInterpreters {
     override def parseSearchQuery(searchObjectCommand: SearchObjectCommand, termToSearch: String, searchValue: String)(
       implicit G: QueryParameterGenerator): Id[Either[AppError, QueryParams]] =
       G.generate(searchObjectCommand, termToSearch, searchValue)
+
+    override def stopIfUserEnteredQuit(userInput: String): Id[Either[AppError, String]] =
+      if (userInput.toLowerCase == UserInputParser.COMMAND_TO_QUIT_APP)
+        ExitAppByUserRequest.asLeft
+      else
+        userInput.asRight
   }
 
   implicit object IORepository extends Repository[Id] {

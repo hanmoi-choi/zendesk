@@ -4,14 +4,13 @@ import cats.effect.IO
 import cats.syntax.either._
 import zendesk.dsl.Repository.queryImpl
 import zendesk.dsl.{Console, Repository, UserInputParser}
-import zendesk.model.{AppError, Database, QueryParams, SearchResult}
+import zendesk.model.{AppError, Database, ExitAppByUserRequest, QueryParams, SearchResult}
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{Parser, SearchObjectCommand}
 
 import scala.io.StdIn
 
 object IOInterpreter {
-
   implicit object IOUserInputParser extends UserInputParser[IO] {
 
     override def parseSearchObject(value: String)(
@@ -22,6 +21,13 @@ object IOInterpreter {
     override def parseSearchQuery(searchObjectCommand: SearchObjectCommand, termToSearch: String, searchValue: String)(
       implicit G: QueryParameterGenerator): IO[Either[AppError, QueryParams]] = IO {
       G.generate(searchObjectCommand, termToSearch, searchValue)
+    }
+
+    override def stopIfUserEnteredQuit(userInput: String): IO[Either[AppError, String]] = IO {
+      if (userInput.toLowerCase == UserInputParser.COMMAND_TO_QUIT_APP)
+        ExitAppByUserRequest.asLeft
+      else
+        userInput.asRight
     }
   }
 

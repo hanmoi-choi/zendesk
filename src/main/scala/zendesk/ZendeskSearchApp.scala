@@ -5,7 +5,7 @@ import cats.effect.{ExitCode, IO, IOApp}
 import cats.syntax.either._
 import zendesk.interpreter.IOInterpreter._
 import zendesk.interpreter.SearchAppModules
-import zendesk.model.{AppError, Database, Organization, Ticket, User}
+import zendesk.model.{AppError, Database, ExitAppByUserRequest, Organization, Ticket, User}
 import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
 import zendesk.service.parser.SearchObjectCommandParser
 import zendesk.util.{DataFileReader, MessageFactory}
@@ -24,7 +24,7 @@ object ZendeskSearchApp extends IOApp {
     val modules = new SearchAppModules[IO]()
 
     Console.println(MessageFactory.welcomeMessage)
-    val result: IO[Either[AppError, ExitCode]] = program(modules)
+    val result = program(modules)
 
     result.map {
       case Right(_) => ExitCode.Success
@@ -32,12 +32,12 @@ object ZendeskSearchApp extends IOApp {
     }
   }
 
-  def program(module: SearchAppModules[IO]): IO[Either[AppError, ExitCode]] = {
-    val r: EitherT[IO, model.AppError, ExitCode] = for {
+  def program(module: SearchAppModules[IO]): IO[Either[AppError, Unit]] = {
+    val r: EitherT[IO, model.AppError, Unit] = for {
       searchObject <- EitherT(module.processSelectSearchObject())
       queryParams  <- EitherT(module.processCreateQueryParams(searchObject))
       _            <- EitherT(module.searchData(queryParams))
-    } yield ExitCode.Success
+    } yield ()
 
     r.value
   }

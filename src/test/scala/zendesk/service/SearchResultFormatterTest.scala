@@ -40,7 +40,6 @@ class SearchResultFormatterTest extends Specification {
              |### Organizations
              |${organization.asSimpleDataString}
              |
-             |
              |---------------------------------------------------""".stripMargin
 
         val queryParams = {
@@ -83,7 +82,6 @@ class SearchResultFormatterTest extends Specification {
              |### Organizations
              |${organization.asSimpleDataString}
              |
-             |
              |---------------------------------------------------""".stripMargin
 
         val queryParams = {
@@ -122,7 +120,6 @@ class SearchResultFormatterTest extends Specification {
              |
              |### Organizations
              |${ticket.asSimpleDataString}
-             |
              |
              |---------------------------------------------------""".stripMargin
 
