@@ -44,8 +44,6 @@ object TermsToSearchUsersParser extends Parser[TermsToSearchUsers] {
 
   private def parseRole[_: P] = P(IgnoreCase("role")).map(_ => Role)
 
-  private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
-
   def parseTerm[_: P]: P[TermsToSearchUsers] = P(
     parseId
       | parseUrl
@@ -66,7 +64,6 @@ object TermsToSearchUsersParser extends Parser[TermsToSearchUsers] {
       | parseTags
       | parseSuspended
       | parseRole
-      | parseQuit
   )
 
   def doParse(command: String): Either[AppError, TermsToSearchUsers] = {

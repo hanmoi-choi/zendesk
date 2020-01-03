@@ -144,16 +144,6 @@ class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
     }
   }
 
-  "Should parse 'quit' as 'Quit' command" >> {
-    "as lowercase" >> {
-      doParse("quit") must beEqualTo(Quit.asRight)
-    }
-
-    "as uppercase" >> {
-      doParse("QUIT") must beEqualTo(Quit.asRight)
-    }
-  }
-
   "any other string inputs" >> prop { invalidCommand: String =>
     (invalidCommand != "id" &&
     invalidCommand.toLowerCase != "url" &&
@@ -170,8 +160,7 @@ class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
     invalidCommand.toLowerCase != "tags" &&
     invalidCommand.toLowerCase != "hasIncidents" &&
     invalidCommand.toLowerCase != "dueAt" &&
-    invalidCommand.toLowerCase != "via" &&
-    invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
+    invalidCommand.toLowerCase != "via") ==> prop { _: String =>
       val result = doParse(invalidCommand)
       val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchTicketsTerm").asLeft
 

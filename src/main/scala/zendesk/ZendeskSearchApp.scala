@@ -38,8 +38,6 @@ object ZendeskSearchApp extends IOApp {
       case Right(_) => ExitCode.Success
       case _ => ExitCode.Error
     }
-
-    IO(ExitCode.Success)
   }
 
   def program(module: SearchAppModules[IO]): IO[Either[AppError, Unit]] = {

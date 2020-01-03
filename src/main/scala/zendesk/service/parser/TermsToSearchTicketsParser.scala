@@ -36,8 +36,6 @@ object TermsToSearchTicketsParser extends Parser[TermsToSearchTickets] {
 
   private def parseVia[_: P] = P(IgnoreCase("via")).map(_ => Via)
 
-  private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
-
   def parseTerm[_: P]: P[TermsToSearchTickets] = P(
     parseId
       | parseUrl
@@ -55,7 +53,6 @@ object TermsToSearchTicketsParser extends Parser[TermsToSearchTickets] {
       | parseDueAt
       | parseTags
       | parseVia
-      | parseQuit
   )
 
   def doParse(command: String): Either[AppError, TermsToSearchTickets] = {

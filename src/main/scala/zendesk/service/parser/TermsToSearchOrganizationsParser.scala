@@ -24,8 +24,6 @@ object TermsToSearchOrganizationsParser extends Parser[TermsToSearchOrganization
 
   private def parseTags[_: P] = P(IgnoreCase("tags")).map(_ => Tags)
 
-  private def parseQuit[_: P] = P(IgnoreCase("quit")).map(_ => Quit)
-
   def parseTerm[_: P]: P[TermsToSearchOrganizations] = P(
     parseId
       | parseUrl
@@ -36,7 +34,6 @@ object TermsToSearchOrganizationsParser extends Parser[TermsToSearchOrganization
       | parseTags
       | parseDetails
       | parseSharedTickets
-      | parseQuit
   )
 
   def doParse(command: String): Either[AppError, TermsToSearchOrganizations] = {

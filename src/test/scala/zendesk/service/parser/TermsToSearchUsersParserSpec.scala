@@ -180,16 +180,6 @@ class TermsToSearchUsersParserSpec extends Specification with ScalaCheck {
     }
   }
 
-  "Should parse 'quit' as 'Quit' command" >> {
-    "as lowercase" >> {
-      doParse("quit") must beEqualTo(Quit.asRight)
-    }
-
-    "as uppercase" >> {
-      doParse("QUIT") must beEqualTo(Quit.asRight)
-    }
-  }
-
   "any other string inputs" >> prop { invalidCommand: String =>
     (invalidCommand != "id" &&
     invalidCommand.toLowerCase != "url" &&
@@ -209,8 +199,7 @@ class TermsToSearchUsersParserSpec extends Specification with ScalaCheck {
     invalidCommand.toLowerCase != "organizationId" &&
     invalidCommand.toLowerCase != "tags" &&
     invalidCommand.toLowerCase != "suspended" &&
-    invalidCommand.toLowerCase != "role" &&
-    invalidCommand.toLowerCase != "quit") ==> prop { _: String =>
+    invalidCommand.toLowerCase != "role") ==> prop { _: String =>
       val result = doParse(invalidCommand)
       val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchUsersTerm").asLeft
 
