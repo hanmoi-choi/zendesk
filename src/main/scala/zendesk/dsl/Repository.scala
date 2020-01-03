@@ -45,7 +45,7 @@ object Repository {
     val submitterId = SubmitterId(user.id.value)
     val assigneeId = AssigneeId(user.id.value)
 
-    val relations = Map[ForeignKey, Vector[Searchable]](
+    val relationsForTickets = Map[ForeignKey, Vector[Searchable]](
       SearchResult.SubmitterId -> DB.query[Ticket](
         QueryParams(Searchable.Tickets, submitterId.getClass.getSimpleName, submitterId)),
       SearchResult.AssigneeId ->
@@ -60,7 +60,7 @@ object Repository {
       )
     }.getOrElse(Map.empty)
 
-    SearchResult(params, user: Searchable, relations ++ maybeRelations)
+    SearchResult(params, user: Searchable, relationsForTickets ++ maybeRelations)
   }
 
   private def retrieveRelationsForOrganization(params: QueryParams, org: Organization)(
@@ -78,7 +78,7 @@ object Repository {
 
   private def retrieveRelationsForTicket(params: QueryParams, ticket: Ticket)(implicit DB: Database): SearchResult = {
     val submitterId = Id(ticket.submitterId.value)
-    val relations = Map[ForeignKey, Vector[Searchable]](
+    val relationsForUsers = Map[ForeignKey, Vector[Searchable]](
       (
         SearchResult.SubmitterId ->
           DB.query[User](QueryParams(Searchable.Users, submitterId.getClass.getSimpleName, submitterId))
@@ -101,6 +101,6 @@ object Repository {
       )
     }.getOrElse(Map.empty)
 
-    SearchResult(params, ticket: Searchable, relations ++ maybeRelationsForUser ++ maybeRelationsForOrg)
+    SearchResult(params, ticket: Searchable, relationsForUsers ++ maybeRelationsForUser ++ maybeRelationsForOrg)
   }
 }

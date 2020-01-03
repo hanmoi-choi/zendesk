@@ -30,7 +30,9 @@ case class QueryParameterGenerator(
       searchValue <- userTerm.asSearchValue(searchValueInput)
     } yield model.QueryParams(
       searchKey = Searchable.Users,
-      searchTerm = searchValue.getClass.getSimpleName,
+      searchTerm =
+        if (searchValueInput.isEmpty) searchTermInput
+        else searchValue.getClass.getSimpleName,
       searchValue = searchValue
     )
 
@@ -42,7 +44,9 @@ case class QueryParameterGenerator(
       searchValue <- ticketTerm.asSearchValue(searchValueInput)
     } yield model.QueryParams(
       searchKey = Searchable.Tickets,
-      searchTerm = searchValue.getClass.getSimpleName,
+      searchTerm =
+        if (searchValueInput.isEmpty) searchTermInput
+        else searchValue.getClass.getSimpleName,
       searchValue = searchValue
     )
 

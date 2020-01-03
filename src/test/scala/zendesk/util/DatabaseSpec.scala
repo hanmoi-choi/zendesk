@@ -47,6 +47,13 @@ class DatabaseSpec extends Specification with ScalaCheck {
         result must beEmpty
       }
 
+      "should be able to search with empty string for optional field" >> {
+        val result: Vector[Ticket] =
+          db.query[Ticket](QueryParams(Searchable.Tickets, "assigneeId", EmptyStringSearchField))
+
+        result must not(beEmpty)
+      }
+
       "should be able to search with 'id'" >> {
         val result: Vector[Ticket] = db.query[Ticket](QueryParams(Searchable.Tickets, "id", randomPickedUpTicket.id))
 
@@ -242,6 +249,13 @@ class DatabaseSpec extends Specification with ScalaCheck {
           db.query[User](QueryParams(Searchable.Users, "id", Id(99999999999L)))
 
         result must beEmpty
+      }
+
+      "should be able to search with empty string for optional field" >> {
+        val result: Vector[User] =
+          db.query[User](QueryParams(Searchable.Users, "organizationId", EmptyStringSearchField))
+
+        result must not(beEmpty)
       }
 
       "should be able to search with 'id'" >> {
