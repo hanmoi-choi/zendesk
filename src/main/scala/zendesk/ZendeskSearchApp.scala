@@ -14,10 +14,6 @@ object ZendeskSearchApp extends IOApp {
   implicit private val queryParameterGenerator = QueryParameterGenerator()
   implicit private val formatter = SearchResultFormatter()
 
-  /*
-   Admittedly this function code is not pure.
-   This will need to be refactored later.
-   */
   override def run(args: List[String]): IO[ExitCode] = {
     printWelcomeMessage()
 
@@ -26,13 +22,21 @@ object ZendeskSearchApp extends IOApp {
 
     val modules = new SearchAppModules[IO]()
 
-    val result = program(modules)
+    impurityProgramExecution(modules)
 
-    result.map {
-      case Right(_) => ExitCode.Success
-      case Left(appError) =>
-        Console.println(AppError.asText(appError))
-        ExitCode.Error
+    IO(ExitCode.Success)
+  }
+
+  // TODO: Admittedly this function code is not pure. This will need to be refactored later.
+  private def impurityProgramExecution(modules: SearchAppModules[IO]): Unit = {
+    while (true) {
+      program(modules).unsafeRunSync() match {
+        case Left(ExitAppByUserRequest) =>
+          System.exit(0)
+        case Left(error) =>
+          Console.println(AppError.asText(error))
+        case _ => ()
+      }
     }
   }
 
