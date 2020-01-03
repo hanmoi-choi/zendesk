@@ -7,20 +7,11 @@ import zendesk.interpreter.SearchAppModules
 import zendesk.model._
 import zendesk.service.parser.SearchObjectCommandParser
 import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
-import zendesk.util.{DataFileReader, MessageFactory}
+import zendesk.util.{DataBaseGenerator, MessageFactory}
 
 object ZendeskSearchApp extends IOApp {
-  private val defaultUsersData = "./data/users.json"
-  private val defaultOrganizationsData = "./data/organizations.json"
-  private val defaultTicketsData = "./data/tickets.json"
-
-  private val users = DataFileReader.getDataFromFile[User](defaultUsersData)
-  private val organizations = DataFileReader.getDataFromFile[Organization](defaultOrganizationsData)
-  private val tickets = DataFileReader.getDataFromFile[Ticket](defaultTicketsData)
-
   implicit private val searchObjectCommandParser = SearchObjectCommandParser()
   implicit private val queryParameterGenerator = QueryParameterGenerator()
-  implicit private val database = Database(userData = users, organizationData = organizations, ticketData = tickets)
   implicit private val formatter = SearchResultFormatter()
 
   /*
@@ -28,9 +19,12 @@ object ZendeskSearchApp extends IOApp {
    This will need to be refactored later.
    */
   override def run(args: List[String]): IO[ExitCode] = {
-    val modules = new SearchAppModules[IO]()
+    printWelcomeMessage()
 
-    Console.println(MessageFactory.welcomeMessage)
+    implicit val database: Database =
+      DataBaseGenerator().generateDatabaseWithProgramArguments(args).getOrElse(Database())
+
+    val modules = new SearchAppModules[IO]()
 
     val result = program(modules)
 
@@ -42,7 +36,10 @@ object ZendeskSearchApp extends IOApp {
     }
   }
 
-  def program(module: SearchAppModules[IO]): IO[Either[AppError, Unit]] = {
+  private def printWelcomeMessage(): Unit =
+    Console.println(MessageFactory.welcomeMessage)
+
+  private def program(module: SearchAppModules[IO]): IO[Either[AppError, Unit]] = {
     val r: EitherT[IO, model.AppError, Unit] = for {
       searchObject <- EitherT(module.processSelectSearchObject())
       queryParams  <- EitherT(module.processCreateQueryParams(searchObject))
@@ -51,4 +48,5 @@ object ZendeskSearchApp extends IOApp {
 
     r.value
   }
+
 }
