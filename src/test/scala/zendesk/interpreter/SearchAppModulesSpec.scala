@@ -12,7 +12,7 @@ import zendesk.model._
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.SearchObjectCommandParser
 import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
-import zendesk.util.DataFileReader
+import zendesk.util.DataBaseGenerator
 import zendesk.util.MessageFactory._
 
 import scala.collection.mutable.{Queue => MQueue}
@@ -21,13 +21,10 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
   // Examples should be executed sequencially due to dummyInput and dummyOutput state.
   sequential
 
-  private val users = DataFileReader.getDataFromFile[User]("./data/users.json")
-  private val orgs = DataFileReader.getDataFromFile[Organization]("./data/organizations.json")
-  private val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json")
-
   implicit private val searchObjectCommandParser = SearchObjectCommandParser()
   implicit private val queryParameterGenerator = QueryParameterGenerator()
-  implicit private val database = Database(userData = users, organizationData = orgs, ticketData = tickets)
+  implicit private val database =
+    DataBaseGenerator().generateDatabaseWithProgramArguments(List.empty).getOrElse(Database())
   implicit private val formatter = SearchResultFormatter()
 
   val idProgram = new SearchAppModules[Id]()
@@ -83,7 +80,7 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
         val result = idProgram.processSelectSearchObject()
 
         IdConsole.dummyOutput must beEqualTo(MQueue(searchObjectsOptionMessage))
-        result must beEqualTo(ParseFailure("Cannot parse '4' as SearchObjectCommand").asLeft)
+        result must beEqualTo(CommandParseFailure("Cannot parse '4' as SearchObjectCommand").asLeft)
       }
     }
   }

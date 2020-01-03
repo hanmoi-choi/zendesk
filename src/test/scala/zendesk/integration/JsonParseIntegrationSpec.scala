@@ -1,5 +1,6 @@
 package zendesk.integration
 
+import cats.syntax.either._
 import org.specs2.mutable.Specification
 import zendesk.model.Organization.decodeOrg
 import zendesk.model.Ticket.decodeTicket
@@ -14,7 +15,7 @@ class JsonParseIntegrationSpec extends Specification {
     // ❯ cat data/users.json | jq '. | length'
     // 75
     "JSON file should be parsed without failure" >> {
-      users.size must beEqualTo(75)
+      users.map(_.size) must beEqualTo(75.asRight)
     }
   }
 
@@ -24,7 +25,7 @@ class JsonParseIntegrationSpec extends Specification {
     // ❯ cat data/organizations.json | jq '. | length'
     // 25
     "JSON file should be parsed without failure" >> {
-      orgs.size must beEqualTo(25)
+      orgs.map(_.size) must beEqualTo(25.asRight)
     }
   }
 
@@ -34,7 +35,7 @@ class JsonParseIntegrationSpec extends Specification {
     // ❯ cat data/tickets.json | jq '. | length'
     // 200
     "JSON file should be parsed without failure" >> {
-      tickets.size must beEqualTo(200)
+      tickets.map(_.size) must beEqualTo(200.asRight)
     }
   }
 }

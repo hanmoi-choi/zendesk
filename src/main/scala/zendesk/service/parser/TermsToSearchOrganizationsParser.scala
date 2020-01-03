@@ -2,7 +2,7 @@ package zendesk.service.parser
 
 import cats.syntax.either._
 import fastparse._
-import zendesk.model.{AppError, ParseFailure}
+import zendesk.model.{AppError, CommandParseFailure}
 import zendesk.service.parser.TermsToSearchOrganizations._
 
 object TermsToSearchOrganizationsParser extends Parser[TermsToSearchOrganizations] {
@@ -38,7 +38,7 @@ object TermsToSearchOrganizationsParser extends Parser[TermsToSearchOrganization
 
   def doParse(command: String): Either[AppError, TermsToSearchOrganizations] = {
     parse(command, parseTerm(_)) match {
-      case Parsed.Failure(_, _, _) => ParseFailure(s"Cannot parse $command as SearchOrganizationsTerm").asLeft
+      case Parsed.Failure(_, _, _) => CommandParseFailure(s"Cannot parse $command as SearchOrganizationsTerm").asLeft
       case Parsed.Success(v, _) => v.asRight
     }
   }

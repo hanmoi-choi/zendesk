@@ -3,7 +3,7 @@ package zendesk.service.parser
 import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.model.ParseFailure
+import zendesk.model.CommandParseFailure
 import zendesk.service.parser.TermsToSearchTickets._
 import zendesk.service.parser.TermsToSearchTicketsParser.doParse
 
@@ -162,7 +162,7 @@ class TermsToSearchTicketsParserSpec extends Specification with ScalaCheck {
     invalidCommand.toLowerCase != "dueAt" &&
     invalidCommand.toLowerCase != "via") ==> prop { _: String =>
       val result = doParse(invalidCommand)
-      val expectedError = ParseFailure(s"Cannot parse $invalidCommand as SearchTicketsTerm").asLeft
+      val expectedError = CommandParseFailure(s"Cannot parse $invalidCommand as SearchTicketsTerm").asLeft
 
       result must beEqualTo(expectedError)
     }

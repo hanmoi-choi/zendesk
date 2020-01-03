@@ -11,11 +11,12 @@ import scala.util.Random
 
 class DatabaseSpec extends Specification with ScalaCheck {
   "Build Search DB from the given Data" >> {
-    val users = DataFileReader.getDataFromFile[User]("./data/users.json")
-    val organizations = DataFileReader.getDataFromFile[Organization]("./data/organizations.json")
-    val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json")
+    val users = DataFileReader.getDataFromFile[User]("./data/users.json").getOrElse(Vector.empty)
+    val organizations =
+      DataFileReader.getDataFromFile[Organization]("./data/organizations.json").getOrElse(Vector.empty)
+    val tickets = DataFileReader.getDataFromFile[Ticket]("./data/tickets.json").getOrElse(Vector.empty)
 
-    val db = Database(userData = users, organizationData = organizations, ticketData = tickets)
+    val db = DataBaseGenerator().generateDatabaseWithProgramArguments(List.empty).getOrElse(Database())
 
     "Provides lists of searchable fields for each object" >> {
       "Users" >> {

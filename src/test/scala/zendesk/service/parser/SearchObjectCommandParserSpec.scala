@@ -3,7 +3,7 @@ package zendesk.service.parser
 import cats.syntax.either._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
-import zendesk.model.ParseFailure
+import zendesk.model.CommandParseFailure
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 
 class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
@@ -24,12 +24,12 @@ class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
 
     "Should parse 'quit' as 'Quit' command" >> {
       "as uppercase" >> {
-        val expectedError = ParseFailure("Cannot parse 'QUIT' as SearchObjectCommand")
+        val expectedError = CommandParseFailure("Cannot parse 'QUIT' as SearchObjectCommand")
         parser.doParse("QUIT") must beEqualTo(expectedError.asLeft)
       }
 
       "as lowercase" >> {
-        val expectedError = ParseFailure("Cannot parse 'quit' as SearchObjectCommand")
+        val expectedError = CommandParseFailure("Cannot parse 'quit' as SearchObjectCommand")
         parser.doParse("quit") must beEqualTo(expectedError.asLeft)
       }
     }
@@ -38,7 +38,7 @@ class SearchObjectCommandParserSpec extends Specification with ScalaCheck {
       (invalidCommand != "1" && invalidCommand != "2" && invalidCommand != "3" && invalidCommand.toLowerCase != "quit") ==> prop {
         _: String =>
           val result = parser.doParse(invalidCommand)
-          val expectedError = ParseFailure(s"Cannot parse '$invalidCommand' as SearchObjectCommand").asLeft
+          val expectedError = CommandParseFailure(s"Cannot parse '$invalidCommand' as SearchObjectCommand").asLeft
 
           result must beEqualTo(expectedError)
       }
