@@ -34,10 +34,10 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
    - Screenshot is attached at Appendix
 
 5. Search value is case-sensitive and Search term(field) is case-insensitive.
-   
+
    - `Enter search term` is case-insensitive
    - `Enter search value` is case-sensitive
-   
+
 ![](./resources/search.png)
 
 # Approach
@@ -83,9 +83,10 @@ I have used these two Scala class based on [this scala doc](https://docs.scala-l
        - many-users.json
        - many-tickets.json
        - many-organizations.json
-   - `scala target/scala-2.13/zendesk.jar data/many-users.json data/many-organizations.json data/many-tickets.json`
+   - `JAVA_OPTS="-Xmx2g" scala target/scala-2.13/zendesk.jar data/many-users.json data/many-organizations.json data/many-tickets.json`
+       - need to increase JVM heapsize; Search Users with `organizationId` and `empty string`.
    - `auto/run data/many-users.json data/many-organizations.json data/many-tickets.json`
-   
+
 ![](./resources/test-machine.png)
 
 
@@ -115,9 +116,13 @@ This command will fix the issue
 
 ##### Run App
 
-`sbt clean assembly`
+1. `sbt clean assembly`
 
-`scala target/scala-2.13/zendesk.jar <optional users data file path> <optional organizations data file path> <optional tickets data file path>`
+2. `scala target/scala-2.13/zendesk.jar <optional users data file path> <optional organizations data file path> <optional tickets data file path>`
+   - when optional params are not provided the default data files are used under `./data` directory
+      - users.json
+      - tickets.json
+      - organizations.json
 
 ### With Docker
 1. [Install Latest Docker](https://docs.docker.com/v17.12/install/)
