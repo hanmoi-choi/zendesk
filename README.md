@@ -53,8 +53,12 @@ TBD
 ### Relationships among object to be used for search
 ![](./resources/Relationships.png)
 
-### Data Structure for Database
-TBD
+### Data Structure for Database Class
+I have used these two Scala class based on [this scala doc](https://docs.scala-lang.org/overviews/collections-2.13/performance-characteristics.html) for `BigO performance`
+- Either mutable or immutable Hashmap
+- Vector
+
+![](./resources/Database_Internal.jpg)
 
 ## Libraries
 - [Circe](https://circe.github.io/circe/) to parse Json data files; users.json, tickets.json, and organizations.json
@@ -88,6 +92,7 @@ This command will fix the issue
 ##### Run App
 
 `sbt clean assembly`
+
 `scala target/scala-2.13/zendesk.jar`
 
 ### With Docker

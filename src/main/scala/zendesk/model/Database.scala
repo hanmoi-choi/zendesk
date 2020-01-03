@@ -13,13 +13,8 @@ case class Database() {
     listOfSearchableFieldsMap.getOrElse(key, "")
 
   def query[T](queryParams: QueryParams): Vector[T] = {
-    val table = queryParams.searchKey match {
-      case Searchable.Users => userTable
-      case Searchable.Tickets => ticketTable
-      case Searchable.Organizations => organizationTable
-    }
-
-    table
+    tables
+      .getOrElse[MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]]](queryParams.searchKey, MMap.empty)
       .getOrElse[Map[SearchValue, Vector[Searchable]]](queryParams.searchTerm.toLowerCase, Map.empty)
       .getOrElse[Vector[Searchable]](queryParams.searchValue, Vector.empty)
       .asInstanceOf[Vector[T]]
@@ -32,6 +27,13 @@ case class Database() {
   private val organizationTable: MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]] = MMap()
 
   private val ticketTable: MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]] = MMap()
+
+  private val tables: Map[Searchable.Keys, MMap[SearchTerm, Map[SearchValue, Vector[Searchable]]]] =
+    Map(
+      Searchable.Users -> userTable,
+      Searchable.Tickets -> ticketTable,
+      Searchable.Organizations -> organizationTable
+    )
 
   private def groupAndExtractValues[T <: SearchValue, V <: Searchable](
     data: Vector[(T, V)]
