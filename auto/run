@@ -2,4 +2,4 @@
 
 auto/dev-environment sbt clean assembly
 
-scala target/scala-2.13/zendesk.jar
+scala target/scala-2.13/zendesk.jar $1 $2 $3

@@ -33,6 +33,13 @@ Zendesk describes that it is fine for me to use Public repo for my exercise.
    - I wanted to display the searchable fields for the object users are selected.
    - Screenshot is attached at Appendix
 
+5. Search value is case-sensitive and Search term(field) is case-insensitive.
+   
+   - `Enter search term` is case-insensitive
+   - `Enter search value` is case-sensitive
+   
+![](./resources/search.png)
+
 # Approach
 
 ## Libraries I used
@@ -65,7 +72,27 @@ I have used these two Scala class based on [this scala doc](https://docs.scala-l
 
 ![](./resources/Database_Internal.jpg)
 
+## Performance
+1. Throughput
+   - Description mentioned that I could assume Memory could store all data so this will not be tested.
+   - It does not matter how much text data will be flushed into IO.
+
+2. Latency; Result was acceptable, I felt less than 1 sec delay.
+   - Search time should not BigO(N)
+   - I have created 3 files under `./data` directory which have 150 times more data than the given data.
+       - many-users.json
+       - many-tickets.json
+       - many-organizations.json
+   - `scala target/scala-2.13/zendesk.jar data/many-users.json data/many-organizations.json data/many-tickets.json`
+   - `auto/run data/many-users.json data/many-organizations.json data/many-tickets.json`
+   
+![](./resources/test-machine.png)
+
+
 # Development
+
+## Initial execution takes time
+This is due to download `sbt` and `libraries` so please be patient.
 
 ## Setup Environment
 **sometime after running your test from docker the file owner tend to be changed as `root`**
