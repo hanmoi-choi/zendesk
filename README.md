@@ -47,9 +47,6 @@ Exceptions are
 
 ## Diagrams
 
-### Overall dataflow from user input to output
-TBD
-
 ### Relationships among object to be used for search
 ![](./resources/Relationships.png)
 
@@ -111,3 +108,8 @@ This command will fix the issue
 
 ##### Run App
 `auto/run`
+
+## Appendix
+
+### Sample Result
+![](./resources/SampleResult.png)
