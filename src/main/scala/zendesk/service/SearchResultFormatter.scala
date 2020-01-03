@@ -5,52 +5,16 @@ import zendesk.model.{Organization, QueryParams, SearchResult, Searchable, Ticke
 
 case class SearchResultFormatter() {
   def format(searchResults: Vector[SearchResult]): String = {
-    searchResults.flatMap { sr: SearchResult =>
-      Vector(
-        title(sr.queryParams),
-        formatPrimaryObject(sr.queryParams, sr.primaryObject)
-      )
-    }.mkString("")
-  }
+    val reportTitle = searchResults.headOption.map { sr: SearchResult =>
+      title(sr.queryParams)
+    }.toVector
 
-  private def formatPrimaryObject(queryParams: QueryParams, primaryObject: Searchable) = {
-    val formatted = queryParams.searchKey match {
-      case Searchable.Users =>
-        primaryObject
-          .asInstanceOf[User]
-          .asJson
-          .spaces2
-          .replaceAll("\"", "")
-          .replaceAll(",", "")
-          .replaceAll("\\}", "")
-          .trim
-          .replaceAll("\\{", "")
-
-      case Searchable.Tickets =>
-        primaryObject
-          .asInstanceOf[Ticket]
-          .asJson
-          .spaces2
-          .replaceAll("\"", "")
-          .replaceAll(",", "")
-          .replaceAll("\\}", "")
-          .trim
-          .replaceAll("\\{", "")
-
-      case Searchable.Organizations =>
-        primaryObject
-          .asInstanceOf[Organization]
-          .asJson
-          .spaces2
-          .replaceAll("\"", "")
-          .replaceAll(",", "")
-          .replaceAll("\\}", "")
-          .trim
-          .replaceAll("\\{", "")
+    val reportContents = searchResults.map { sr: SearchResult =>
+      s"""${sr.primaryObject.asFullDataString}
+         |---------------------------------------------------""".stripMargin
     }
 
-    s"""$formatted
-       |---------------------------------------------------""".stripMargin
+    (reportTitle ++ reportContents).mkString("")
   }
 
   private def title(queryParams: QueryParams): String = {

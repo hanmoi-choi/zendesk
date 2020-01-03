@@ -28,9 +28,19 @@ case class User(
 
   def pairWithTag(): List[(Tag, User)] = tags.map((_, this))
 
+  override def asFullDataString: String = trimJsonString(this.asJson.spaces2)
+
+  override def asSimpleDataString: String = trimJsonString(User.simpleJson(this).spaces2)
 }
 
 object User {
+  def simpleJson(user: User): Json =
+    Json.obj(
+      ("user_name", user.name.asJson),
+      ("alias", user.alias.asJson),
+      ("user_role", user.role.asJson)
+    )
+
   implicit val encodeUser: Encoder[User] = (user: User) =>
     Json.obj(
       ("_id", user.id.asJson),

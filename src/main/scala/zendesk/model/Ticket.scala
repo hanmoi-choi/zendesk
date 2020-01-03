@@ -24,9 +24,19 @@ case class Ticket(
 ) extends Searchable {
   def pairWithTag(): List[(Tag, Ticket)] = tags.map((_, this))
 
+  override def asFullDataString: String = trimJsonString(this.asJson.spaces2)
+
+  override def asSimpleDataString: String = trimJsonString(Ticket.simpleJson(this).spaces2)
 }
 
 object Ticket {
+  def simpleJson(tk: Ticket): Json =
+    Json.obj(
+      ("ticket_subject", tk.subject.asJson),
+      ("ticket_priority", tk.priority.asJson),
+      ("ticket_status", tk.status.asJson)
+    )
+
   implicit val encodeTicket: Encoder[Ticket] = (tk: Ticket) =>
     Json.obj(
       ("_id", tk.id.asJson),

@@ -151,10 +151,10 @@ class DatabaseSpec extends Specification with ScalaCheck {
         result must contain(randomPickedUpTicket)
       }
 
-      "should be able to search with 'tags'" >> {
+      "should be able to search with 'tag'" >> {
         randomPickedUpTicket.tags.map { tag =>
           val result: Vector[Ticket] =
-            db.query[Ticket](model.QueryParams(Searchable.Tickets, "tags", tag))
+            db.query[Ticket](model.QueryParams(Searchable.Tickets, "tag", tag))
 
           result must contain(randomPickedUpTicket)
         }
@@ -199,7 +199,7 @@ class DatabaseSpec extends Specification with ScalaCheck {
       "should be able to search with 'domainName'" >> {
         randomPickedUpOrg.domainNames.map { domainName =>
           val result: Vector[Organization] =
-            db.query[Organization](model.QueryParams(Searchable.Organizations, "domainNames", domainName))
+            db.query[Organization](model.QueryParams(Searchable.Organizations, "domainName", domainName))
 
           result must contain(randomPickedUpOrg)
         }
@@ -208,7 +208,7 @@ class DatabaseSpec extends Specification with ScalaCheck {
       "should be able to search with 'tags'" >> {
         randomPickedUpOrg.tags.map { tag =>
           val result: Vector[Organization] =
-            db.query[Organization](model.QueryParams(Searchable.Organizations, "tags", tag))
+            db.query[Organization](model.QueryParams(Searchable.Organizations, "tag", tag))
 
           result must contain(randomPickedUpOrg)
         }
@@ -352,7 +352,7 @@ class DatabaseSpec extends Specification with ScalaCheck {
       "should be able to search with 'tags'" >> {
         randomPickedUpUser.tags.map { tag =>
           val result: Vector[User] =
-            db.query[User](model.QueryParams(Searchable.Users, "tags", tag))
+            db.query[User](model.QueryParams(Searchable.Users, "tag", tag))
 
           result must contain(randomPickedUpUser)
         }

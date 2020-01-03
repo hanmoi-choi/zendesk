@@ -60,7 +60,7 @@ case class Database() {
     userTable.put("phone".toLowerCase, data.groupBy(_.phone))
     userTable.put("signature".toLowerCase, data.groupBy(_.signature))
     userTable.put("organizationId".toLowerCase, data.groupBy(_.organizationId.getOrElse(EmptyStringSearchField)))
-    userTable.put("tags".toLowerCase, usersGroupedByTag)
+    userTable.put("tag".toLowerCase, usersGroupedByTag)
     userTable.put("suspended".toLowerCase, data.groupBy(_.suspended))
     userTable.put("role".toLowerCase, data.groupBy(_.role))
   }
@@ -79,8 +79,8 @@ case class Database() {
     organizationTable.put("createdAt".toLowerCase, data.groupBy(_.createdAt))
     organizationTable.put("details".toLowerCase, data.groupBy(_.details))
     organizationTable.put("sharedTickets".toLowerCase, data.groupBy(_.sharedTickets))
-    organizationTable.put("tags".toLowerCase, orgsGroupedByTag)
-    organizationTable.put("domainNames".toLowerCase, orgsGroupedByDomainName)
+    organizationTable.put("tag".toLowerCase, orgsGroupedByTag)
+    organizationTable.put("domainName".toLowerCase, orgsGroupedByDomainName)
   }
 
   def createTicketTable(data: Vector[Ticket]): Unit = {
@@ -101,7 +101,7 @@ case class Database() {
     ticketTable.put("submitterId".toLowerCase, data.groupBy(_.submitterId))
     ticketTable.put("assigneeId".toLowerCase, data.groupBy(_.assigneeId.getOrElse(EmptyStringSearchField)))
     ticketTable.put("organizationId".toLowerCase, data.groupBy(_.organizationId.getOrElse(EmptyStringSearchField)))
-    ticketTable.put("tags".toLowerCase, ticketsGroupedByTag)
+    ticketTable.put("tag".toLowerCase, ticketsGroupedByTag)
     ticketTable.put("hasIncidents".toLowerCase, data.groupBy(_.hasIncidents))
     ticketTable.put("dueAt".toLowerCase, data.groupBy(_.dueAt.getOrElse(EmptyStringSearchField)))
     ticketTable.put("via".toLowerCase, data.groupBy(_.via))

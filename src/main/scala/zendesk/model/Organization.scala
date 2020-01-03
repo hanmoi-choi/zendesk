@@ -20,9 +20,17 @@ case class Organization(
 
   def pairWithDomainName(): List[(DomainName, Organization)] = domainNames.map((_, this))
 
+  override def asFullDataString: String = trimJsonString(this.asJson.spaces2)
+
+  override def asSimpleDataString: String = trimJsonString(Organization.simpleJson(this).spaces2)
 }
 
 object Organization {
+  def simpleJson(org: Organization): Json =
+    Json.obj(
+      ("organization_name", org.name.asJson)
+    )
+
   implicit val encodeOrg: Encoder[Organization] = (org: Organization) =>
     Json.obj(
       ("_id", org.id.asJson),

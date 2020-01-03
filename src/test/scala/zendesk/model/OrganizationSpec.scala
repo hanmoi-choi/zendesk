@@ -7,6 +7,13 @@ import org.specs2.mutable.Specification
 import zendesk.helper.TestDataFactory
 
 class OrganizationSpec extends Specification {
+  "Simple Data String" >> {
+    val expected =
+      """
+        |  organization_name : Enthaze""".stripMargin
+
+    TestDataFactory.organization.asSimpleDataString must beEqualTo(expected)
+  }
 
   "JSON string for a organization should be decoded to Organization object" >> {
     val result: Either[Error, Organization] = io.circe.parser.decode[Organization](TestDataFactory.rawOrganizationJson)

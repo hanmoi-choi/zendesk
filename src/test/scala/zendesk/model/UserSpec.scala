@@ -7,6 +7,16 @@ import org.specs2.mutable.Specification
 import zendesk.helper.TestDataFactory
 
 class UserSpec extends Specification {
+  "Simple Data String" >> {
+    val expected =
+      """
+        |  user_name : Francisca Rasmussen
+        |  alias : Miss Coffey
+        |  user_role : admin""".stripMargin
+
+    TestDataFactory.user.asSimpleDataString must beEqualTo(expected)
+  }
+
   "JSON string for a user should be decoded to User object" >> {
     val result: Either[Error, User] = io.circe.parser.decode[User](TestDataFactory.rawUserJson)
 
