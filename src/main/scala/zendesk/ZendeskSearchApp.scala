@@ -17,12 +17,13 @@ object ZendeskSearchApp extends IOApp {
   override def run(args: List[String]): IO[ExitCode] = {
     printWelcomeMessage()
 
-    implicit val database: Database =
-      DataBaseGenerator().generateDatabaseWithProgramArguments(args).getOrElse(Database())
-
-    val modules = new SearchAppModules[IO]()
-
-    impurityProgramExecution(modules)
+    DataBaseGenerator().generateDatabaseWithProgramArguments(args) match {
+      case Left(error) => Console.println(AppError.asText(error))
+      case Right(value) =>
+        implicit val database: Database = value
+        val modules = new SearchAppModules[IO]()
+        impurityProgramExecution(modules)
+    }
 
     IO(ExitCode.Success)
   }

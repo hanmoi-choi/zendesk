@@ -20,8 +20,9 @@ object DataFileReader {
   def getDataFromFile[T](path: String)(implicit decoder: Decoder[T]): Either[AppError, Vector[T]] = {
     readFileAsString(path).flatMap { rawJson =>
       decode[Vector[T]](rawJson)
-    }.leftMap[AppError] { e =>
-      JsonParseFailure(e.toString)
+    }.leftMap[AppError] {
+      case e @ FileNotExistError(_) => e
+      case e => JsonParseFailure(e.toString)
     }
   }
 }
