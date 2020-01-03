@@ -1,7 +1,5 @@
 package zendesk.dsl
 
-import cats.Monad
-import cats.instances.option._
 import cats.syntax.either._
 import zendesk.model.SearchResult.ForeignKey
 import zendesk.model.value.{AssigneeId, Id, OrganizationId, SubmitterId}

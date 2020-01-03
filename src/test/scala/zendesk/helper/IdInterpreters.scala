@@ -3,7 +3,7 @@ package zendesk.helper
 import cats.Id
 import cats.syntax.either._
 import zendesk.dsl.{Console, Repository, UserInputParser}
-import zendesk.model.{AppError, Database, ExitAppByUserRequest, QueryParams, SearchResult}
+import zendesk.model._
 import zendesk.service.QueryParameterGenerator
 import zendesk.service.parser.{Parser, SearchObjectCommand}
 

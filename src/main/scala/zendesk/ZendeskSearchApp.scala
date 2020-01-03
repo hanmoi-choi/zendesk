@@ -2,12 +2,11 @@ package zendesk
 
 import cats.data.EitherT
 import cats.effect.{ExitCode, IO, IOApp}
-import cats.syntax.either._
 import zendesk.interpreter.IOInterpreter._
 import zendesk.interpreter.SearchAppModules
-import zendesk.model.{AppError, Database, ExitAppByUserRequest, Organization, Ticket, User}
-import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
+import zendesk.model._
 import zendesk.service.parser.SearchObjectCommandParser
+import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
 import zendesk.util.{DataFileReader, MessageFactory}
 
 object ZendeskSearchApp extends IOApp {

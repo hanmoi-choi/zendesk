@@ -1,9 +1,8 @@
 package zendesk.service
 
-import io.circe.syntax._
-import zendesk.model.SearchResult.{AssigneeId, ForeignKey, OrganizationIdAtTicket, OrganizationIdAtUser, SubmitterId}
+import zendesk.model.SearchResult._
 import zendesk.model.Searchable.{Tickets, Users}
-import zendesk.model.{Organization, QueryParams, SearchResult, Searchable, Ticket, User}
+import zendesk.model.{QueryParams, SearchResult, Searchable}
 
 case class SearchResultFormatter() {
   def format(searchResults: Vector[SearchResult]): String = {

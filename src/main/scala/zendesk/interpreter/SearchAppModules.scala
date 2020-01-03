@@ -2,16 +2,14 @@ package zendesk.interpreter
 
 import cats.Monad
 import cats.data.EitherT
-import cats.effect.IO
-import cats.syntax.either._
 import zendesk.dsl.Console._
 import zendesk.dsl.UserInputParser._
 import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model
-import zendesk.model.{AppError, Database, ExitAppByUserRequest, QueryParams, SearchResult, Searchable}
-import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
+import zendesk.model.{Database, QueryParams, Searchable}
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{Parser, SearchObjectCommand}
+import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
 import zendesk.util.MessageFactory
 
 case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()(

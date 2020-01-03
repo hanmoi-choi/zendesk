@@ -74,8 +74,8 @@ This command will fix the issue
 > sudo chown -r $USER:$USER .
 >
 ### Without Docker
-1. [Install Open JDK 8](https://openjdk.java.net/install/)
-2. [Install sbt](https://www.scala-sbt.org/)
+1. [Install Open JDK 8u222](https://openjdk.java.net/install/)
+2. [Install sbt 1.3.6](https://www.scala-sbt.org/)
 2. [Scala 2.13.1](https://www.scala-lang.org/)
 4. Execute `Commands` below for either test or execute app
 
