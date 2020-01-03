@@ -3,8 +3,8 @@ package zendesk.service
 import io.circe.syntax._
 import zendesk.model.{Organization, QueryParams, SearchResult, Searchable, Ticket, User}
 
-case class SearchResultFormatter(searchResults: Vector[SearchResult]) {
-  def format(): String = {
+case class SearchResultFormatter() {
+  def format(searchResults: Vector[SearchResult]): String = {
     searchResults.flatMap { sr: SearchResult =>
       Vector(
         title(sr.queryParams),

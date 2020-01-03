@@ -6,7 +6,7 @@ import cats.syntax.either._
 import zendesk.interpreter.IOInterpreter._
 import zendesk.interpreter.SearchAppModules
 import zendesk.model.{AppError, Database, Organization, Ticket, User}
-import zendesk.service.QueryParameterGenerator
+import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
 import zendesk.service.parser.SearchObjectCommandParser
 import zendesk.util.{DataFileReader, MessageFactory}
 
@@ -18,6 +18,7 @@ object ZendeskSearchApp extends IOApp {
   implicit private val searchObjectCommandParser = SearchObjectCommandParser()
   implicit private val queryParameterGenerator = QueryParameterGenerator()
   implicit private val database = Database(userData = users, organizationData = orgs, ticketData = tickets)
+  implicit private val formatter = SearchResultFormatter()
 
   override def run(args: List[String]): IO[ExitCode] = {
     val modules = new SearchAppModules[IO]()
@@ -35,9 +36,7 @@ object ZendeskSearchApp extends IOApp {
     val r: EitherT[IO, model.AppError, ExitCode] = for {
       searchObject <- EitherT(module.processSelectSearchObject())
       queryParams  <- EitherT(module.processCreateQueryParams(searchObject))
-      _            <- EitherT(IO { Console.println(queryParams); ().asRight[model.AppError] })
-      searchResult <- EitherT(module.searchData(queryParams))
-      _            <- EitherT(IO { Console.println(searchResult); ().asRight[model.AppError] })
+      _            <- EitherT(module.searchData(queryParams))
     } yield ExitCode.Success
 
     r.value

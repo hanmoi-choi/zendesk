@@ -7,7 +7,7 @@ import zendesk.dsl.UserInputParser._
 import zendesk.dsl.{Console, Repository, UserInputParser}
 import zendesk.model
 import zendesk.model.{Database, QueryParams, SearchResult, Searchable}
-import zendesk.service.QueryParameterGenerator
+import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{Parser, SearchObjectCommand}
 import zendesk.util.MessageFactory
@@ -15,11 +15,12 @@ import zendesk.util.MessageFactory
 case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()(
   implicit searchObjectCommandParser: Parser[SearchObjectCommand],
   queryParamsGenerator: QueryParameterGenerator,
-  searchDatabase: Database
+  searchDatabase: Database,
+  searchResultFormatter: SearchResultFormatter
 ) {
 
   def processSelectSearchObject(): F[Either[model.AppError, SearchObjectCommand]] = {
-    val parserResult: EitherT[F, model.AppError, SearchObjectCommand] =
+    val parserResult =
       for {
         _         <- EitherT(out(MessageFactory.searchObjectsOptionMessage))
         userInput <- EitherT(in())
@@ -37,7 +38,7 @@ case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()
   }
 
   def processCreateQueryParams(searchObjectCommand: SearchObjectCommand): F[Either[model.AppError, QueryParams]] = {
-    val parserResult: EitherT[F, model.AppError, QueryParams] =
+    val parserResult =
       for {
         _                <- EitherT(out(MessageFactory.enterSearchTerm))
         searchTermInput  <- EitherT(in())
@@ -49,11 +50,12 @@ case class SearchAppModules[F[_]: Monad: Repository: Console: UserInputParser]()
     parserResult.value
   }
 
-  def searchData(queryParams: QueryParams): F[Either[model.AppError, Vector[SearchResult]]] = {
-    val parserResult: EitherT[F, model.AppError, Vector[SearchResult]] =
+  def searchData(queryParams: QueryParams): F[Either[model.AppError, Unit]] = {
+    val parserResult =
       for {
         result <- EitherT(Repository.query(queryParams))
-      } yield result
+        _      <- EitherT(out(searchResultFormatter.format(result)))
+      } yield ()
 
     parserResult.value
   }

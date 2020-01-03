@@ -8,7 +8,7 @@ import zendesk.helper.IdInterpreters._
 import zendesk.helper.TestDataFactory
 import zendesk.model
 import zendesk.model._
-import zendesk.service.QueryParameterGenerator
+import zendesk.service.{QueryParameterGenerator, SearchResultFormatter}
 import zendesk.service.parser.SearchObjectCommand.{SearchOrganizations, SearchTickets, SearchUsers}
 import zendesk.service.parser.{SearchObjectCommand, SearchObjectCommandParser}
 import zendesk.util.MessageFactory._
@@ -27,6 +27,7 @@ class SearchAppModulesSpec extends Specification with BeforeEach {
   implicit private val searchObjectCommandParser = SearchObjectCommandParser()
   implicit private val queryParameterGenerator = QueryParameterGenerator()
   implicit private val database = Database(userData = users, organizationData = orgs, ticketData = tickets)
+  implicit private val formatter = SearchResultFormatter()
 
   val idProgram = new SearchAppModules[Id]()
 

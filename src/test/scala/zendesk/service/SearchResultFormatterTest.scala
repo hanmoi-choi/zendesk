@@ -10,6 +10,7 @@ class SearchResultFormatterTest extends Specification {
   private val user = TestDataFactory.user
   private val organization = TestDataFactory.organization
   private val ticket = TestDataFactory.ticket
+  private val formatter = SearchResultFormatter()
 
   "SearchResultFormatter" should {
     "Should return human readable format" in {
@@ -57,7 +58,7 @@ class SearchResultFormatterTest extends Specification {
         val searchResult = SearchResult(queryParams, user, Map.empty)
         val expectedResultString = searchResultTitle + expectedSearchResultForPrimaryObject
 
-        val result = SearchResultFormatter(Vector(searchResult)).format()
+        val result = formatter.format(Vector(searchResult))
 
         result must beEqualTo(expectedResultString)
       }
@@ -101,7 +102,7 @@ class SearchResultFormatterTest extends Specification {
         val searchResult = SearchResult(queryParams, ticket, Map.empty)
         val expectedResultString = searchResultTitle + expectedSearchResultForPrimaryObject
 
-        val result = SearchResultFormatter(Vector(searchResult)).format()
+        val result = formatter.format(Vector(searchResult))
 
         result must beEqualTo(expectedResultString)
       }
@@ -145,7 +146,7 @@ class SearchResultFormatterTest extends Specification {
         val searchResult = SearchResult(queryParams, organization, Map.empty)
         val expectedResultString = searchResultTitle + expectedSearchResultForPrimaryObject
 
-        val result = SearchResultFormatter(Vector(searchResult)).format()
+        val result = formatter.format(Vector(searchResult))
 
         result must beEqualTo(expectedResultString)
       }
